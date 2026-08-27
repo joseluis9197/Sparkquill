@@ -1,0 +1,1133 @@
+<title>Sparkquill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#F5F7F4;
+  --surface:#FFFFFF;
+  --surface-2:#EEF2EE;
+  --ink:#12242C;
+  --ink-2:#4B646E;
+  --ink-3:#7A8F96;
+  --line:#DCE4DE;
+  --line-strong:#C3D0C8;
+  --tide:#1B7A6A;
+  --tide-soft:#E2F0EC;
+  --ela:#45589B;
+  --ela-soft:#E7EBF7;
+  --spark:#C87D06;
+  --spark-soft:#FBF0DA;
+  --coral:#B8422A;
+  --coral-soft:#FAEAE5;
+  --shadow:0 1px 2px rgba(18,36,44,.05), 0 8px 24px -16px rgba(18,36,44,.25);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E181C;
+    --surface:#152329;
+    --surface-2:#1B2C33;
+    --ink:#E7EDE9;
+    --ink-2:#A2B5BA;
+    --ink-3:#7A8F96;
+    --line:#26383F;
+    --line-strong:#375059;
+    --tide:#46B39F;
+    --tide-soft:#15302C;
+    --ela:#8A9CE0;
+    --ela-soft:#1C2440;
+    --spark:#F0B14A;
+    --spark-soft:#33270F;
+    --coral:#E88268;
+    --coral-soft:#37201A;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E181C;
+  --surface:#152329;
+  --surface-2:#1B2C33;
+  --ink:#E7EDE9;
+  --ink-2:#A2B5BA;
+  --ink-3:#7A8F96;
+  --line:#26383F;
+  --line-strong:#375059;
+  --tide:#46B39F;
+  --tide-soft:#15302C;
+  --ela:#8A9CE0;
+  --ela-soft:#1C2440;
+  --spark:#F0B14A;
+  --spark-soft:#33270F;
+  --coral:#E88268;
+  --coral-soft:#37201A;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* ---------- masthead ---------- */
+.masthead{
+  border-bottom:1px solid var(--line);
+  background:
+    radial-gradient(120% 100% at 88% 0%, var(--tide-soft) 0%, transparent 60%),
+    var(--surface);
+}
+.masthead .wrap{padding-top:56px;padding-bottom:44px}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tide);margin:0 0 20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.eyebrow span{color:var(--ink-3)}
+h1{
+  font-family:"Fraunces",Georgia,serif;
+  font-weight:600;
+  font-size:clamp(42px,7vw,74px);
+  line-height:1.02;
+  letter-spacing:-.022em;
+  margin:0 0 18px;
+  text-wrap:balance;
+}
+.deck{
+  font-size:clamp(17px,2vw,20px);
+  line-height:1.55;
+  color:var(--ink-2);
+  max-width:60ch;
+  margin:0 0 30px;
+}
+.deck strong{color:var(--ink);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-size:12.5px;font-weight:600;
+  padding:5px 12px;border-radius:999px;
+  border:1px solid var(--line-strong);
+  color:var(--ink-2);background:var(--surface);
+}
+.chip.on{border-color:transparent;background:var(--spark-soft);color:var(--spark)}
+
+/* ---------- layout ---------- */
+.shell{display:block}
+@media(min-width:1080px){
+  .shell{display:grid;grid-template-columns:216px minmax(0,1fr);gap:56px;align-items:start}
+  .toc{position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto;padding:40px 0}
+}
+.toc{padding:32px 0 0}
+.toc h2{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);margin:0 0 14px;font-weight:500;
+}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc a{
+  display:flex;gap:10px;text-decoration:none;color:var(--ink-2);
+  font-size:13.5px;line-height:1.35;padding:5px 8px;border-radius:6px;
+  border-left:2px solid transparent;
+}
+.toc a:hover{background:var(--surface-2);color:var(--ink)}
+.toc a b{
+  font-family:"IBM Plex Mono",monospace;font-weight:400;color:var(--ink-3);
+  font-size:11.5px;padding-top:1px;flex:none;
+}
+main{padding:40px 0 96px;min-width:0}
+
+/* ---------- sections ---------- */
+section{margin:0 0 68px;scroll-margin-top:24px}
+.sec-head{display:flex;gap:14px;align-items:baseline;margin:0 0 6px;padding-top:8px;border-top:2px solid var(--ink);}
+.sec-num{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);
+  flex:none;padding-top:6px;letter-spacing:.04em;
+}
+h2.sec-title{
+  font-family:"Fraunces",Georgia,serif;font-weight:600;
+  font-size:clamp(26px,3.4vw,36px);line-height:1.12;letter-spacing:-.015em;
+  margin:0;text-wrap:balance;
+}
+.sec-lede{color:var(--ink-2);font-size:16.5px;max-width:70ch;margin:10px 0 28px}
+h3{
+  font-family:"Fraunces",Georgia,serif;font-weight:600;
+  font-size:21px;line-height:1.25;letter-spacing:-.01em;
+  margin:36px 0 10px;text-wrap:balance;
+}
+h4{
+  font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-2);margin:26px 0 8px;
+}
+p{margin:0 0 14px;max-width:74ch}
+ul,ol.body{margin:0 0 16px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+a{color:var(--tide)}
+strong{font-weight:600}
+code,.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.88em}
+code{
+  background:var(--surface-2);padding:1px 5px;border-radius:4px;
+  border:1px solid var(--line);color:var(--ink);
+}
+
+/* ---------- tables ---------- */
+.tw{overflow-x:auto;margin:0 0 22px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{
+  font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  font-weight:700;background:var(--surface-2);white-space:nowrap;
+}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{font-variant-numeric:tabular-nums;text-align:right}
+td .mono{color:var(--ink-2)}
+
+/* ---------- cards ---------- */
+.grid{display:grid;gap:14px;margin:0 0 22px}
+@media(min-width:640px){.g2{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:860px){.g3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:640px){.g3{grid-template-columns:repeat(2,1fr)}}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;
+  padding:16px 18px;box-shadow:var(--shadow);
+}
+.card h5{
+  margin:0 0 6px;font-size:15px;font-weight:700;line-height:1.3;letter-spacing:-.005em;
+}
+.card p{font-size:14px;color:var(--ink-2);margin:0}
+.card .tag{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin:0 0 8px;
+}
+
+/* callouts */
+.note{
+  border-left:3px solid var(--spark);background:var(--spark-soft);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:0 0 22px;
+}
+.note.risk{border-left-color:var(--coral);background:var(--coral-soft)}
+.note.key{border-left-color:var(--tide);background:var(--tide-soft)}
+.note p{margin:0 0 8px;max-width:68ch}
+.note p:last-child{margin:0}
+.note .lbl{
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.11em;
+  text-transform:uppercase;font-weight:500;display:block;margin:0 0 6px;color:var(--spark);
+}
+.note.risk .lbl{color:var(--coral)}
+.note.key .lbl{color:var(--tide)}
+
+/* pills */
+.pill{
+  display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;
+  letter-spacing:.03em;white-space:nowrap;
+}
+.p-math{background:var(--tide-soft);color:var(--tide)}
+.p-ela{background:var(--ela-soft);color:var(--ela)}
+.p-risk{background:var(--coral-soft);color:var(--coral)}
+.p-ok{background:var(--tide-soft);color:var(--tide)}
+.p-warn{background:var(--spark-soft);color:var(--spark)}
+
+/* phase timeline */
+.phases{display:flex;flex-direction:column;gap:0;margin:0 0 22px}
+.phase{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;
+  padding:0 0 26px;position:relative;
+}
+.phase-rail{position:relative;width:34px;display:flex;flex-direction:column;align-items:center}
+.phase-dot{
+  width:34px;height:34px;border-radius:50%;flex:none;
+  display:grid;place-items:center;font-family:"IBM Plex Mono",monospace;
+  font-size:12.5px;font-weight:500;background:var(--surface);
+  border:2px solid var(--line-strong);color:var(--ink-2);z-index:1;
+}
+.phase:not(:last-child) .phase-rail::after{
+  content:"";position:absolute;top:34px;bottom:-26px;width:2px;background:var(--line);
+}
+.phase.hot .phase-dot{border-color:var(--spark);color:var(--spark);background:var(--spark-soft)}
+.phase-body{padding-top:3px}
+.phase-body h3{margin:0 0 2px;font-size:19px}
+.phase-when{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  letter-spacing:.04em;margin:0 0 10px;
+}
+.phase-out{
+  font-size:14px;background:var(--surface-2);border-radius:8px;padding:10px 14px;
+  margin-top:10px;border:1px solid var(--line);
+}
+.phase-out b{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:3px;font-weight:500}
+
+/* stats */
+.stats{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);margin:0 0 22px}
+@media(min-width:760px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.stat .v{
+  font-family:"Fraunces",Georgia,serif;font-size:30px;font-weight:600;line-height:1;
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:block;margin-bottom:5px;
+}
+.stat .k{font-size:12px;color:var(--ink-2);line-height:1.35}
+
+hr.rule{border:none;border-top:1px solid var(--line);margin:34px 0}
+
+footer{border-top:1px solid var(--line);background:var(--surface);padding:34px 0 48px}
+footer p{font-size:13.5px;color:var(--ink-3);max-width:78ch}
+footer a{color:var(--ink-2)}
+
+:focus-visible{outline:2px solid var(--spark);outline-offset:2px;border-radius:3px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Plan de desarrollo <span>·</span> v1.0 <span>·</span> Agosto 2026</p>
+    <h1>Sparkquill</h1>
+    <p class="deck">Plataforma interactiva de preparación para los exámenes <strong>FAST</strong> de Florida, grados&nbsp;1.º a 6.º, en Inglés y Matemáticas. Manipulativos 3D, audio nativo y un motor adaptativo construido sobre los benchmarks reales del currículo B.E.S.T.</p>
+    <div class="chips">
+      <span class="chip on">6 grados</span>
+      <span class="chip">ELA + Math</span>
+      <span class="chip">$10 / estudiante / mes</span>
+      <span class="chip">Stripe per-seat</span>
+      <span class="chip">Next.js + Postgres</span>
+      <span class="chip">COPPA-first</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap shell">
+  <nav class="toc" aria-label="Índice">
+    <h2>Índice</h2>
+    <ol>
+      <li><a href="#s1"><b>01</b> Qué es FAST realmente</a></li>
+      <li><a href="#s2"><b>02</b> Currículo por grado</a></li>
+      <li><a href="#s3"><b>03</b> Interactividad</a></li>
+      <li><a href="#s4"><b>04</b> Audio</a></li>
+      <li><a href="#s5"><b>05</b> Arquitectura técnica</a></li>
+      <li><a href="#s6"><b>06</b> Motor adaptativo</a></li>
+      <li><a href="#s7"><b>07</b> Producción de contenido</a></li>
+      <li><a href="#s8"><b>08</b> Suscripciones y admin</a></li>
+      <li><a href="#s9"><b>09</b> Cumplimiento legal</a></li>
+      <li><a href="#s10"><b>10</b> Roadmap</a></li>
+      <li><a href="#s11"><b>11</b> Equipo y costes</a></li>
+      <li><a href="#s12"><b>12</b> Riesgos</a></li>
+      <li><a href="#s13"><b>13</b> Empezar mañana</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+  <section id="s1">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Qué es FAST realmente</h2></div>
+    <p class="sec-lede">Antes de escribir una línea de código hay que entender que «FAST» no es un examen, sino dos programas distintos bajo un mismo nombre. Esto cambia el producto de raíz.</p>
+
+    <p>Florida administra el <strong>Florida Assessment of Student Thinking</strong> tres veces al año como <em>progress monitoring</em>: PM1, PM2 y PM3. Solo PM3 cuenta como calificación sumativa y de rendición de cuentas. Pero el instrumento no es el mismo en todos los grados, y esa diferencia define dos productos dentro de la misma plataforma.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th>Inglés (ELA)</th><th>Matemáticas</th><th>Motor</th><th>Diseño de ítems</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.º</strong></td><td>Star Early Literacy (PM1-2)<br>Star Reading (PM3 obligatorio)</td><td>Star Math (PM1-3)</td><td>Renaissance</td><td>Por <em>dominios</em> de destreza</td></tr>
+          <tr><td><strong>2.º</strong></td><td>Star Reading (PM1-3)</td><td>Star Math (PM1-3)</td><td>Renaissance</td><td>Por <em>dominios</em> de destreza</td></tr>
+          <tr><td><strong>3.º-6.º</strong></td><td>FAST ELA Reading</td><td>FAST Mathematics</td><td>Cambium (TIDE / TDS)</td><td>Por <em>benchmark</em> B.E.S.T. con blueprint publicado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note key">
+      <span class="lbl">Consecuencia de producto</span>
+      <p>Para <strong>1.º y 2.º no existe un blueprint de benchmarks</strong>: Star es adaptativo y reporta percentil y dominios, no porcentajes por benchmark. La plataforma debe enseñar el currículo B.E.S.T. de esos grados (que sí existe: 26 y 27 benchmarks) pero <strong>reportar al padre en el lenguaje de Star</strong> — percentil, dominios, Equivalent Score. Prometer «predicción de nivel FAST» en 1.º-2.º sería deshonesto.</p>
+      <p>De 3.º en adelante sí se puede mapear cada ítem a su reporting category con su peso real, y ahí sí cabe una predicción de Achievement Level.</p>
+    </div>
+
+    <h3>Ventanas de administración 2025-26</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Ventana</th><th>Grados K-2</th><th>Grados 3-10</th><th>Peso</th></tr></thead>
+        <tbody>
+          <tr><td>PM1</td><td>4 ago - 26 sep 2025</td><td>11 ago - 26 sep 2025</td><td>Línea base, informativo</td></tr>
+          <tr><td>PM2</td><td colspan="2">1 dic 2025 - 23 ene 2026</td><td>Medio curso, informativo</td></tr>
+          <tr><td>PM3</td><td>13 abr - 29 may 2026</td><td>1 - 29 may 2026</td><td><span class="pill p-risk">Sumativo</span> Promoción de 3.º y rendición de cuentas</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Esto define la estacionalidad del negocio: la demanda se dispara de <strong>enero a abril</strong>. Volveremos sobre ello en riesgos.</p>
+
+    <h3>Formato y duración</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Evaluación</th><th class="num">Ítems</th><th class="num">PM1/PM2</th><th class="num">PM3</th><th>Notas</th></tr></thead>
+        <tbody>
+          <tr><td>ELA Reading 3.º-6.º</td><td class="num">36-40</td><td class="num">90 min</td><td class="num">120 min</td><td>Adaptativo. 50% ficción / 50% informativo</td></tr>
+          <tr><td>Math 3.º-5.º</td><td class="num">35-40</td><td class="num">80 min</td><td class="num">100 min</td><td>Sin calculadora</td></tr>
+          <tr><td>Math 6.º</td><td class="num">36-40</td><td class="num">100 min</td><td class="num">120 min</td><td>Calculadora de 4 funciones en ítems marcados</td></tr>
+          <tr><td>Star Early Literacy</td><td class="num">27</td><td class="num" colspan="2">10-20 min · 150 s por ítem</td><td>Auriculares obligatorios</td></tr>
+          <tr><td>Star Reading</td><td class="num">34</td><td class="num" colspan="2">15-20 min</td><td>Contiene ítems de audio por diseño</td></tr>
+          <tr><td>Star Math</td><td class="num">34</td><td class="num" colspan="2">20-30 min · 4 min por ítem</td><td>Audio en ítems de texto denso</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Hoja de referencia matemática disponible en pantalla solo de <strong>4.º en adelante</strong>. Papel en blanco obligatorio en todos los grados. En 3.º no hay ni calculadora ni hoja de referencia.</p>
+
+    <h3>Tipos de ítem que hay que replicar</h3>
+    <p>Esta lista no es decorativa: es la especificación del motor de renderizado. Si el niño practica solo con opción múltiple y en el examen se encuentra un <em>Equation Editor</em>, la práctica no transfiere.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="tag">ELA Reading · 3.º-6.º</span>
+        <ul style="margin:0;padding-left:18px;font-size:14px">
+          <li>Multiple Choice</li>
+          <li><strong>Selectable Hot Text</strong> — resaltar fragmentos del texto</li>
+          <li>Multiselect — elegir N de varias</li>
+          <li><strong>EBSR</strong> — Parte A respuesta + Parte B evidencia</li>
+          <li>Table Match — emparejar filas y columnas</li>
+          <li>Multimedia — imagen, gráfico o línea de tiempo integrada</li>
+        </ul>
+      </div>
+      <div class="card">
+        <span class="tag">Mathematics · 3.º-6.º</span>
+        <ul style="margin:0;padding-left:18px;font-size:14px">
+          <li>Multiple Choice · Multiselect</li>
+          <li><strong>Editing Task Choice</strong> — desplegable dentro de la ecuación</li>
+          <li><strong>GRID</strong> — arrastrar y colocar sobre un gráfico</li>
+          <li><strong>Equation Editor</strong> — entrada numérica con barra de símbolos</li>
+          <li>Matching Item — rejilla de casillas</li>
+          <li><strong>Fraction Model</strong> — construir o sombrear una fracción</li>
+          <li>Graphing — trazar puntos, barras, histogramas, rectas numéricas</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>Puntos de corte 2025-26</h3>
+    <p>Nivel 3 o superior = «On Grade Level». Los usamos para calibrar el predictor y para explicar al padre dónde está su hijo en términos que el estado reconoce.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Evaluación</th><th class="num">Nivel 1</th><th class="num">Nivel 2</th><th class="num">Nivel 3</th><th class="num">Nivel 4</th><th class="num">Nivel 5</th></tr></thead>
+        <tbody>
+          <tr><td>3.º ELA</td><td class="num">140-185</td><td class="num">186-200</td><td class="num">201-212</td><td class="num">213-224</td><td class="num">225-260</td></tr>
+          <tr><td>4.º ELA</td><td class="num">154-198</td><td class="num">199-212</td><td class="num">213-223</td><td class="num">224-236</td><td class="num">237-270</td></tr>
+          <tr><td>5.º ELA</td><td class="num">160-205</td><td class="num">206-221</td><td class="num">222-231</td><td class="num">232-245</td><td class="num">246-279</td></tr>
+          <tr><td>6.º ELA</td><td class="num">161-208</td><td class="num">209-224</td><td class="num">225-236</td><td class="num">237-249</td><td class="num">250-284</td></tr>
+          <tr><td>3.º Math</td><td class="num">140-182</td><td class="num">183-197</td><td class="num">198-208</td><td class="num">209-224</td><td class="num">225-260</td></tr>
+          <tr><td>4.º Math</td><td class="num">155-199</td><td class="num">200-210</td><td class="num">211-220</td><td class="num">221-237</td><td class="num">238-273</td></tr>
+          <tr><td>5.º Math</td><td class="num">158-206</td><td class="num">207-221</td><td class="num">222-233</td><td class="num">234-245</td><td class="num">246-285</td></tr>
+          <tr><td>6.º Math</td><td class="num">168-212</td><td class="num">213-228</td><td class="num">229-238</td><td class="num">239-253</td><td class="num">254-287</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note risk">
+      <span class="lbl">Atención</span>
+      <p>Existe un PDF antiguo de cortes «FSA» que sigue apareciendo en búsquedas. <strong>FSA es el programa anterior a 2022 y sus cortes no son válidos.</strong> Los de la tabla son los de FAST/B.E.S.T. bajo la regla 6A-1.09422, F.A.C. Hay que reverificarlos cada agosto.</p>
+    </div>
+
+    <h3>Material oficial de práctica</h3>
+    <p>El portal <a href="https://flfast.org">flfast.org</a> publica ítems de muestra con acceso de invitado, en la misma interfaz que el examen real. Además, el estatuto 1008.22(8) obliga al estado a <strong>publicar cada evaluación al menos una vez cada tres años</strong> con clave de respuestas y datos de dificultad por ítem. Ese material liberado es la referencia para calibrar nuestro banco: no para copiarlo, sino para verificar que nuestros ítems tienen el mismo registro, longitud y nivel de exigencia.</p>
+  </section>
+  <section id="s2">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Currículo por grado</h2></div>
+    <p class="sec-lede">El inventario completo de lo que hay que enseñar. No es un anexo: es la especificación funcional del producto, y cada código de esta sección será una fila en la base de datos.</p>
+
+    <p>Florida organiza sus estándares como <strong>B.E.S.T. — Benchmarks for Excellent Student Thinking</strong>. La codificación es <code>Materia . Grado . Strand . Estándar . Benchmark</code>, de modo que <code>MA.5.GR.3.2</code> es Matemáticas, 5.º grado, Geometric Reasoning, estándar 3, benchmark 2. Esa cadena es el identificador que atraviesa toda la plataforma.</p>
+
+    <h3>Matemáticas · 202 benchmarks</h3>
+    <p>Verificados uno a uno contra el PDF oficial del FDOE y volcados a <code>docs/benchmarks-math.csv</code>, con su reporting category del blueprint cuando existe.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="v">26</span><span class="k">Grado 1 · 6 strands</span></div>
+      <div class="stat"><span class="v">27</span><span class="k">Grado 2 · 6 strands</span></div>
+      <div class="stat"><span class="v">34</span><span class="k">Grado 3 · 6 strands</span></div>
+      <div class="stat"><span class="v">39</span><span class="k">Grado 4 · 6 strands</span></div>
+      <div class="stat"><span class="v">36</span><span class="k">Grado 5 · 6 strands</span></div>
+      <div class="stat"><span class="v">40</span><span class="k">Grado 6 · 4 strands</span></div>
+    </div>
+
+    <p>Los strands son <strong>NSO</strong> (Number Sense and Operations), <strong>FR</strong> (Fractions), <strong>AR</strong> (Algebraic Reasoning), <strong>M</strong> (Measurement), <strong>GR</strong> (Geometric Reasoning) y <strong>DP</strong> (Data Analysis and Probability). En <strong>6.º desaparecen FR y M</strong>: las fracciones se absorben en NSO y el contenido de razón, tasa y porcentaje se integra en AR como estándar <code>MA.6.AR.3</code>. No existe un strand «RP» de proporcionalidad, contra lo que sugiere el nombre habitual del tema.</p>
+
+    <h4>Distribución por strand</h4>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th class="num">NSO</th><th class="num">FR</th><th class="num">AR</th><th class="num">M</th><th class="num">GR</th><th class="num">DP</th><th class="num">Total</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.º</strong></td><td class="num">9</td><td class="num">1</td><td class="num">5</td><td class="num">5</td><td class="num">4</td><td class="num">2</td><td class="num"><strong>26</strong></td></tr>
+          <tr><td><strong>2.º</strong></td><td class="num">8</td><td class="num">2</td><td class="num">5</td><td class="num">5</td><td class="num">5</td><td class="num">2</td><td class="num"><strong>27</strong></td></tr>
+          <tr><td><strong>3.º</strong></td><td class="num">8</td><td class="num">5</td><td class="num">8</td><td class="num">4</td><td class="num">7</td><td class="num">2</td><td class="num"><strong>34</strong></td></tr>
+          <tr><td><strong>4.º</strong></td><td class="num">12</td><td class="num">8</td><td class="num">7</td><td class="num">4</td><td class="num">5</td><td class="num">3</td><td class="num"><strong>39</strong></td></tr>
+          <tr><td><strong>5.º</strong></td><td class="num">10</td><td class="num">5</td><td class="num">9</td><td class="num">2</td><td class="num">8</td><td class="num">2</td><td class="num"><strong>36</strong></td></tr>
+          <tr><td><strong>6.º</strong></td><td class="num">14</td><td class="num">—</td><td class="num">13</td><td class="num">—</td><td class="num">7</td><td class="num">6</td><td class="num"><strong>40</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Reporting categories de FAST Mathematics</h4>
+    <p>Cada benchmark de 3.º a 6.º está asignado a una categoría con un peso objetivo sobre el examen. Esto es lo que permite al motor adaptativo priorizar por impacto real en la nota, y no simplemente por lo que el niño falló ayer.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th>Categorías</th><th class="num">Peso</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4"><strong>3.º</strong></td><td>Number Sense and Additive Reasoning</td><td class="num">23-29%</td></tr>
+          <tr><td>Number Sense and Multiplicative Reasoning</td><td class="num">23-29%</td></tr>
+          <tr><td>Fractional Reasoning</td><td class="num">23-29%</td></tr>
+          <tr><td>Geometric Reasoning, Measurement and Data</td><td class="num">23-29%</td></tr>
+          <tr><td rowspan="3"><strong>4.º</strong></td><td>Number Sense and Operations with Whole Numbers</td><td class="num">31-37%</td></tr>
+          <tr><td>Number Sense and Operations with Fractions and Decimals</td><td class="num">31-37%</td></tr>
+          <tr><td>Geometric Reasoning, Measurement and Data</td><td class="num">31-37%</td></tr>
+          <tr><td rowspan="4"><strong>5.º</strong></td><td>Number Sense and Operations with Whole Numbers</td><td class="num">23-29%</td></tr>
+          <tr><td>Number Sense and Operations with Fractions and Decimals</td><td class="num">23-29%</td></tr>
+          <tr><td>Algebraic Reasoning</td><td class="num">23-29%</td></tr>
+          <tr><td>Geometric Reasoning, Measurement and Data</td><td class="num">23-29%</td></tr>
+          <tr><td rowspan="3"><strong>6.º</strong></td><td>Number Sense and Operations</td><td class="num"><strong>33-42%</strong></td></tr>
+          <tr><td>Algebraic Reasoning</td><td class="num">25-36%</td></tr>
+          <tr><td>Geometric Reasoning, Data Analysis and Probability</td><td class="num">25-36%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <span class="lbl">Detalle útil del blueprint</span>
+      <p>Todos los benchmarks del grado se evalúan; no existe un subconjunto «prioritario» publicado por el FDOE. Lo más parecido es la marca <em>«Also Assesses»</em>, que identifica benchmarks evaluados de forma agrupada con otro en vez de con ítems propios. Esos son los candidatos naturales a recibir menos peso en la práctica: por ejemplo, en 6.º solo <code>MA.6.GR.1.2</code> lleva esa marca.</p>
+    </div>
+
+    <h4>Dónde se concentra el trabajo de cada grado</h4>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th>El salto conceptual del año</th><th>Manipulativos que lo sostienen</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.º</strong></td><td>Contar hasta 120, valor posicional de dos dígitos, sumas y restas hasta 20 con automaticidad, mitades y cuartos, hora y media hora, monedas</td><td>Base-Ten Blocks · Number Line · Interactive Clock · Money Counter</td></tr>
+          <tr><td><strong>2.º</strong></td><td>Centenas, sumas y restas hasta 100 con fiabilidad, pares e impares, <strong>arrays como antesala de la multiplicación</strong>, simetría, perímetro</td><td>Regrouping Machine · Array Builder · Symmetry Mirror · Solid Explorer</td></tr>
+          <tr><td><strong>3.º</strong></td><td><strong>Multiplicación y división hasta 12</strong>, fracciones como número en la recta, área por conteo de unidades, tiempo al minuto</td><td>Array Builder · Fraction Number Line · Area Grid · Division Sharing</td></tr>
+          <tr><td><strong>4.º</strong></td><td>Millones, algoritmo estándar de multiplicación, <strong>equivalencia fracción-decimal</strong>, ángulos con transportador</td><td>Decimal Grid · Fraction Bars · Angle Protractor</td></tr>
+          <tr><td><strong>5.º</strong></td><td>Decimales hasta milésimas, <strong>fracciones con denominadores distintos</strong>, orden de operaciones, volumen, plano cartesiano</td><td>Unit Cube Filler · Coordinate Plotter · Fraction Operations Canvas</td></tr>
+          <tr><td><strong>6.º</strong></td><td><strong>Números negativos y valor absoluto</strong>, expresiones algebraicas, razón y porcentaje, área de superficie con nets, box plots</td><td>Number Line Zoom · Balance Scale · Double Number Line · Net Unfolder · Box Plot Lab</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <hr class="rule">
+
+    <h3>Inglés · 156 benchmarks</h3>
+    <p>Los strands son <strong>F</strong> (Foundational Skills), <strong>R</strong> (Reading), <strong>C</strong> (Communication) y <strong>V</strong> (Vocabulary), con la misma codificación: <code>ELA.2.F.1.3</code> es Inglés, 2.º grado, Foundational Skills. Inventario completo en <code>docs/benchmarks-ela.csv</code>.</p>
+
+    <div class="stats">
+      <div class="stat"><span class="v">28</span><span class="k">Grado 1 · único con F.1.1 y F.1.2</span></div>
+      <div class="stat"><span class="v">26</span><span class="k">Grados 2 a 5 · estructura idéntica</span></div>
+      <div class="stat"><span class="v">24</span><span class="k">Grado 6 · sin strand F</span></div>
+      <div class="stat"><span class="v">13</span><span class="k">Los que de verdad entran en el examen de lectura</span></div>
+    </div>
+
+    <div class="note key">
+      <span class="lbl">El hallazgo que más ahorra trabajo</span>
+      <p>De los 26 benchmarks de cada grado, <strong>solo 13 se evalúan en FAST ELA Reading</strong> — exactamente la mitad. Todo el strand <strong>C</strong> (escritura, oralidad, investigación, caligrafía) y el strand <strong>F</strong> quedan fuera del examen de lectura, igual que <code>V.1.1</code>, que trata de <em>usar</em> el vocabulario al hablar y escribir, no de reconocerlo.</p>
+      <p>Lo evaluado es <code>R.1.1</code> a <code>R.1.4</code>, <code>R.2.1</code> a <code>R.2.4</code>, <code>R.3.x</code>, más <code>V.1.2</code> (morfología) y <code>V.1.3</code> (claves de contexto). Para los grados 3.º-6.º eso reduce a la mitad el volumen de contenido de ELA que hay que producir en fase 3, y dice exactamente <em>cuál</em> mitad.</p>
+    </div>
+
+    <h4>Correcciones a la estructura que suele darse por supuesta</h4>
+    <ul>
+      <li><code>C.1</code> es <strong>Communicating Through Writing</strong>, no «Handwriting». La caligrafía es solo el benchmark <code>C.1.1</code>; <code>C.1.2</code> a <code>C.1.5</code> son narrativa, argumentación, exposición y mejora del texto.</li>
+      <li><code>F.1.1</code> (conceptos de lo impreso) y <code>F.1.2</code> (conciencia fonológica) <strong>existen solo en Kinder y 1.º</strong>. De 2.º a 5.º sobreviven únicamente <code>F.1.3</code> (fonética) y <code>F.1.4</code> (fluidez).</li>
+      <li>En <strong>6.º desaparece el strand F por completo</strong>, y también <code>C.1.1</code>: ya no se evalúa caligrafía.</li>
+      <li><code>R.3.4</code> (apelaciones retóricas) <strong>aparece por primera vez en 6.º</strong>. No existe en 4.º ni 5.º.</li>
+      <li><code>ELA.6.R.3.2</code> (parafrasear) existe como estándar pero <strong>no figura en el blueprint de lectura de 6.º</strong>; se evalúa a través de la prueba de escritura.</li>
+    </ul>
+
+    <h4>Reporting categories de FAST ELA Reading</h4>
+    <p>La estructura es idéntica en los grados 3.º a 10.º, lo que simplifica mucho el motor: una sola lógica de ponderación para todos los grados evaluados.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Categoría</th><th class="num">Peso</th><th>Benchmarks</th></tr></thead>
+        <tbody>
+          <tr><td>Reading Prose and Poetry</td><td class="num">25-35%</td><td class="mono">R.1.1 · R.1.2 · R.1.3 · R.1.4</td></tr>
+          <tr><td>Reading Informational Text</td><td class="num">25-35%</td><td class="mono">R.2.1 · R.2.2 · R.2.3 · R.2.4</td></tr>
+          <tr><td><strong>Reading Across Genres &amp; Vocabulary</strong></td><td class="num"><strong>35-50%</strong></td><td class="mono">R.3.1 · R.3.2 · R.3.3 · R.3.4 (6.º) · V.1.2 · V.1.3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La tercera categoría pesa hasta la mitad del examen y es la que más se descuida en clase, porque mezcla lenguaje figurado, resumen, lectura comparada y morfología. Es el punto donde una plataforma de práctica aporta más valor por hora invertida.</p>
+
+    <h4>Complejidad de los textos</h4>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th class="num">Palabras por pasaje</th><th class="num">Rango Lexile</th><th>Géneros</th></tr></thead>
+        <tbody>
+          <tr><td>4.º</td><td class="num">100-900</td><td class="num">770L-1050L</td><td rowspan="3">50% ficción / 50% informativo. Ficción: histórica, contemporánea, ciencia ficción, folclore, mitos, fábulas. No ficción literaria: ensayo personal, biografía, memorias, discursos. Poesía: lírica, narrativa, épica. Informativo: exposición, textos persuasivos, textos procedimentales</td></tr>
+          <tr><td>5.º</td><td class="num">200-1.000</td><td class="num">770L-1050L</td></tr>
+          <tr><td>6.º</td><td class="num">200-1.100</td><td class="num">955L-1200L</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Estos rangos son la especificación del validador automático de pasajes descrito en la sección 7: un texto que caiga fuera de la banda se rechaza antes de que lo revise un humano.</p>
+
+    <h4>Fonética: el salto de 1.º a 2.º</h4>
+    <p>Esta es la parte del currículo que más importa en el caso concreto que originó el proyecto, y la que mejor se presta a manipulativos con audio.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Destreza</th><th>Grado 1 · <span class="mono">ELA.1.F.1.3</span></th><th>Grado 2 · <span class="mono">ELA.2.F.1.3</span></th></tr></thead>
+        <tbody>
+          <tr><td>Combinaciones consonánticas</td><td>Dígrafos, trígrafos y mezclas</td><td>Se asume dominado</td></tr>
+          <tr><td>Vocales con r</td><td>Palabras simples con vocal controlada por r</td><td>Se asume dominado</td></tr>
+          <tr><td>Equipos vocálicos</td><td>Solo los que producen sonido largo, más la <em>e</em> final muda</td><td><strong>Equipos variables</strong> (ea en <em>bread</em> vs <em>bead</em>) y <strong>diptongos</strong> (oi, oy, ow, ou)</td></tr>
+          <tr><td>Sílabas</td><td>Bisílabas de patrón regular, partiendo la palabra</td><td><strong>Tipos de sílaba con nombre propio</strong>: abierta (<em>hi, baby</em>), cerrada (<em>bag, chop</em>) y consonante + <em>-le</em> (<em>purple, circle</em>)</td></tr>
+          <tr><td>Morfología</td><td>Solo terminaciones flexivas (-s, -ed, -ing)</td><td>Prefijos y sufijos comunes</td></tr>
+          <tr><td>Letras mudas</td><td>—</td><td><strong>Exclusivo de 2.º</strong>: knight, comb, island, ghost</td></tr>
+          <tr><td>Conciencia fonológica</td><td><code>ELA.1.F.1.2</code>, solo oral: segmentar y mezclar fonemas, incluso en palabras de 5+ fonemas</td><td>Ya no existe como benchmark</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <span class="lbl">Traducción a producto</span>
+      <p>Los tres saltos reales de 2.º grado son <strong>equipos vocálicos variables, tipos de sílaba y letras mudas</strong>. Son exactamente los contenidos que <em>Vowel Team Sorter</em>, <em>Syllable Splitter</em> y <em>Word Builder Tiles</em> atacan, y ninguno de los tres funciona sin audio: la dificultad de «ea» está en que una misma grafía suena distinto, algo imposible de enseñar en papel.</p>
+      <p>Sobre palabras de alta frecuencia, el estándar remite a las listas <strong>Dolch y Fry</strong> pero no las reproduce ni las reparte por grado. Habrá que tomarlas de la fuente original y decidir el reparto, apoyándose en el criterio del educador.</p>
+    </div>
+
+    <h4>Las Expectations, transversales a todo</h4>
+    <p>Seis expectativas se aplican en todos los grados y materias, y conviene modelarlas como etiquetas sobre los ítems, no como benchmarks independientes:</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Código</th><th>Expectativa</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">ELA.K12.EE.1.1</td><td>Citar evidencia para explicar y justificar el razonamiento</td></tr>
+          <tr><td class="mono">ELA.K12.EE.2.1</td><td>Leer y comprender textos complejos del nivel de grado</td></tr>
+          <tr><td class="mono">ELA.K12.EE.3.1</td><td>Hacer inferencias que sostengan la comprensión</td></tr>
+          <tr><td class="mono">ELA.K12.EE.4.1</td><td>Usar técnicas de colaboración y escucha activa en discusiones</td></tr>
+          <tr><td class="mono">ELA.K12.EE.5.1</td><td>Seguir las reglas de un formato para producir trabajo de calidad</td></tr>
+          <tr><td class="mono">ELA.K12.EE.6.1</td><td>Usar voz y tono apropiados al hablar o escribir</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La primera, <code>EE.1.1</code>, es la que justifica que el <em>Evidence Linker</em> aparezca en todos los grados: citar evidencia no es un tema del temario, es el hábito que el examen mide una y otra vez a través de los ítems EBSR.</p>
+
+    <hr class="rule">
+
+    <h3>Resumen del inventario</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Grado</th><th class="num">Math</th><th class="num">ELA</th><th class="num">Total</th><th>Evaluación</th><th>Predicción de nivel</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1.º</strong></td><td class="num">26</td><td class="num">28</td><td class="num">54</td><td>Star Early Literacy · Star Reading · Star Math</td><td><span class="pill p-warn">No</span> Percentil y dominios</td></tr>
+          <tr><td><strong>2.º</strong></td><td class="num">27</td><td class="num">26</td><td class="num">53</td><td>Star Reading · Star Math</td><td><span class="pill p-warn">No</span> Percentil y dominios</td></tr>
+          <tr><td><strong>3.º</strong></td><td class="num">34</td><td class="num">26</td><td class="num">60</td><td>FAST ELA Reading · FAST Math</td><td><span class="pill p-ok">Sí</span> Nivel 1-5</td></tr>
+          <tr><td><strong>4.º</strong></td><td class="num">39</td><td class="num">26</td><td class="num">65</td><td>FAST ELA Reading · FAST Math</td><td><span class="pill p-ok">Sí</span> Nivel 1-5</td></tr>
+          <tr><td><strong>5.º</strong></td><td class="num">36</td><td class="num">26</td><td class="num">62</td><td>FAST ELA Reading · FAST Math</td><td><span class="pill p-ok">Sí</span> Nivel 1-5</td></tr>
+          <tr><td><strong>6.º</strong></td><td class="num">40</td><td class="num">24</td><td class="num">64</td><td>FAST ELA Reading · FAST Math</td><td><span class="pill p-ok">Sí</span> Nivel 1-5</td></tr>
+          <tr><td><strong>Total</strong></td><td class="num"><strong>202</strong></td><td class="num"><strong>156</strong></td><td class="num"><strong>358</strong></td><td colspan="2">Ambos CSV listos para el script semilla de la fase 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note risk">
+      <span class="lbl">Sobre la fiabilidad de estos datos</span>
+      <p>Los 202 códigos de Matemáticas se extrajeron y verificaron línea a línea contra el PDF oficial, en tres pasadas independientes de extracción que coincidieron en todos los códigos. Los 156 de Inglés proceden del mismo documento oficial.</p>
+      <p>Dos salvedades honestas: los rangos de longitud y Lexile de los pasajes se obtuvieron a través de un proxy de lectura porque fldoe.org bloquea el acceso automatizado, y conviene contrastarlos con el PDF antes de codificar el validador. Y la redacción exacta de <code>ELA.5.C.3.1</code> y <code>ELA.6.C.3.1</code> remite a una tabla de progresión de convenciones que no se pudo confirmar por separado — irrelevante para el examen de lectura, ya que ninguno de los dos se evalúa en él.</p>
+    </div>
+  </section>
+  <section id="s3">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Interactividad</h2></div>
+    <p class="sec-lede">Lo que diferencia la plataforma. No son ejercicios con una animación encima: cada concepto difícil tiene un objeto manipulable donde el niño descubre la respuesta en vez de recibirla.</p>
+
+    <p>Todos los manipulativos comparten un mismo contrato de componente, lo que permite usar el mismo widget en tres contextos sin reescribirlo:</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Modo</th><th>Comportamiento</th><th>Dónde aparece</th></tr></thead>
+        <tbody>
+          <tr><td><code>explore</code></td><td>Libre, sin respuesta correcta, con narración</td><td>Lección</td></tr>
+          <tr><td><code>practice</code></td><td>Con pistas progresivas y feedback inmediato</td><td>Práctica adaptativa</td></tr>
+          <tr><td><code>assess</code></td><td>Sin pistas, sin audio de pasajes, cronometrado</td><td>Simulacro PM</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>El pedido explícito: geometría del espacio</h3>
+    <div class="note key">
+      <span class="lbl">Solid Explorer</span>
+      <p>Sólido rotable con ratón o dedo, construido con <code>react-three-fiber</code>. Al tocar una cara se resalta y se cuenta en voz alta; contadores en vivo de <strong>caras, aristas y vértices</strong>. Cubo, prisma rectangular, prisma triangular, pirámides, cilindro, cono y esfera. Alimenta <code>MA.1.GR.1.1</code>, <code>MA.1.GR.1.3</code> y <code>MA.5.GR.1.2</code>.</p>
+      <p>Su complemento es el <strong>Net Unfolder</strong>: el sólido se despliega a su net con un deslizador que controla el niño, y el ejercicio inverso pregunta qué net forma qué cuerpo. Es exactamente lo que exige <code>MA.6.GR.2.4</code> (área de superficie mediante nets), un benchmark que en papel es casi imposible de enseñar.</p>
+    </div>
+
+    <h3>Catálogo de manipulativos · Matemáticas</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Widget</th><th>Qué hace</th><th>Grados</th><th>Benchmarks</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Base-Ten Blocks</strong></td><td>Arrastrar unidades, decenas, centenas; animación de agrupar 10 en 1</td><td>1-4</td><td class="mono">NSO.1.x</td></tr>
+          <tr><td><strong>Number Line Zoom</strong></td><td>Recta con zoom continuo; saltos de conteo y redondeo visual</td><td>1-6</td><td class="mono">NSO.1.3, 1.4</td></tr>
+          <tr><td><strong>Regrouping Machine</strong></td><td>Algoritmo vertical paso a paso; el niño decide cuándo llevar</td><td>2-5</td><td class="mono">NSO.2.x</td></tr>
+          <tr><td><strong>Array Builder</strong></td><td>Arreglos rectangulares: multiplicación como filas x columnas y como área</td><td>2-4</td><td class="mono">MA.2.AR.3.2, MA.3.GR.2.2</td></tr>
+          <tr><td><strong>Division Sharing</strong></td><td>Repartir objetos en grupos; el residuo se ve físicamente</td><td>3-5</td><td class="mono">MA.4.NSO.2.4</td></tr>
+          <tr><td><strong>Fraction Bars / Circles</strong></td><td>Barras y círculos partibles y superponibles</td><td>1-5</td><td class="mono">FR.1.x, FR.2.x</td></tr>
+          <tr><td><strong>Fraction Number Line</strong></td><td>Equivalencias al alinear rectas de distinto denominador</td><td>3-5</td><td class="mono">MA.3.FR.2.1, MA.4.FR.1.4</td></tr>
+          <tr><td><strong>Decimal Grid</strong></td><td>Rejilla 10x10 y 100: fracción ↔ decimal ↔ porcentaje</td><td>4-6</td><td class="mono">MA.4.FR.1.2, MA.6.NSO.3.5</td></tr>
+          <tr><td><strong>Balance Scale</strong></td><td>Balanza que se inclina en vivo; resolver manteniendo el equilibrio</td><td>1-6</td><td class="mono">AR.2.x</td></tr>
+          <tr><td><strong>Function Machine</strong></td><td>Entrada → caja → salida; deducir la regla</td><td>4-6</td><td class="mono">MA.5.AR.3.1, 3.2</td></tr>
+          <tr><td><strong>Interactive Clock</strong></td><td>Manecillas arrastrables, analógico y digital sincronizados</td><td>1-3</td><td class="mono">M.2.1</td></tr>
+          <tr><td><strong>Money Counter</strong></td><td>Monedas y billetes con sonido y conteo acumulado</td><td>1-5</td><td class="mono">M.2.2, M.2.3</td></tr>
+          <tr><td><strong>Ruler &amp; Tape</strong></td><td>Medir en pulgadas y centímetros, medios y cuartos</td><td>1-4</td><td class="mono">M.1.1</td></tr>
+          <tr><td><strong>Solid Explorer</strong> ★</td><td>Sólido 3D rotable; caras, aristas y vértices en vivo</td><td>1-6</td><td class="mono">GR.1.x</td></tr>
+          <tr><td><strong>Net Unfolder</strong> ★</td><td>Desplegado animado del sólido a su net y vuelta</td><td>5-6</td><td class="mono">MA.6.GR.2.4</td></tr>
+          <tr><td><strong>Unit Cube Filler</strong></td><td>Llenar un prisma capa por capa: volumen como L x A x H</td><td>5-6</td><td class="mono">MA.5.GR.3.1, 3.2</td></tr>
+          <tr><td><strong>Angle Protractor</strong></td><td>Transportador arrastrable; medir y construir ángulos</td><td>4</td><td class="mono">MA.4.GR.1.2, 1.3</td></tr>
+          <tr><td><strong>Coordinate Plotter</strong></td><td>Plano cartesiano; arrastrar puntos, polígonos, distancias</td><td>5-6</td><td class="mono">MA.5.GR.4.x, MA.6.GR.1.x</td></tr>
+          <tr><td><strong>Area &amp; Perimeter Grid</strong></td><td>Deformar una figura y ver que área y perímetro no covarían</td><td>3-6</td><td class="mono">MA.4.GR.2.2</td></tr>
+          <tr><td><strong>Symmetry Mirror</strong></td><td>Eje de simetría móvil con reflexión en tiempo real</td><td>2-4</td><td class="mono">MA.2.GR.1.3, MA.3.GR.1.3</td></tr>
+          <tr><td><strong>Graph Builder</strong></td><td>Construir pictogramas, barras y gráficos de línea arrastrando</td><td>1-6</td><td class="mono">DP.1.1</td></tr>
+          <tr><td><strong>Box Plot Lab</strong></td><td>Mover datos y ver cuartiles y mediana desplazarse</td><td>6</td><td class="mono">MA.6.DP.1.3, 1.5, 1.6</td></tr>
+          <tr><td><strong>Double Number Line</strong></td><td>Recta doble para razones equivalentes y porcentajes</td><td>6</td><td class="mono">MA.6.AR.3.x</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Catálogo de manipulativos · Inglés</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Widget</th><th>Qué hace</th><th>Grados</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Phoneme Blender</strong> ★</td><td>Fichas de sonidos; al juntarlas suena cada fonema y luego la palabra mezclada</td><td>1-2</td></tr>
+          <tr><td><strong>Word Builder Tiles</strong></td><td>Construir palabras con onsets, rimes, dígrafos y mezclas</td><td>1-3</td></tr>
+          <tr><td><strong>Syllable Splitter</strong></td><td>Dividir en sílabas con un golpe sonoro por sílaba</td><td>1-3</td></tr>
+          <tr><td><strong>Vowel Team Sorter</strong></td><td>Clasificar palabras por patrón vocálico (ai/ay, ee/ea, oa/ow)</td><td>1-3</td></tr>
+          <tr><td><strong>Sight Word Flash</strong></td><td>Palabras de alta frecuencia con reconocimiento de voz opcional</td><td>1-2</td></tr>
+          <tr><td><strong>Read-Along Passage</strong></td><td>Audio con resaltado sincronizado palabra a palabra, velocidad ajustable</td><td>1-6</td></tr>
+          <tr><td><strong>Hot Text Highlighter</strong> ★</td><td>Seleccionar evidencia en el texto — réplica exacta del item type de FAST</td><td>3-6</td></tr>
+          <tr><td><strong>Evidence Linker</strong> ★</td><td>Pregunta de dos partes: respuesta + evidencia que la sustenta (EBSR)</td><td>3-6</td></tr>
+          <tr><td><strong>Story Sequencer</strong></td><td>Arrastrar eventos al orden correcto; mapa de estructura narrativa</td><td>1-4</td></tr>
+          <tr><td><strong>Text Structure Sorter</strong></td><td>Identificar causa-efecto, comparación o secuencia en texto informativo</td><td>3-6</td></tr>
+          <tr><td><strong>Affix Builder</strong></td><td>Prefijo + raíz + sufijo como piezas encajables; el significado se recompone</td><td>3-6</td></tr>
+          <tr><td><strong>Sentence Builder</strong></td><td>Arrastrar palabras para formar oraciones correctas</td><td>1-4</td></tr>
+          <tr><td><strong>Editing Task</strong></td><td>Texto con errores; clic en el error abre menú de correcciones</td><td>3-6</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Gamificación calibrada por edad</h3>
+    <p>Un niño de 1.º y uno de 6.º no responden al mismo refuerzo. El sistema es común pero la presentación cambia:</p>
+    <ul>
+      <li><strong>Sparks</strong> (XP) por ítem correcto, con bonus por racha dentro de la sesión.</li>
+      <li><strong>Quest Map</strong> por grado: el currículo como mapa de islas, una por strand. Encodea la estructura real del temario, no es decoración.</li>
+      <li>Mascota que evoluciona y se personaliza gastando Sparks. Recompensa cosmética, nunca <em>pay-to-win</em>.</li>
+      <li>Rachas diarias <strong>con congelador</strong>: perder la racha por un día enfermo genera ansiedad y abandono en niños pequeños.</li>
+      <li>Objetivo diario configurable por el padre: 10, 15 o 20 minutos.</li>
+      <li><strong>Sin tablas de clasificación públicas entre niños.</strong> Comparación social innecesaria y un problema de privacidad de más.</li>
+    </ul>
+  </section>
+
+  <section id="s4">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Audio</h2></div>
+    <p class="sec-lede">El audio no es un extra: en 1.º y 2.º el niño todavía no lee con fluidez, así que sin audio la plataforma es inutilizable para ellos. Pero hay una restricción legal del examen que obliga a diseñarlo con cuidado.</p>
+
+    <div class="note risk">
+      <span class="lbl">Hallazgo crítico</span>
+      <p>Según la Guía de Acomodaciones 2025-26 de Florida, en <strong>FAST ELA Reading los pasajes de lectura NO pueden leerse en voz alta</strong> — ni por lector humano ni por TTS. Solo se permiten instrucciones, preguntas y opciones de respuesta. La excepción es una «unique accommodation» para deficiencia visual severa o de decodificación documentada, que el distrito debe someter anualmente al FDOE.</p>
+      <p>En <strong>Matemáticas, en cambio, todo puede leerse</strong>: enunciados, tablas, gráficos e ilustraciones.</p>
+    </div>
+
+    <p>Traducido a diseño de producto, el audio tiene tres estados y el widget lo respeta automáticamente:</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Contexto</th><th>Matemáticas</th><th>ELA — instrucciones e ítems</th><th>ELA — pasajes</th></tr></thead>
+        <tbody>
+          <tr><td>Lección y práctica</td><td><span class="pill p-ok">Audio completo</span></td><td><span class="pill p-ok">Audio completo</span></td><td><span class="pill p-ok">Read-along activo</span> — aquí sí, es aprendizaje</td></tr>
+          <tr><td>Simulacro PM</td><td><span class="pill p-ok">Audio completo</span></td><td><span class="pill p-ok">Audio completo</span></td><td><span class="pill p-risk">Desactivado</span> — replica la condición real</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Esta distinción es además un argumento de venta: la plataforma le enseña al niño a leer con apoyo y luego lo entrena a soltarlo, que es exactamente la transición que el examen le va a exigir.</p>
+
+    <h3>Implementación</h3>
+    <ul>
+      <li><strong>Pre-generación en build</strong>, no en runtime. Cada enunciado, instrucción y feedback se sintetiza una vez y se guarda como MP3 en Cloudflare R2. El coste marginal por alumno es cero y la latencia es la de un CDN.</li>
+      <li>Los ítems paramétricos se resuelven con <strong>audio por segmentos</strong>: partes fijas grabadas más números pronunciados desde una librería de dígitos, concatenados en cliente. Evita regenerar audio para cada una de las infinitas variantes.</li>
+      <li>Dos voces distintas: narrador para instrucciones, mascota para el feedback. Ayuda al niño a distinguir «esto es la tarea» de «esto es ánimo».</li>
+      <li>Resaltado sincronizado mediante <em>word timings</em> devueltos por la API de síntesis, guardados junto al MP3.</li>
+      <li><strong>Fallback</strong> a Web Speech API si falta un audio, para no dejar nunca un botón muerto.</li>
+      <li>Efectos de acierto, error <em>suave</em> —nunca punitivo— subida de nivel y racha.</li>
+    </ul>
+    <p>Sobre proveedor: OpenAI TTS a ~$15 por millón de caracteres da la mejor relación calidad-precio; ElevenLabs tiene mejor naturalidad a 4-12x el coste. Como la generación es única y amortizada, conviene <strong>ElevenLabs para las voces de marca</strong> (narrador y mascota, que el niño oirá miles de veces) y OpenAI para el volumen largo.</p>
+
+    <h4>Accesibilidad, no opcional</h4>
+    <ul>
+      <li>Subtítulos siempre disponibles para todo audio.</li>
+      <li>Respeto de <code>prefers-reduced-motion</code> en todas las animaciones, incluidas las 3D.</li>
+      <li>Navegación completa por teclado en todos los manipulativos, incluido el arrastrar y soltar (<code>dnd-kit</code> lo soporta de forma nativa).</li>
+      <li>Contraste AA mínimo; nunca color como único portador de información.</li>
+      <li>Réplica de las herramientas de accesibilidad del examen real: máscara de respuestas, regla de línea, zoom, contraste alto. El niño llega al examen conociéndolas.</li>
+    </ul>
+  </section>
+  <section id="s5">
+    <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">Arquitectura técnica</h2></div>
+    <p class="sec-lede">Un solo repositorio, un solo despliegue, base de datos relacional. La complejidad de este producto está en el contenido y en el motor pedagógico, no en la infraestructura — y la infraestructura debe mantenerse aburrida para que así siga.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Capa</th><th>Elección</th><th>Por qué esta y no otra</th></tr></thead>
+        <tbody>
+          <tr><td>Framework</td><td>Next.js 15 App Router · React 19 · TypeScript</td><td>SSR para captación orgánica en Florida, RSC para dashboards pesados de datos, un repo para app, admin y API</td></tr>
+          <tr><td>UI</td><td>Tailwind 4 · shadcn/ui · Motion</td><td>Velocidad de iteración; el movimiento es funcional en UI infantil, no decorativo</td></tr>
+          <tr><td>3D</td><td>react-three-fiber · drei</td><td>Three.js declarativo dentro de React; presupuesto de polígonos bajo para Chromebooks</td></tr>
+          <tr><td>2D interactivo</td><td>SVG + dnd-kit</td><td>dnd-kit es el único drag-and-drop accesible por teclado sin reescribirlo</td></tr>
+          <tr><td>Base de datos</td><td>Postgres (Neon) + Drizzle ORM</td><td>El modelo de currículo es fuertemente relacional; Drizzle da SQL tipado sin capa mágica</td></tr>
+          <tr><td>Auth</td><td>Auth.js v5 para padres + PIN de estudiante</td><td><strong>El niño nunca tiene cuenta con email.</strong> Decisión de arquitectura impuesta por COPPA</td></tr>
+          <tr><td>Pagos</td><td>Stripe Billing per-seat + Customer Portal</td><td>El portal ahorra construir toda la gestión de tarjeta, facturas y cancelación</td></tr>
+          <tr><td>Assets y audio</td><td>Cloudflare R2 + CDN</td><td>Sin coste de egreso, que con audio en cada ítem sería la partida dominante en S3</td></tr>
+          <tr><td>Jobs</td><td>Inngest</td><td>Reportes semanales, reconciliación de Stripe, generación de audio e ítems</td></tr>
+          <tr><td>Email</td><td>Resend + React Email</td><td></td></tr>
+          <tr><td>Observabilidad</td><td>Sentry + PostHog</td><td>PostHog para embudos de activación; el evento clave es «primer ítem resuelto»</td></tr>
+          <tr><td>Tests</td><td>Vitest + Playwright</td><td>E2E obligatorio en checkout y en el motor de ítems: son los dos puntos donde un fallo cuesta dinero o confianza</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Modelo de datos</h3>
+    <p>Cuatro dominios que conviene mantener separados, porque cambian a ritmos muy distintos: el currículo casi nunca, el contenido a diario, las cuentas por evento de negocio y el progreso a cada segundo.</p>
+
+    <div class="grid g2">
+      <div class="card">
+        <span class="tag">Currículo · cambia una vez al año</span>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;color:var(--ink)">
+        grades · subjects<br>
+        strands <span style="color:var(--ink-3)">— MA.2.NSO, ELA.2.R</span><br>
+        <strong>benchmarks</strong> <span style="color:var(--ink-3)">— PK = el código oficial</span><br>
+        skills <span style="color:var(--ink-3)">— unidad de maestría</span><br>
+        skill_prerequisites <span style="color:var(--ink-3)">— grafo dirigido</span>
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag">Contenido · cambia a diario</span>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;color:var(--ink)">
+        lessons · passages<br>
+        <strong>item_templates</strong> <span style="color:var(--ink-3)">— paramétricas</span><br>
+        items <span style="color:var(--ink-3)">— instancias con seed</span><br>
+        interactive_widgets<br>
+        content_reviews <span style="color:var(--ink-3)">— workflow humano</span>
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag">Cuentas · por evento de negocio</span>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;color:var(--ink)">
+        parents <span style="color:var(--ink-3)">— email, stripe_customer_id</span><br>
+        students <span style="color:var(--ink-3)">— nombre de pila, grado, pin_hash</span><br>
+        subscriptions · student_seats<br>
+        stripe_events <span style="color:var(--ink-3)">— idempotencia</span><br>
+        admin_users · audit_log
+        </p>
+      </div>
+      <div class="card">
+        <span class="tag">Progreso · cada segundo</span>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;line-height:1.7;color:var(--ink)">
+        attempts <span style="color:var(--ink-3)">— respuesta, tiempo, pistas</span><br>
+        <strong>skill_mastery</strong> <span style="color:var(--ink-3)">— elo, nivel, next_review_at</span><br>
+        sessions<br>
+        mock_exams · mock_exam_results
+        </p>
+      </div>
+    </div>
+
+    <div class="note key">
+      <span class="lbl">Dos decisiones que conviene no revisar después</span>
+      <p><strong>El código de benchmark es la clave primaria.</strong> <code>MA.5.GR.3.2</code> no es un campo descriptivo: es el identificador. Todo —ítems, informes, predicciones, el CSV semilla— cuelga de él. Cuando Florida revise los estándares, se versiona la tabla; no se renumeran filas.</p>
+      <p><strong>El grafo de prerrequisitos es cross-grade.</strong> Un niño de 2.º que falla en valor posicional puede necesitar <code>MA.1.NSO.1.3</code>. Sin ese grafo la plataforma solo puede repetir el ejercicio que el niño ya falló, que es justo lo que no funciona.</p>
+    </div>
+
+    <h3>Tabla de <code>students</code>: minimización de datos</h3>
+    <p>Lo que <em>no</em> se guarda es tan importante como lo que sí. Nombre de pila únicamente, año de nacimiento en vez de fecha completa, avatar en vez de foto, PIN hasheado en vez de contraseña con email. Sin apellidos, sin colegio, sin dirección, sin geolocalización, sin datos biométricos —la reforma de COPPA de 2025 incluyó explícitamente huellas vocales, lo que afecta a cualquier función de reconocimiento de voz: si se implementa <em>Sight Word Flash</em> con micrófono, el audio se procesa en el dispositivo y no se transmite ni se almacena.</p>
+  </section>
+
+  <section id="s6">
+    <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">Motor adaptativo</h2></div>
+    <p class="sec-lede">FAST es adaptativo, así que la práctica también debe serlo. Pero no hace falta psicometría completa en la versión 1: hace falta algo que funcione con pocos datos y mejore cuando lleguen.</p>
+
+    <h3>Tres capas</h3>
+    <ol class="body">
+      <li><strong>Qué skill toca.</strong> Prioridad a lo que vence en repaso espaciado, luego a skills no dominados cuyos prerrequisitos sí lo están, luego a la <em>reporting category</em> con peor rendimiento — ponderada por su peso real en el blueprint del grado.</li>
+      <li><strong>Qué dificultad.</strong> Elo por par estudiante-skill. Se sirve el ítem cuya probabilidad de acierto estimada ronda <strong>0,75</strong>: suficientemente difícil para enseñar, suficientemente fácil para no desmoralizar.</li>
+      <li><strong>Cuándo está dominado.</strong> Cuatro de cinco aciertos recientes en dificultad de nivel de grado. A partir de ahí pasa a repaso espaciado: 1, 3, 7 y 21 días.</li>
+    </ol>
+    <p>Migrar a IRT de dos parámetros cuando haya unas 50.000 respuestas por grado con que calibrar. Antes de eso, un modelo IRT estaría ajustando ruido.</p>
+
+    <h3>Diagnóstico inicial</h3>
+    <p>Quince minutos al registrarse. No mide todo el grado —imposible— sino que hace una búsqueda binaria sobre el grafo de prerrequisitos para encontrar la frontera de conocimiento del niño. La salida es un mapa de fortalezas y huecos por reporting category, que es también la primera pantalla que ve el padre y el momento de conversión del trial.</p>
+
+    <h3>Predicción de nivel de logro</h3>
+    <div class="note risk">
+      <span class="lbl">Honestidad como requisito de diseño</span>
+      <p>Se puede estimar un Achievement Level de 1 a 5 para grados 3.º-6.º, porque existen blueprint y puntos de corte publicados. Debe presentarse siempre como <strong>rango con intervalo de confianza</strong>, nunca como número único, y con la muestra en que se basa a la vista.</p>
+      <p>Para <strong>1.º y 2.º no se hace predicción de nivel</strong>: Star no publica blueprint de benchmarks y cualquier cifra sería inventada. Ahí se reporta progreso por dominio y percentil aproximado, que es lo que el propio informe de Star le da al padre.</p>
+    </div>
+  </section>
+
+  <section id="s7">
+    <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">Producción de contenido</h2></div>
+    <p class="sec-lede">Aquí se va el 60% del esfuerzo del proyecto y es donde fracasan la mayoría de las plataformas educativas. Merece un plan propio, no un «ya generaremos ejercicios».</p>
+
+    <h3>Matemáticas: generadores paramétricos</h3>
+    <p>Un generador en TypeScript por skill produce ítems infinitos y válidos a partir de una semilla. Lo que lo hace pedagógico no es el enunciado sino <strong>los distractores</strong>: cada opción incorrecta corresponde a un error conceptual concreto y catalogado.</p>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Ejemplo · <span class="mono">MA.2.NSO.2.3</span></th><th>Origen del distractor</th><th>Qué revela</th></tr></thead>
+        <tbody>
+          <tr><td>47 + 25 = <strong>72</strong></td><td>Correcta</td><td>—</td></tr>
+          <tr><td>62</td><td>No llevó la decena</td><td>Fallo de regrouping</td></tr>
+          <tr><td>612</td><td>Sumó columnas por separado</td><td>No entiende valor posicional</td></tr>
+          <tr><td>22</td><td>Restó en vez de sumar</td><td>Error de lectura del signo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Cuando un niño elige repetidamente el mismo tipo de distractor, el sistema no le da «más práctica»: le da la lección específica de ese error. Eso es diagnóstico real y es imposible con un banco de ítems estáticos.</p>
+
+    <h3>Inglés: no se puede parametrizar</h3>
+    <p>Un pasaje de lectura es contenido original y cada ítem depende de él. El pipeline tiene cinco pasos y ninguno es opcional:</p>
+    <ol class="body">
+      <li><strong>Pasajes originales</strong> escritos para la plataforma, más textos de dominio público adaptados. Nunca material con copyright — es el error legal más común del sector.</li>
+      <li><strong>Validación de complejidad</strong> automática: longitud de oración, frecuencia léxica, medida tipo Lexile. Si cae fuera de la banda del grado, se rechaza antes de que lo vea un humano.</li>
+      <li><strong>Generación de ítems</strong> asistida por LLM, anclada al benchmark y al <em>item type</em> exacto de FAST.</li>
+      <li><strong>Revisión humana obligatoria</strong> por educador certificado en Florida. Estados: <code>draft → in_review → published</code>. Nada llega al niño sin pasar por aquí.</li>
+      <li><strong>Depuración psicométrica</strong> posterior: p-value y correlación punto-biserial. Se retira todo ítem con p&lt;0,2 o p&gt;0,95, y cualquiera con discriminación negativa —esos indican un ítem defectuoso, no un alumno flojo.</li>
+    </ol>
+
+    <h3>Volumen a producir</h3>
+    <div class="stats">
+      <div class="stat"><span class="v">202</span><span class="k">Benchmarks de Matemáticas, grados 1-6 (ya inventariados)</span></div>
+      <div class="stat"><span class="v">~240</span><span class="k">Generadores paramétricos, ~40 por grado</span></div>
+      <div class="stat"><span class="v">~400</span><span class="k">Pasajes ELA originales, con revisión humana</span></div>
+      <div class="stat"><span class="v">36</span><span class="k">Manipulativos interactivos del catálogo</span></div>
+    </div>
+    <p>El inventario completo de benchmarks de Matemáticas está en <code>docs/benchmarks-math.csv</code>, listo para el script semilla — 202 filas con código, grado, strand y reporting category del blueprint oficial.</p>
+  </section>
+  <section id="s8">
+    <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">Suscripciones y administración</h2></div>
+    <p class="sec-lede">Diez dólares por estudiante y mes, cobrados con Stripe. La decisión relevante no es el precio sino el modelo: una suscripción por familia con asientos, no una suscripción por niño.</p>
+
+    <h3>Por qué per-seat y no una suscripción por hijo</h3>
+    <p>Una familia con tres hijos generaría tres suscripciones, tres facturas, tres renovaciones desalineadas y tres oportunidades de fallo de pago. Con <code>quantity</code> sobre un único <em>price</em> recurrente hay una factura, una fecha de renovación y una relación con el cliente. Stripe prorratea los cambios automáticamente.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Operación</th><th>Implementación</th><th>Efecto para el padre</th></tr></thead>
+        <tbody>
+          <tr><td>Añadir un hijo</td><td><code>subscriptions.update</code> con <code>create_prorations</code></td><td>Cobro prorrateado inmediato; el hijo entra hoy</td></tr>
+          <tr><td>Quitar un hijo</td><td>Bajar <code>quantity</code> sin prorrateo</td><td>El asiento sigue activo hasta fin de periodo. Ya lo pagó</td></tr>
+          <tr><td>Prueba</td><td>7 días con tarjeta, cancelación en un clic</td><td>Convierte mejor que 14 días sin tarjeta, y la tarjeta sirve además como consentimiento parental verificable</td></tr>
+          <tr><td>Plan anual</td><td>$100/año, dos meses gratis</td><td>Mitiga la estacionalidad y mejora el flujo de caja</td></tr>
+          <tr><td>Gestión de tarjeta y facturas</td><td>Stripe Customer Portal</td><td>Cero código propio en la superficie de mayor riesgo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Reglas no negociables de la integración</h3>
+    <ul>
+      <li><strong>Stripe es la fuente de verdad</strong>; la base de datos es una caché. Un job nocturno reconcilia y alerta de divergencias.</li>
+      <li><strong>Idempotencia por <code>event.id</code></strong> en una tabla <code>stripe_events</code>. Stripe reenvía webhooks; sin esto se duplican asientos y créditos.</li>
+      <li>Webhooks mínimos: <code>checkout.session.completed</code>, <code>customer.subscription.created/updated/deleted</code>, <code>invoice.paid</code>, <code>invoice.payment_failed</code>.</li>
+      <li><strong>Un fallo de pago nunca borra el progreso.</strong> Tras tres reintentos fallidos la cuenta pasa a modo solo lectura: el padre ve los informes, el niño no practica. Recupera todo al actualizar la tarjeta. Borrar datos de un niño por una tarjeta caducada es la forma más rápida de perder un cliente para siempre.</li>
+    </ul>
+
+    <h3>Panel de administración</h3>
+    <p>Todo lo referido a cuentas y suscripciones se controla desde aquí, sin entrar nunca al dashboard de Stripe para operaciones rutinarias.</p>
+    <div class="grid g2">
+      <div class="card">
+        <span class="tag">Cuentas</span>
+        <p>Buscar padre o estudiante · ver familia completa · cambiar grado de un alumno · resetear PIN · suspender o reactivar · exportar o eliminar todos los datos de un menor a petición del padre <span class="pill p-warn">requisito COPPA</span></p>
+      </div>
+      <div class="card">
+        <span class="tag">Suscripciones</span>
+        <p>Estado y periodo actual · cambiar plan mensual ↔ anual · ajustar número de asientos · aplicar cupón o crédito · emitir reembolso · cancelar al final del periodo o de inmediato · reintentar cobro fallido</p>
+      </div>
+      <div class="card">
+        <span class="tag">Soporte</span>
+        <p>Impersonar a un alumno en modo solo lectura para reproducir un problema · ver historial de intentos · marcar un ítem como defectuoso, lo que lo retira del banco al instante en todas las cuentas</p>
+      </div>
+      <div class="card">
+        <span class="tag">Contenido y métricas</span>
+        <p>Cola de revisión de ítems · publicar o retirar · salud psicométrica del banco · MRR, churn, activación, minutos por sesión, cobertura de benchmarks por grado</p>
+      </div>
+    </div>
+    <div class="note">
+      <span class="lbl">Registro de auditoría</span>
+      <p>Toda acción de admin sobre una cuenta, una suscripción o los datos de un menor queda registrada con actor, objetivo, valores anterior y nuevo, y marca de tiempo. No es burocracia: es lo primero que pide un distrito escolar en una revisión de privacidad, y sin ello la fase B2B no arranca.</p>
+    </div>
+
+    <h3>Economía unitaria</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Servicio</th><th class="num">100 alumnos</th><th class="num">1.000</th><th class="num">10.000</th></tr></thead>
+        <tbody>
+          <tr><td>Vercel</td><td class="num">$20</td><td class="num">$150</td><td class="num">$500-800</td></tr>
+          <tr><td>Neon Postgres</td><td class="num">$19</td><td class="num">$69</td><td class="num">$300-700</td></tr>
+          <tr><td>Cloudflare R2 + CDN</td><td class="num">$5</td><td class="num">$15</td><td class="num">$60</td></tr>
+          <tr><td>TTS (pre-generado, coste único)</td><td class="num">~$0</td><td class="num">~$0</td><td class="num">~$0</td></tr>
+          <tr><td>PostHog · Sentry · Resend · Inngest</td><td class="num">$30</td><td class="num">$130</td><td class="num">$600</td></tr>
+          <tr><td><strong>Infraestructura</strong></td><td class="num"><strong>~$75</strong></td><td class="num"><strong>~$365</strong></td><td class="num"><strong>~$2.100</strong></td></tr>
+          <tr><td>Stripe (2,9% + $0,30)</td><td class="num">$59</td><td class="num">$590</td><td class="num">$5.900</td></tr>
+          <tr><td><strong>Ingresos brutos</strong></td><td class="num"><strong>$1.000</strong></td><td class="num"><strong>$10.000</strong></td><td class="num"><strong>$100.000</strong></td></tr>
+          <tr><td><strong>Margen bruto</strong></td><td class="num">87%</td><td class="num"><strong>90%</strong></td><td class="num">92%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>El coste variable es despreciable. <strong>La comisión de Stripe cuesta ocho veces más que toda la infraestructura</strong>, y ambos juntos son ruido frente al coste real del proyecto, que es producir y revisar el contenido. Conviene tener esto presente al decidir dónde gastar: optimizar la factura de Vercel es tiempo perdido; contratar un educador más, no.</p>
+  </section>
+
+  <section id="s9">
+    <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">Cumplimiento legal</h2></div>
+    <p class="sec-lede">Se construye una plataforma que recoge datos de menores de 13 años en Estados Unidos. Esto no es un capítulo para el final: condiciona el esquema de base de datos, el flujo de registro y el modelo de negocio.</p>
+
+    <div class="note risk">
+      <span class="lbl">El plazo ya venció</span>
+      <p>La FTC finalizó la reforma de COPPA el 16 de enero de 2025; entró en vigor el 23 de junio de 2025 y el <strong>cumplimiento pleno era exigible desde el 22 de abril de 2026</strong>. No es un requisito futuro que se pueda posponer a la fase 3: es exigible desde el primer usuario. Las sanciones llegan a <strong>$53.088 por infracción</strong>, y cada menor cuyos datos se recojan indebidamente puede contar como una.</p>
+    </div>
+
+    <h3>Cómo la arquitectura resuelve COPPA por diseño</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Requisito</th><th>Cómo se cumple</th></tr></thead>
+        <tbody>
+          <tr><td>Consentimiento parental verificable</td><td>El padre crea la cuenta e introduce tarjeta en una transacción monetaria real — uno de los métodos que la norma acepta explícitamente. La suscripción de pago <em>es</em> el mecanismo de consentimiento, lo que convierte una restricción en una ventaja del modelo de negocio</td></tr>
+          <tr><td>Fin de la autodeclaración de edad</td><td>Ningún «marca aquí si eres mayor de 13». El niño no se registra: lo da de alta el padre</td></tr>
+          <tr><td>Minimización de datos</td><td>Nombre de pila, grado, año de nacimiento y PIN. Nada más. Ver sección 5</td></tr>
+          <tr><td>Consentimiento separado para cesión a terceros</td><td>No se cede a terceros. Sin píxeles publicitarios, sin trackers de terceros en el área del estudiante. PostHog configurado sin identificadores de menores</td></tr>
+          <tr><td>Datos biométricos</td><td>La reforma incluye huellas vocales. Todo reconocimiento de voz se procesa en el dispositivo; el audio no se transmite ni se almacena</td></tr>
+          <tr><td>Programa escrito de seguridad</td><td>Documento formal desde la fase 0, no cuando lo pida un distrito</td></tr>
+          <tr><td>Política escrita de retención y borrado</td><td>Purga automática de datos de progreso a los N meses de cancelar; borrado a petición del padre desde el propio panel</td></tr>
+          <tr><td>Derecho de acceso y borrado del padre</td><td>Exportación y eliminación autoservicio, más la vía de admin</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>FERPA y la fase B2B</h3>
+    <p>Vendiendo directo al padre, FERPA no aplica: no se es agente de un centro educativo. En cuanto se firme el primer contrato con una escuela o distrito (fase 5) sí aplica, junto con la normativa de privacidad de datos estudiantiles de Florida y los acuerdos de datos del distrito. Conviene que el modelo de datos y el registro de auditoría estén listos para eso desde el principio, porque readaptarlos después es carísimo.</p>
+
+    <h3>Uso de la marca</h3>
+    <p>«FAST» y «B.E.S.T.» son designaciones del estado de Florida. El uso descriptivo —«preparación para el examen FAST»— es defendible como uso nominativo, pero conviene fijar tres reglas desde el día uno: <strong>no usar «FAST» en el nombre del producto ni en el dominio</strong>, no emplear el logotipo ni la identidad visual del FDOE, e incluir un descargo visible de no afiliación en el pie y en la página de precios. Una revisión con abogado de marcas antes del lanzamiento público cuesta poco y evita un cambio de nombre con clientes ya dentro.</p>
+  </section>
+  <section id="s10">
+    <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">Roadmap</h2></div>
+    <p class="sec-lede">Seis fases. La numeración es real: cada una depende de que la anterior esté validada, y la fase 1 existe para descubrir si el motor funciona antes de gastar cinco meses produciendo contenido para él.</p>
+
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-rail"><div class="phase-dot">0</div></div>
+        <div class="phase-body">
+          <h3>Fundaciones</h3>
+          <p class="phase-when">Semanas 1-2</p>
+          <p>Monorepo Next.js con Drizzle y Neon. Carga del currículo completo: los 202 benchmarks de Matemáticas más los de ELA desde el CSV semilla. Auth de padres, perfiles de estudiante con PIN. CI/CD, Sentry, PostHog. Sistema de diseño y mascota. Programa escrito de seguridad y política de retención.</p>
+          <div class="phase-out"><b>Entregable</b>Un padre crea cuenta, añade un hijo, el hijo entra con su PIN y ve el mapa de su grado, todavía vacío.</div>
+        </div>
+      </div>
+
+      <div class="phase hot">
+        <div class="phase-rail"><div class="phase-dot">1</div></div>
+        <div class="phase-body">
+          <h3>Vertical slice: 2.º de Matemáticas</h3>
+          <p class="phase-when">Semanas 3-6 · fase de validación</p>
+          <p>Se elige 2.º Matemáticas porque es el caso concreto que originó el proyecto y porque ejercita el motor entero de punta a punta. Tres tipos de ítem, cuatro generadores paramétricos (valor posicional, suma y resta de dos dígitos, reloj, figuras 2D y 3D), tres manipulativos —Base-Ten Blocks, Interactive Clock y <strong>Solid Explorer</strong>— motor Elo con maestría y repaso espaciado, pipeline de audio pre-generado y dashboard de padre.</p>
+          <div class="phase-out"><b>Entregable</b>Su hijo puede estudiar de verdad, todos los días. Es la única prueba que importa antes de invertir en escala: si él no vuelve solo a la plataforma, ningún otro niño lo hará.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-rail"><div class="phase-dot">2</div></div>
+        <div class="phase-body">
+          <h3>Monetización y admin</h3>
+          <p class="phase-when">Semanas 7-9</p>
+          <p>Stripe Checkout per-seat, Customer Portal, webhooks con idempotencia, reconciliación y dunning. Prueba de 7 días. Gating de contenido por suscripción. Panel de administración v1 completo: cuentas, suscripciones, soporte con impersonación y registro de auditoría. Landing con SEO orientado a búsquedas reales de padres de Florida.</p>
+          <div class="phase-out"><b>Entregable</b>Se puede cobrar. Beta cerrada con 20-50 familias del condado, reclutadas en grupos de padres.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-rail"><div class="phase-dot">3</div></div>
+        <div class="phase-body">
+          <h3>Cobertura de contenido</h3>
+          <p class="phase-when">Semanas 10-20 · la fase larga</p>
+          <p>Matemáticas de 1.º a 6.º completo, unos 40 generadores por grado. ELA de 1.º a 6.º: banco de pasajes originales e ítems, todos revisados por el educador certificado. Los 36 manipulativos del catálogo. CMS interno de autoría con workflow de revisión. Simulacros tipo PM con formato y duración realistas.</p>
+          <div class="phase-out"><b>Entregable</b>Producto completo. Aquí se concentra el 60% del esfuerzo total del proyecto.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-rail"><div class="phase-dot">4</div></div>
+        <div class="phase-body">
+          <h3>Inteligencia y retención</h3>
+          <p class="phase-when">Semanas 21-28</p>
+          <p>Diagnóstico inicial adaptativo de 15 minutos. Predicción de Achievement Level con intervalo de confianza para 3.º-6.º. Reporte semanal por email al padre. Ruta de remediación cross-grade automática sobre el grafo de prerrequisitos. Perfil familiar multi-hijo. PWA instalable, y app nativa solo si los datos de uso móvil lo justifican.</p>
+          <div class="phase-out"><b>Entregable</b>La plataforma deja de ser un banco de ejercicios y pasa a ser un tutor que sabe qué le falta a cada niño.</div>
+        </div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-rail"><div class="phase-dot">5</div></div>
+        <div class="phase-body">
+          <h3>Canal escolar</h3>
+          <p class="phase-when">Semana 29 en adelante</p>
+          <p>Licencias para escuelas y distritos, que es donde está el dinero real del EdTech en Florida. Panel de maestro con asignaciones e informes de clase. Rostering con Clever y ClassLink, SSO. Cumplimiento de los acuerdos de privacidad de datos de distrito.</p>
+          <div class="phase-out"><b>Entregable</b>Un contrato de distrito equivale a cientos de suscripciones B2C con una fracción del coste de adquisición.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s11">
+    <div class="sec-head"><span class="sec-num">11</span><h2 class="sec-title">Equipo y costes</h2></div>
+    <p class="sec-lede">Seis roles, de los cuales uno es el que decide si el producto es creíble.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Rol</th><th>Dedicación</th><th>Fases</th><th>Por qué</th></tr></thead>
+        <tbody>
+          <tr><td>Full-stack lead</td><td>100%</td><td>0-5</td><td>Next.js, Postgres, Stripe, admin</td></tr>
+          <tr><td>Frontend interactivo</td><td>100% desde F1</td><td>1-4</td><td>react-three-fiber, animación, accesibilidad de los manipulativos</td></tr>
+          <tr><td>Diseño UI/UX infantil</td><td>50%</td><td>0-3</td><td>Diseñar para un niño de 6 años y para su padre en la misma app son dos problemas distintos</td></tr>
+          <tr><td><strong>Educador certificado en Florida (K-6)</strong></td><td>50%</td><td>1-4</td><td><span class="pill p-risk">No negociable</span> Sin revisión pedagógica humana el contenido no es defendible ante un padre, y mucho menos ante un distrito</td></tr>
+          <tr><td>Autor de contenido ELA</td><td>100% en F3</td><td>3</td><td>400 pasajes originales no se escriben en ratos libres</td></tr>
+          <tr><td>QA</td><td>50% desde F2</td><td>2-5</td><td>Checkout y motor de ítems: los dos sitios donde un bug cuesta dinero o confianza</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La infraestructura cuesta unos <strong>$365 al mes con mil alumnos</strong> (desglose en la sección 8). El presupuesto real del proyecto es el equipo y, dentro de él, la producción de contenido.</p>
+  </section>
+
+  <section id="s12">
+    <div class="sec-head"><span class="sec-num">12</span><h2 class="sec-title">Riesgos</h2></div>
+    <p class="sec-lede">Ordenados por lo que realmente puede hundir el proyecto, no por lo que es más fácil de mitigar.</p>
+
+    <div class="tw">
+      <table>
+        <thead><tr><th>Riesgo</th><th>Impacto</th><th>Mitigación</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Subestimar el volumen de contenido</strong></td><td><span class="pill p-risk">Alto</span></td><td>Es la causa número uno de fracaso en este sector. Generadores paramétricos en Matemáticas para no escribir ítems a mano; validar un grado entero antes de escalar a seis</td></tr>
+          <tr><td><strong>Coste de adquisición en B2C educativo</strong></td><td><span class="pill p-risk">Alto</span></td><td>Empezar hiperlocal: el condado propio, grupos de padres, boca a boca escolar. Referidos con mes gratis. El canal escalable es el B2B de la fase 5, no la publicidad pagada</td></tr>
+          <tr><td>COPPA</td><td><span class="pill p-risk">Alto</span></td><td>Resuelto por arquitectura, no por política: sin cuenta para el niño, sin PII, consentimiento vía la propia transacción de pago. Ver sección 9</td></tr>
+          <tr><td>Estacionalidad enero-abril</td><td><span class="pill p-warn">Medio</span></td><td>Posicionar como refuerzo curricular anual y no solo test-prep. Plan anual. Contenido de verano contra el <em>summer slide</em></td></tr>
+          <tr><td>Competencia establecida</td><td><span class="pill p-warn">Medio</span></td><td>IXL cuesta $20-30/mes y es genérico nacional; Lumos vende sobre todo a centros. El hueco es un producto <strong>específico de Florida, para padres, verdaderamente interactivo y a $10</strong>. La interactividad es la defensa: es lo más caro de copiar</td></tr>
+          <tr><td>Los estándares cambian</td><td><span class="pill p-warn">Medio</span></td><td>El código de benchmark es la clave; el currículo se versiona en tabla, nunca se hardcodea. Reverificar cortes y ventanas cada agosto</td></tr>
+          <tr><td>Rendimiento 3D en Chromebooks</td><td><span class="pill p-warn">Medio</span></td><td>Presupuesto de polígonos bajo, detección de capacidad del dispositivo, fallback 2D automático. El Chromebook es el equipo real de muchos alumnos de Florida</td></tr>
+          <tr><td>Uso de la marca «FAST»</td><td><span class="pill p-warn">Medio</span></td><td>Uso descriptivo únicamente, nunca en el nombre ni el dominio. Descargo de no afiliación visible. Revisión con abogado antes del lanzamiento</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="s13">
+    <div class="sec-head"><span class="sec-num">13</span><h2 class="sec-title">Empezar mañana</h2></div>
+    <p class="sec-lede">Lo que tiene sentido hacer esta semana, en orden.</p>
+
+    <ol class="body">
+      <li><strong>Registrar la cuenta de Stripe</strong> y crear el producto «Student Seat» con precio recurrente de $10 y el plan anual de $100. Se tarda una hora y desbloquea toda la fase 2.</li>
+      <li><strong>Elegir nombre y dominio</strong> definitivos, comprobando que no contienen «FAST» ni «B.E.S.T.».</li>
+      <li><strong>Buscar al educador certificado.</strong> Es el rol de contratación más lenta y el que condiciona la fase 3. Empezar la búsqueda ahora, aunque no se incorpore hasta la semana 10.</li>
+      <li><strong>Completar el inventario de ELA</strong> en <code>docs/benchmarks-ela.csv</code>, igual que ya está el de Matemáticas.</li>
+      <li><strong>Levantar el esqueleto de la fase 0</strong> y cargar el CSV semilla. En cuanto los 202 benchmarks estén en Postgres, el resto del proyecto tiene dónde engancharse.</li>
+      <li><strong>Hacer el Solid Explorer primero</strong>, antes que el resto del vertical slice. Es el componente de mayor riesgo técnico y el de mayor valor demostrativo: si funciona bien en el portátil del niño, sirve como prueba de concepto y como material de captación para la beta.</li>
+      <li><strong>Reclutar cinco familias</strong> del entorno cercano para la beta de la fase 1. Cinco niños usando la plataforma dos semanas enseñan más que cualquier estudio de mercado.</li>
+    </ol>
+
+    <div class="note key">
+      <span class="lbl">El criterio de decisión</span>
+      <p>Todo el plan se apoya en una sola prueba, en la semana 6: <strong>si su hijo abre la plataforma por su cuenta un sábado por la mañana, el producto funciona.</strong> Si hay que pedírselo, ningún volumen de contenido ni de marketing lo va a arreglar, y conviene saberlo antes de la fase 3 y no después.</p>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>Documento de planificación interno. Los datos de estructura, ventanas de administración, tipos de ítem y puntos de corte proceden de fuentes oficiales del Florida Department of Education (fldoe.org) y del Florida Statewide Assessments Portal (flfast.org), consultadas en agosto de 2026; los puntos de corte y ventanas corresponden al curso 2025-26 y deben reverificarse cada año. Sparkquill no está afiliado ni respaldado por el FDOE ni por Cambium Assessment. «FAST» y «B.E.S.T.» son designaciones del estado de Florida y se usan aquí de forma descriptiva.</p>
+  </div>
+</footer>

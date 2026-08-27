@@ -1,0 +1,203 @@
+code,grade,subject,strand,standard,description,reporting_category
+MA.1.NSO.1.1,1,math,NSO,1,"Count forward/backward within 120 by ones; skip count by 2s to 20 and 5s to 100",
+MA.1.NSO.1.2,1,math,NSO,1,"Read/write numbers 0-100 in standard, expanded, and word form",
+MA.1.NSO.1.3,1,math,NSO,1,"Compose/decompose two-digit numbers using tens and ones",
+MA.1.NSO.1.4,1,math,NSO,1,"Plot, order, and compare whole numbers up to 100",
+MA.1.NSO.2.1,1,math,NSO,2,"Recall addition facts to 10 and related subtraction facts with automaticity",
+MA.1.NSO.2.2,1,math,NSO,2,"Add two numbers with sums 0-20; subtract using related facts",
+MA.1.NSO.2.3,1,math,NSO,2,"Identify the number that is one more/less, ten more/less than a two-digit number",
+MA.1.NSO.2.4,1,math,NSO,2,"Explore adding a two-digit + one-digit number, sums to 100",
+MA.1.NSO.2.5,1,math,NSO,2,"Explore subtracting a one-digit number from a two-digit number",
+MA.1.FR.1.1,1,math,FR,1,"Partition circles/rectangles into 2 or 4 equal parts; name halves/fourths",
+MA.1.AR.1.1,1,math,AR,1,"Apply properties of addition to find the sum of three or more whole numbers",
+MA.1.AR.1.2,1,math,AR,1,"Solve addition/subtraction real-world problems using objects, drawings, or equations",
+MA.1.AR.2.1,1,math,AR,2,"Restate a subtraction problem as a missing-addend problem",
+MA.1.AR.2.2,1,math,AR,2,"Determine and explain whether addition or subtraction equations are true or false",
+MA.1.AR.2.3,1,math,AR,2,"Determine the unknown whole number in an addition/subtraction equation",
+MA.1.M.1.1,1,math,M,1,"Estimate and measure length to the nearest inch or centimeter",
+MA.1.M.1.2,1,math,M,1,"Compare and order the length of up to three objects",
+MA.1.M.2.1,1,math,M,2,"Tell and write time in hours and half-hours (analog and digital)",
+MA.1.M.2.2,1,math,M,2,"Identify pennies, nickels, dimes, quarters; express value with cent symbol",
+MA.1.M.2.3,1,math,M,2,"Find value of combinations of coins to $1 and $1/$5/$10 bills to $100",
+MA.1.GR.1.1,1,math,GR,1,"Identify, compare and sort 2D/3D figures by defining attributes",
+MA.1.GR.1.2,1,math,GR,1,"Sketch 2D figures given defining attributes (triangles, rectangles, squares, hexagons)",
+MA.1.GR.1.3,1,math,GR,1,"Compose and decompose 2D and 3D figures",
+MA.1.GR.1.4,1,math,GR,1,"Identify real-world object parts modeled by 2D/3D figures",
+MA.1.DP.1.1,1,math,DP,1,"Collect data into categories; represent with tally marks or pictographs",
+MA.1.DP.1.2,1,math,DP,1,"Interpret tally-mark and pictograph data (totals, comparisons)",
+MA.2.NSO.1.1,2,math,NSO,1,"Read/write numbers 0-1000 in standard, expanded and word form",
+MA.2.NSO.1.2,2,math,NSO,1,"Compose/decompose three-digit numbers using hundreds, tens, ones",
+MA.2.NSO.1.3,2,math,NSO,1,"Plot, order and compare whole numbers up to 1000",
+MA.2.NSO.1.4,2,math,NSO,1,"Round whole numbers 0-100 to the nearest 10",
+MA.2.NSO.2.1,2,math,NSO,2,"Recall addition facts to 20 and related subtraction facts with automaticity",
+MA.2.NSO.2.2,2,math,NSO,2,"Identify the number that is ten more/less, hundred more/less than a three-digit number",
+MA.2.NSO.2.3,2,math,NSO,2,"Add and subtract whole numbers up to 100 with procedural reliability",
+MA.2.NSO.2.4,2,math,NSO,2,"Explore addition and subtraction of whole numbers up to 1000",
+MA.2.FR.1.1,2,math,FR,1,"Partition circles/rectangles into 2, 3 or 4 equal parts; name halves/thirds/fourths",
+MA.2.FR.1.2,2,math,FR,1,"Partition rectangles into equal parts two different ways",
+MA.2.AR.1.1,2,math,AR,1,"Solve one- and two-step addition/subtraction real-world problems",
+MA.2.AR.2.1,2,math,AR,2,"Determine and explain whether addition/subtraction equations are true or false",
+MA.2.AR.2.2,2,math,AR,2,"Determine the unknown whole number in an addition/subtraction equation",
+MA.2.AR.3.1,2,math,AR,3,"Represent even and odd numbers using equal groups or addends",
+MA.2.AR.3.2,2,math,AR,3,"Use repeated addition to find totals in equal groups; represent with arrays and equations",
+MA.2.M.1.1,2,math,M,1,"Estimate and measure length to nearest inch, foot, yard, centimeter or meter",
+MA.2.M.1.2,2,math,M,1,"Measure two objects in the same unit and find the difference",
+MA.2.M.1.3,2,math,M,1,"Solve one/two-step real-world addition and subtraction length problems",
+MA.2.M.2.1,2,math,M,2,"Tell and write time to the nearest 5 minutes (a.m./p.m.)",
+MA.2.M.2.2,2,math,M,2,"Solve one/two-step real-world addition and subtraction money problems",
+MA.2.GR.1.1,2,math,GR,1,"Identify and draw 2D figures by defining attributes (triangle through octagon)",
+MA.2.GR.1.2,2,math,GR,1,"Categorize 2D figures by sides, vertices, closed/open, curved/straight edges",
+MA.2.GR.1.3,2,math,GR,1,"Identify line(s) of symmetry for a 2D figure",
+MA.2.GR.2.1,2,math,GR,2,"Explore perimeter by placing unit segments along a boundary",
+MA.2.GR.2.2,2,math,GR,2,"Find the perimeter of a polygon with whole-number side lengths",
+MA.2.DP.1.1,2,math,DP,1,"Collect, categorize and represent data with tally marks, tables, pictographs, bar graphs",
+MA.2.DP.1.2,2,math,DP,1,"Interpret data, including solving addition and subtraction problems",
+MA.3.NSO.1.1,3,math,NSO,1,"Read/write numbers 0-10000 in standard, expanded and word form",Number Sense and Additive Reasoning
+MA.3.NSO.1.2,3,math,NSO,1,"Compose/decompose four-digit numbers using thousands, hundreds, tens, ones",Number Sense and Additive Reasoning
+MA.3.NSO.1.3,3,math,NSO,1,"Plot, order and compare whole numbers up to 10000",Number Sense and Additive Reasoning
+MA.3.NSO.1.4,3,math,NSO,1,"Round whole numbers 0-1000 to nearest 10 or 100",Number Sense and Additive Reasoning
+MA.3.NSO.2.1,3,math,NSO,2,"Add and subtract multi-digit whole numbers using the standard algorithm",Number Sense and Additive Reasoning
+MA.3.NSO.2.2,3,math,NSO,2,"Explore multiplication (products 0-144) and related division facts",Number Sense and Multiplicative Reasoning
+MA.3.NSO.2.3,3,math,NSO,2,"Multiply a one-digit number by a multiple of 10 (to 90) or 100 (to 900)",Number Sense and Multiplicative Reasoning
+MA.3.NSO.2.4,3,math,NSO,2,"Multiply whole numbers 0-12 and divide using related facts",Number Sense and Multiplicative Reasoning
+MA.3.FR.1.1,3,math,FR,1,"Represent and interpret unit fractions 1/n",Fractional Reasoning
+MA.3.FR.1.2,3,math,FR,1,"Represent and interpret fractions as a unit fraction repeated n times",Fractional Reasoning
+MA.3.FR.1.3,3,math,FR,1,"Read and write fractions in standard, numeral-word and word form",Fractional Reasoning
+MA.3.FR.2.1,3,math,FR,2,"Plot, order and compare fractions with the same numerator or denominator",Fractional Reasoning
+MA.3.FR.2.2,3,math,FR,2,"Identify equivalent fractions and explain why they are equivalent",Fractional Reasoning
+MA.3.AR.1.1,3,math,AR,1,"Apply the distributive property and multiplication properties",Number Sense and Multiplicative Reasoning
+MA.3.AR.1.2,3,math,AR,1,"Solve one/two-step real-world problems with any of the four operations",Number Sense and Additive Reasoning
+MA.3.AR.2.1,3,math,AR,2,"Restate a division problem as a missing-factor problem",Number Sense and Multiplicative Reasoning
+MA.3.AR.2.2,3,math,AR,2,"Determine and explain whether multiplication/division equations are true or false",Number Sense and Multiplicative Reasoning
+MA.3.AR.2.3,3,math,AR,2,"Determine the unknown whole number in a multiplication/division equation",Number Sense and Multiplicative Reasoning
+MA.3.AR.3.1,3,math,AR,3,"Determine and explain whether a number 1-1000 is even or odd",Number Sense and Additive Reasoning
+MA.3.AR.3.2,3,math,AR,3,"Determine whether a number 1-144 is a multiple of a given one-digit number",Number Sense and Multiplicative Reasoning
+MA.3.AR.3.3,3,math,AR,3,"Identify, create and extend numerical patterns",Number Sense and Additive Reasoning
+MA.3.M.1.1,3,math,M,1,"Select and use tools to measure length, liquid volume and temperature",Geometric Reasoning Measurement and Data
+MA.3.M.1.2,3,math,M,1,"Solve real-world problems with lengths, masses, weights, temperatures, volumes",Geometric Reasoning Measurement and Data
+MA.3.M.2.1,3,math,M,2,"Tell and write time to the nearest minute (a.m./p.m.)",Geometric Reasoning Measurement and Data
+MA.3.M.2.2,3,math,M,2,"Solve one/two-step real-world elapsed-time problems",Geometric Reasoning Measurement and Data
+MA.3.GR.1.1,3,math,GR,1,"Describe and draw points, lines, segments, rays, intersecting/perpendicular/parallel lines",Geometric Reasoning Measurement and Data
+MA.3.GR.1.2,3,math,GR,1,"Identify and draw quadrilaterals by defining attributes",Geometric Reasoning Measurement and Data
+MA.3.GR.1.3,3,math,GR,1,"Draw lines of symmetry; identify line-symmetric 2D figures",Geometric Reasoning Measurement and Data
+MA.3.GR.2.1,3,math,GR,2,"Explore area by covering with unit squares; find area of rectangles by counting",Number Sense and Multiplicative Reasoning
+MA.3.GR.2.2,3,math,GR,2,"Find the area of a rectangle via visual model and multiplication formula",Number Sense and Multiplicative Reasoning
+MA.3.GR.2.3,3,math,GR,2,"Solve perimeter and area problems for rectangles",Geometric Reasoning Measurement and Data
+MA.3.GR.2.4,3,math,GR,2,"Solve perimeter and area problems for composite figures of non-overlapping rectangles",Geometric Reasoning Measurement and Data
+MA.3.DP.1.1,3,math,DP,1,"Collect and represent data using tables, scaled pictographs/bar graphs, line plots",Geometric Reasoning Measurement and Data
+MA.3.DP.1.2,3,math,DP,1,"Interpret data by solving one/two-step problems",Geometric Reasoning Measurement and Data
+MA.4.NSO.1.1,4,math,NSO,1,"Express how a digit's value changes moving one place left or right",Whole Numbers
+MA.4.NSO.1.2,4,math,NSO,1,"Read/write whole numbers 0-1000000 in standard, expanded and word form",Whole Numbers
+MA.4.NSO.1.3,4,math,NSO,1,"Plot, order and compare whole numbers up to 1000000",Whole Numbers
+MA.4.NSO.1.4,4,math,NSO,1,"Round whole numbers 0-10000 to nearest 10, 100 or 1000",Whole Numbers
+MA.4.NSO.1.5,4,math,NSO,1,"Plot, order and compare decimals to hundredths",Whole Numbers
+MA.4.NSO.2.1,4,math,NSO,2,"Recall multiplication facts to 12 and related division facts with automaticity",Whole Numbers
+MA.4.NSO.2.2,4,math,NSO,2,"Multiply two whole numbers up to 3 digits by up to 2 digits",Whole Numbers
+MA.4.NSO.2.3,4,math,NSO,2,"Multiply two 2-digit whole numbers using the standard algorithm",Whole Numbers
+MA.4.NSO.2.4,4,math,NSO,2,"Divide up to 4-digit by 1-digit; represent remainders as fractions",Whole Numbers
+MA.4.NSO.2.5,4,math,NSO,2,"Explore multiplication and division of multi-digit numbers via estimation",Whole Numbers
+MA.4.NSO.2.6,4,math,NSO,2,"Identify the number that is one-tenth or one-hundredth more/less than a given number",Fractions and Decimals
+MA.4.NSO.2.7,4,math,NSO,2,"Explore addition and subtraction of decimals to hundredths",Fractions and Decimals
+MA.4.FR.1.1,4,math,FR,1,"Express a fraction with denominator 10 as an equivalent fraction with denominator 100",Fractions and Decimals
+MA.4.FR.1.2,4,math,FR,1,"Use decimal notation for fractions with denominators 10 or 100 and vice versa",Fractions and Decimals
+MA.4.FR.1.3,4,math,FR,1,"Identify and generate equivalent fractions",Fractions and Decimals
+MA.4.FR.1.4,4,math,FR,1,"Plot, order and compare fractions with different denominators",Fractions and Decimals
+MA.4.FR.2.1,4,math,FR,2,"Decompose a fraction into a sum of fractions with the same denominator",Fractions and Decimals
+MA.4.FR.2.2,4,math,FR,2,"Add and subtract fractions with like denominators",Fractions and Decimals
+MA.4.FR.2.3,4,math,FR,2,"Explore adding a denominator-10 fraction to a denominator-100 fraction",Fractions and Decimals
+MA.4.FR.2.4,4,math,FR,2,"Explore multiplying a fraction by a whole number",Fractions and Decimals
+MA.4.AR.1.1,4,math,AR,1,"Solve real-world multiplication and division problems, interpreting remainders",Whole Numbers
+MA.4.AR.1.2,4,math,AR,1,"Solve real-world addition and subtraction problems with like-denominator fractions",Fractions and Decimals
+MA.4.AR.1.3,4,math,AR,1,"Solve real-world problems multiplying a fraction by a whole number",Fractions and Decimals
+MA.4.AR.2.1,4,math,AR,2,"Determine and explain whether a four-operation equation is true or false",Whole Numbers
+MA.4.AR.2.2,4,math,AR,2,"Write a multiplication or division equation to find an unknown whole number",Whole Numbers
+MA.4.AR.3.1,4,math,AR,3,"Determine factor pairs 0-144; classify as prime, composite or neither",Whole Numbers
+MA.4.AR.3.2,4,math,AR,3,"Generate, describe and extend a numerical pattern following a given rule",Whole Numbers
+MA.4.M.1.1,4,math,M,1,"Select and use appropriate tools to measure attributes of objects",Geometric Reasoning Measurement and Data
+MA.4.M.1.2,4,math,M,1,"Convert within a single measurement system",Geometric Reasoning Measurement and Data
+MA.4.M.2.1,4,math,M,2,"Solve two-step real-world distance and time-interval problems",Geometric Reasoning Measurement and Data
+MA.4.M.2.2,4,math,M,2,"Solve one/two-step real-world money problems using decimal notation",Fractions and Decimals
+MA.4.GR.1.1,4,math,GR,1,"Explore angles; classify as acute, right, obtuse, straight or reflex",Geometric Reasoning Measurement and Data
+MA.4.GR.1.2,4,math,GR,1,"Estimate, measure and draw angles with a protractor; angle measure is additive",Geometric Reasoning Measurement and Data
+MA.4.GR.1.3,4,math,GR,1,"Solve problems with unknown whole-number angle measures",Geometric Reasoning Measurement and Data
+MA.4.GR.2.1,4,math,GR,2,"Solve perimeter and area problems for rectangles including unknown sides",Geometric Reasoning Measurement and Data
+MA.4.GR.2.2,4,math,GR,2,"Solve problems with rectangles of same perimeter and different area or vice versa",Geometric Reasoning Measurement and Data
+MA.4.DP.1.1,4,math,DP,1,"Collect and represent numerical data with tables, stem-and-leaf plots, line plots",Geometric Reasoning Measurement and Data
+MA.4.DP.1.2,4,math,DP,1,"Determine mode, median or range from a data set",Geometric Reasoning Measurement and Data
+MA.4.DP.1.3,4,math,DP,1,"Solve real-world problems involving numerical data",Geometric Reasoning Measurement and Data
+MA.5.NSO.1.1,5,math,NSO,1,"Express digit-value change when moving places left or right, decimals to thousandths",Whole Numbers
+MA.5.NSO.1.2,5,math,NSO,1,"Read and write decimal numbers to thousandths in standard, word and expanded form",Whole Numbers
+MA.5.NSO.1.3,5,math,NSO,1,"Compose and decompose multi-digit decimal numbers to thousandths",Whole Numbers
+MA.5.NSO.1.4,5,math,NSO,1,"Plot, order and compare decimal numbers to thousandths",Whole Numbers
+MA.5.NSO.1.5,5,math,NSO,1,"Round decimals to nearest hundredth, tenth or whole number",Whole Numbers
+MA.5.NSO.2.1,5,math,NSO,2,"Multiply multi-digit whole numbers using the standard algorithm",Whole Numbers
+MA.5.NSO.2.2,5,math,NSO,2,"Divide up to 5-digit by 2-digit; represent remainders as fractions",Whole Numbers
+MA.5.NSO.2.3,5,math,NSO,2,"Add and subtract decimals to thousandths using the standard algorithm",Fractions and Decimals
+MA.5.NSO.2.4,5,math,NSO,2,"Explore multiplication and division of decimals to hundredths via estimation",Fractions and Decimals
+MA.5.NSO.2.5,5,math,NSO,2,"Multiply and divide a decimal by 0.1 and 0.01",Fractions and Decimals
+MA.5.FR.1.1,5,math,FR,1,"Represent division of two whole numbers as a fraction",Fractions and Decimals
+MA.5.FR.2.1,5,math,FR,2,"Add and subtract fractions with unlike denominators including mixed numbers",Fractions and Decimals
+MA.5.FR.2.2,5,math,FR,2,"Multiply a fraction by a fraction including mixed numbers",Fractions and Decimals
+MA.5.FR.2.3,5,math,FR,2,"Predict and explain the relative size of a product when multiplying by a fraction",Fractions and Decimals
+MA.5.FR.2.4,5,math,FR,2,"Explore dividing a unit fraction by a whole number and vice versa",Fractions and Decimals
+MA.5.AR.1.1,5,math,AR,1,"Solve multi-step real-world problems with four operations, interpreting remainders",Algebraic Reasoning
+MA.5.AR.1.2,5,math,AR,1,"Solve real-world problems adding, subtracting and multiplying fractions",Fractions and Decimals
+MA.5.AR.1.3,5,math,AR,1,"Solve real-world problems dividing a unit fraction by a whole number and vice versa",Fractions and Decimals
+MA.5.AR.2.1,5,math,AR,2,"Translate written descriptions into numerical expressions and vice versa",Algebraic Reasoning
+MA.5.AR.2.2,5,math,AR,2,"Evaluate multi-step numerical expressions using order of operations",Algebraic Reasoning
+MA.5.AR.2.3,5,math,AR,2,"Determine and explain whether a four-operation equation is true or false",Algebraic Reasoning
+MA.5.AR.2.4,5,math,AR,2,"Write an equation to find an unknown whole number",Algebraic Reasoning
+MA.5.AR.3.1,5,math,AR,3,"Given a numerical pattern, write a rule as an expression",Algebraic Reasoning
+MA.5.AR.3.2,5,math,AR,3,"Given a rule, use a two-column table to record inputs and outputs",Algebraic Reasoning
+MA.5.M.1.1,5,math,M,1,"Solve multi-step real-world unit-conversion problems within a single system",Geometric Reasoning Measurement and Data
+MA.5.M.2.1,5,math,M,2,"Solve multi-step real-world money problems using decimal notation",Fractions and Decimals
+MA.5.GR.1.1,5,math,GR,1,"Classify triangles and quadrilaterals into categories",Geometric Reasoning Measurement and Data
+MA.5.GR.1.2,5,math,GR,1,"Identify and classify 3D figures: pyramids, prisms, cylinders, cones, spheres",Geometric Reasoning Measurement and Data
+MA.5.GR.2.1,5,math,GR,2,"Find perimeter and area of a rectangle with fractional or decimal side lengths",Geometric Reasoning Measurement and Data
+MA.5.GR.3.1,5,math,GR,3,"Explore volume by packing with unit cubes; find volume by counting cubes",Geometric Reasoning Measurement and Data
+MA.5.GR.3.2,5,math,GR,3,"Find the volume of a right rectangular prism using a visual model and formula",Geometric Reasoning Measurement and Data
+MA.5.GR.3.3,5,math,GR,3,"Solve real-world volume problems including unknown edge length",Geometric Reasoning Measurement and Data
+MA.5.GR.4.1,5,math,GR,4,"Identify origin and axes; plot and label ordered pairs in Quadrant I",Geometric Reasoning Measurement and Data
+MA.5.GR.4.2,5,math,GR,4,"Represent and interpret real-world problems by plotting points in Quadrant I",Geometric Reasoning Measurement and Data
+MA.5.DP.1.1,5,math,DP,1,"Collect and represent numerical data using tables, line graphs and line plots",Geometric Reasoning Measurement and Data
+MA.5.DP.1.2,5,math,DP,1,"Interpret numerical data by determining mean, mode, median or range",Geometric Reasoning Measurement and Data
+MA.6.NSO.1.1,6,math,NSO,1,"Define rational numbers; plot, order and compare rational numbers",Number Sense and Operations
+MA.6.NSO.1.2,6,math,NSO,1,"Represent quantities with opposite direction using rational numbers",Number Sense and Operations
+MA.6.NSO.1.3,6,math,NSO,1,"Interpret absolute value as distance from zero",Number Sense and Operations
+MA.6.NSO.1.4,6,math,NSO,1,"Solve problems involving absolute value including comparisons",Number Sense and Operations
+MA.6.NSO.2.1,6,math,NSO,2,"Multiply and divide positive decimals to thousandths using the standard algorithm",Number Sense and Operations
+MA.6.NSO.2.2,6,math,NSO,2,"Multiply and divide positive fractions including mixed numbers",Number Sense and Operations
+MA.6.NSO.2.3,6,math,NSO,2,"Solve multi-step real-world problems with positive decimals or fractions",Number Sense and Operations
+MA.6.NSO.3.1,6,math,NSO,3,"Find the greatest common factor and least common multiple of two whole numbers",Number Sense and Operations
+MA.6.NSO.3.2,6,math,NSO,3,"Rewrite a sum of two composite numbers with a common factor as factor times sum",Number Sense and Operations
+MA.6.NSO.3.3,6,math,NSO,3,"Evaluate positive rational numbers and integers with natural number exponents",Number Sense and Operations
+MA.6.NSO.3.4,6,math,NSO,3,"Express composite whole numbers as a product of prime factors with exponents",Number Sense and Operations
+MA.6.NSO.3.5,6,math,NSO,3,"Rewrite positive rational numbers as fraction, decimal or percent",Number Sense and Operations
+MA.6.NSO.4.1,6,math,NSO,4,"Add and subtract integers with procedural fluency",Number Sense and Operations
+MA.6.NSO.4.2,6,math,NSO,4,"Multiply and divide integers with procedural fluency",Number Sense and Operations
+MA.6.AR.1.1,6,math,AR,1,"Translate written descriptions into algebraic expressions and vice versa",Algebraic Reasoning
+MA.6.AR.1.2,6,math,AR,1,"Translate a description into an algebraic inequality; represent on a number line",Algebraic Reasoning
+MA.6.AR.1.3,6,math,AR,1,"Evaluate algebraic expressions using substitution and order of operations",Algebraic Reasoning
+MA.6.AR.1.4,6,math,AR,1,"Apply properties of operations to generate equivalent expressions",Algebraic Reasoning
+MA.6.AR.2.1,6,math,AR,2,"Given integer values, determine which make an equation or inequality true",Algebraic Reasoning
+MA.6.AR.2.2,6,math,AR,2,"Write and solve one-step addition and subtraction equations with integers",Algebraic Reasoning
+MA.6.AR.2.3,6,math,AR,2,"Write and solve one-step multiplication and division equations with integers",Algebraic Reasoning
+MA.6.AR.2.4,6,math,AR,2,"Determine the unknown decimal or fraction in a four-operation equation",Algebraic Reasoning
+MA.6.AR.3.1,6,math,AR,3,"Write and interpret ratios using a/b, a to b, or a:b notation",Algebraic Reasoning
+MA.6.AR.3.2,6,math,AR,3,"Determine a rate; calculate and interpret the corresponding unit rate",Algebraic Reasoning
+MA.6.AR.3.3,6,math,AR,3,"Generate and complete a table of equivalent ratios",Algebraic Reasoning
+MA.6.AR.3.4,6,math,AR,3,"Apply ratio relationships to solve problems involving percentages",Algebraic Reasoning
+MA.6.AR.3.5,6,math,AR,3,"Solve problems involving ratios, rates and unit rates",Algebraic Reasoning
+MA.6.GR.1.1,6,math,GR,1,"Plot rational-number ordered pairs in all four quadrants",Geometric Reasoning Data and Probability
+MA.6.GR.1.2,6,math,GR,1,"Find distances between ordered pairs sharing an x- or y-coordinate",Geometric Reasoning Data and Probability
+MA.6.GR.1.3,6,math,GR,1,"Solve problems by plotting points including perimeter and area of a rectangle",Geometric Reasoning Data and Probability
+MA.6.GR.2.1,6,math,GR,2,"Derive and apply a formula for the area of a right triangle",Geometric Reasoning Data and Probability
+MA.6.GR.2.2,6,math,GR,2,"Solve area problems for quadrilaterals and composite figures by decomposition",Geometric Reasoning Data and Probability
+MA.6.GR.2.3,6,math,GR,2,"Solve volume problems for right rectangular prisms with rational edge lengths",Geometric Reasoning Data and Probability
+MA.6.GR.2.4,6,math,GR,2,"Find surface area of right rectangular prisms and pyramids using a net",Geometric Reasoning Data and Probability
+MA.6.DP.1.1,6,math,DP,1,"Recognize and formulate a statistical question generating numerical data",Geometric Reasoning Data and Probability
+MA.6.DP.1.2,6,math,DP,1,"Find and interpret mean, median, mode and range of a numerical data set",Geometric Reasoning Data and Probability
+MA.6.DP.1.3,6,math,DP,1,"From a box plot determine min, lower quartile, median, upper quartile and max",Geometric Reasoning Data and Probability
+MA.6.DP.1.4,6,math,DP,1,"Qualitatively describe spread and distribution from a histogram or line plot",Geometric Reasoning Data and Probability
+MA.6.DP.1.5,6,math,DP,1,"Create box plots and histograms from numerical data sets",Geometric Reasoning Data and Probability
+MA.6.DP.1.6,6,math,DP,1,"Describe how changes in data values impact measures of center and variation",Geometric Reasoning Data and Probability

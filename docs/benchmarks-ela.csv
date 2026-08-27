@@ -1,0 +1,157 @@
+code,grade,subject,strand,standard,description,reporting_category
+ELA.1.F.1.1,1,ela,F,1,"Locate title, table of contents, author and illustrator names, and glossary",
+ELA.1.F.1.2,1,ela,F,1,"Demonstrate phonological awareness",
+ELA.1.F.1.3,1,ela,F,1,"Use grade-appropriate phonics and word-analysis skills to decode words accurately",
+ELA.1.F.1.4,1,ela,F,1,"Read grade-level texts with accuracy, automaticity and appropriate prosody",
+ELA.1.R.1.1,1,ela,R,1,"Identify and describe the main story elements in a story",
+ELA.1.R.1.2,1,ela,R,1,"Identify and explain the moral of a story",
+ELA.1.R.1.3,1,ela,R,1,"Explain who is telling the story using context clues",
+ELA.1.R.1.4,1,ela,R,1,"Identify stanzas and line breaks in poems",
+ELA.1.R.2.1,1,ela,R,2,"Use text features to demonstrate understanding of texts",
+ELA.1.R.2.2,1,ela,R,2,"Identify the topic of and relevant details in a text",
+ELA.1.R.2.3,1,ela,R,2,"Explain similarities and differences between visuals and words in informational text",
+ELA.1.R.2.4,1,ela,R,2,"Identify an author's opinion about the topic",
+ELA.1.R.3.1,1,ela,R,3,"Identify and explain descriptive words and phrases in texts",
+ELA.1.R.3.2,1,ela,R,3,"Retell a text in oral or written form to enhance comprehension",
+ELA.1.R.3.3,1,ela,R,3,"Compare and contrast two texts on the same topic",
+ELA.1.C.1.1,1,ela,C,1,"Print all upper- and lowercase letters",
+ELA.1.C.1.2,1,ela,C,1,"Write narratives retelling two or more sequenced events with a sense of closure",
+ELA.1.C.1.3,1,ela,C,1,"Write opinions with at least one supporting reason from a source",
+ELA.1.C.1.4,1,ela,C,1,"Write expository texts about a topic using a source, providing facts",
+ELA.1.C.1.5,1,ela,C,1,"Improve writing by planning, revising and editing with adult support",
+ELA.1.C.2.1,1,ela,C,2,"Present information orally using complete sentences and appropriate volume",
+ELA.1.C.3.1,1,ela,C,3,"Follow rules of standard English grammar, punctuation, capitalization and spelling",
+ELA.1.C.4.1,1,ela,C,4,"Participate in research to answer a question about a single topic",
+ELA.1.C.5.1,1,ela,C,5,"Use a multimedia element to enhance oral or written tasks",
+ELA.1.C.5.2,1,ela,C,5,"Identify and use digital tools to produce and publish writing",
+ELA.1.V.1.1,1,ela,V,1,"Use grade-level academic vocabulary appropriately in speaking and writing",
+ELA.1.V.1.2,1,ela,V,1,"Identify and use frequently occurring base words and their common inflections",
+ELA.1.V.1.3,1,ela,V,1,"Use picture clues, context clues, word relationships and reference materials for unknown words",
+ELA.2.F.1.3,2,ela,F,1,"Use grade-appropriate phonics and word-analysis skills to decode words",
+ELA.2.F.1.4,2,ela,F,1,"Read grade-level texts with accuracy, automaticity and appropriate prosody",
+ELA.2.R.1.1,2,ela,R,1,"Identify plot structure and describe main story elements in a literary text",
+ELA.2.R.1.2,2,ela,R,1,"Identify and explain a theme of a literary text",
+ELA.2.R.1.3,2,ela,R,1,"Identify different characters' perspectives in a literary text",
+ELA.2.R.1.4,2,ela,R,1,"Identify rhyme schemes in poems",
+ELA.2.R.2.1,2,ela,R,2,"Explain how text features contribute to the meaning of texts",
+ELA.2.R.2.2,2,ela,R,2,"Identify the central idea and relevant details in a text",
+ELA.2.R.2.3,2,ela,R,2,"Explain an author's purpose in an informational text",
+ELA.2.R.2.4,2,ela,R,2,"Explain an author's opinion and supporting evidence",
+ELA.2.R.3.1,2,ela,R,3,"Identify and explain similes, idioms and alliteration in texts",
+ELA.2.R.3.2,2,ela,R,3,"Retell a text to enhance comprehension",
+ELA.2.R.3.3,2,ela,R,3,"Compare and contrast important details in two texts on the same topic or theme",
+ELA.2.C.1.1,2,ela,C,1,"Demonstrate legible printing skills",
+ELA.2.C.1.2,2,ela,C,1,"Write personal or fictional narratives with logical sequence, transitions and an ending",
+ELA.2.C.1.3,2,ela,C,1,"Write opinions with reasons supported by details from a source",
+ELA.2.C.1.4,2,ela,C,1,"Write expository texts with introduction, facts, transitions and conclusion",
+ELA.2.C.1.5,2,ela,C,1,"Improve writing by planning, revising and editing with support and peer feedback",
+ELA.2.C.2.1,2,ela,C,2,"Present information orally with complete sentences, volume and clear pronunciation",
+ELA.2.C.3.1,2,ela,C,3,"Follow rules of standard English grammar, punctuation, capitalization and spelling",
+ELA.2.C.4.1,2,ela,C,4,"Participate in research using multiple sources to answer a question",
+ELA.2.C.5.1,2,ela,C,5,"Use one or more multimedia elements to enhance oral or written tasks",
+ELA.2.C.5.2,2,ela,C,5,"Use digital tools to produce and publish writing",
+ELA.2.V.1.1,2,ela,V,1,"Use grade-level academic vocabulary appropriately in speaking and writing",
+ELA.2.V.1.2,2,ela,V,1,"Identify and use base words and affixes to determine meaning of unfamiliar words",
+ELA.2.V.1.3,2,ela,V,1,"Use context clues, word relationships and reference materials for unknown words",
+ELA.3.F.1.3,3,ela,F,1,"Use grade-level phonics and word-analysis skills to decode words",
+ELA.3.F.1.4,3,ela,F,1,"Read grade-level texts with accuracy, automaticity and appropriate prosody",
+ELA.3.R.1.1,3,ela,R,1,"Explain how one or more characters develop throughout the plot",Reading Prose and Poetry
+ELA.3.R.1.2,3,ela,R,1,"Explain a theme and how it develops using details",Reading Prose and Poetry
+ELA.3.R.1.3,3,ela,R,1,"Explain different characters' perspectives in a literary text",Reading Prose and Poetry
+ELA.3.R.1.4,3,ela,R,1,"Identify types of poems: free verse, rhymed verse, haiku and limerick",Reading Prose and Poetry
+ELA.3.R.2.1,3,ela,R,2,"Explain how text features contribute to meaning; identify chronology, comparison, cause/effect",Reading Informational Text
+ELA.3.R.2.2,3,ela,R,2,"Identify the central idea and explain how relevant details support it",Reading Informational Text
+ELA.3.R.2.3,3,ela,R,2,"Explain the development of an author's purpose in an informational text",Reading Informational Text
+ELA.3.R.2.4,3,ela,R,2,"Identify an author's claim and explain how evidence supports it",Reading Informational Text
+ELA.3.R.3.1,3,ela,R,3,"Identify and explain metaphors, personification and hyperbole in texts",Reading Across Genres and Vocabulary
+ELA.3.R.3.2,3,ela,R,3,"Summarize a text to enhance comprehension",Reading Across Genres and Vocabulary
+ELA.3.R.3.3,3,ela,R,3,"Compare and contrast how two authors present information on the same topic",Reading Across Genres and Vocabulary
+ELA.3.C.1.1,3,ela,C,1,"Write in cursive all upper- and lowercase letters",
+ELA.3.C.1.2,3,ela,C,1,"Write narratives with logical sequence, descriptions, dialogue, transitions and an ending",
+ELA.3.C.1.3,3,ela,C,1,"Write opinions with reasons supported by details from one or more sources",
+ELA.3.C.1.4,3,ela,C,1,"Write expository texts with introduction, facts, elaboration, transitions and conclusion",
+ELA.3.C.1.5,3,ela,C,1,"Improve writing by planning, revising and editing with support and peer feedback",
+ELA.3.C.2.1,3,ela,C,2,"Present information orally in logical sequence with nonverbal cues and clear pronunciation",
+ELA.3.C.3.1,3,ela,C,3,"Follow rules of standard English grammar, punctuation, capitalization and spelling",
+ELA.3.C.4.1,3,ela,C,4,"Conduct research to answer a question, organizing information from multiple sources",
+ELA.3.C.5.1,3,ela,C,5,"Use two or more multimedia elements to enhance oral or written tasks",
+ELA.3.C.5.2,3,ela,C,5,"Use digital writing tools to plan, draft and revise writing",
+ELA.3.V.1.1,3,ela,V,1,"Use grade-level academic vocabulary appropriately in speaking and writing",
+ELA.3.V.1.2,3,ela,V,1,"Apply knowledge of common Greek and Latin roots, base words and affixes",Reading Across Genres and Vocabulary
+ELA.3.V.1.3,3,ela,V,1,"Use context clues, figurative language and word relationships for multiple-meaning words",Reading Across Genres and Vocabulary
+ELA.4.F.1.3,4,ela,F,1,"Use grade-level phonics and word-analysis skills to decode and encode words",
+ELA.4.F.1.4,4,ela,F,1,"Read grade-level texts with accuracy, automaticity and appropriate prosody",
+ELA.4.R.1.1,4,ela,R,1,"Explain how characters develop throughout the plot in a literary text",Reading Prose and Poetry
+ELA.4.R.1.2,4,ela,R,1,"Explain a stated or implied theme and how it develops using details",Reading Prose and Poetry
+ELA.4.R.1.3,4,ela,R,1,"Identify the narrator's point of view versus character perspective",Reading Prose and Poetry
+ELA.4.R.1.4,4,ela,R,1,"Explain how rhyme and structure create meaning in a poem",Reading Prose and Poetry
+ELA.4.R.2.1,4,ela,R,2,"Explain how text features contribute to meaning; identify problem/solution, sequence, description",Reading Informational Text
+ELA.4.R.2.2,4,ela,R,2,"Explain how relevant details support the central idea, implied or explicit",Reading Informational Text
+ELA.4.R.2.3,4,ela,R,2,"Explain an author's perspective toward a topic",Reading Informational Text
+ELA.4.R.2.4,4,ela,R,2,"Explain an author's claim and the reasons and evidence supporting it",Reading Informational Text
+ELA.4.R.3.1,4,ela,R,3,"Explain how figurative language contributes to meaning",Reading Across Genres and Vocabulary
+ELA.4.R.3.2,4,ela,R,3,"Summarize a text: plot and theme, or central idea and details",Reading Across Genres and Vocabulary
+ELA.4.R.3.3,4,ela,R,3,"Compare and contrast accounts of the same event using primary and secondary sources",Reading Across Genres and Vocabulary
+ELA.4.C.1.1,4,ela,C,1,"Demonstrate legible cursive writing",
+ELA.4.C.1.2,4,ela,C,1,"Write personal or fictional narratives with logical sequence, description and transitions",
+ELA.4.C.1.3,4,ela,C,1,"Write to make a claim supporting a perspective, using evidence and organization",
+ELA.4.C.1.4,4,ela,C,1,"Write expository texts using multiple sources and an organizational structure",
+ELA.4.C.1.5,4,ela,C,1,"Improve writing by planning, revising and editing",
+ELA.4.C.2.1,4,ela,C,2,"Present information orally in logical sequence with nonverbal cues and clear pronunciation",
+ELA.4.C.3.1,4,ela,C,3,"Follow rules of standard English grammar, punctuation, capitalization and spelling",
+ELA.4.C.4.1,4,ela,C,4,"Conduct research to answer a question using multiple valid sources",
+ELA.4.C.5.1,4,ela,C,5,"Arrange multimedia elements to create emphasis in oral or written tasks",
+ELA.4.C.5.2,4,ela,C,5,"Use digital writing tools to plan, draft and revise",
+ELA.4.V.1.1,4,ela,V,1,"Use grade-level academic vocabulary appropriately",
+ELA.4.V.1.2,4,ela,V,1,"Apply Greek and Latin roots, base words and affixes to determine word meaning",Reading Across Genres and Vocabulary
+ELA.4.V.1.3,4,ela,V,1,"Use context clues, figurative language and word relationships to determine meaning",Reading Across Genres and Vocabulary
+ELA.5.F.1.3,5,ela,F,1,"Use grade-appropriate phonics and word-analysis skills to decode words",
+ELA.5.F.1.4,5,ela,F,1,"Read grade-level texts with accuracy, automaticity and appropriate prosody",
+ELA.5.R.1.1,5,ela,R,1,"Analyze how setting, events, conflict and characterization contribute to plot",Reading Prose and Poetry
+ELA.5.R.1.2,5,ela,R,1,"Explain the development of stated or implied themes throughout a text",Reading Prose and Poetry
+ELA.5.R.1.3,5,ela,R,1,"Describe how an author develops a character's perspective",Reading Prose and Poetry
+ELA.5.R.1.4,5,ela,R,1,"Explain how figurative language and poetic elements work together in a poem",Reading Prose and Poetry
+ELA.5.R.2.1,5,ela,R,2,"Explain how text structures and features contribute to overall meaning",Reading Informational Text
+ELA.5.R.2.2,5,ela,R,2,"Explain how relevant details support the central ideas",Reading Informational Text
+ELA.5.R.2.3,5,ela,R,2,"Analyze an author's purpose and perspective",Reading Informational Text
+ELA.5.R.2.4,5,ela,R,2,"Track the development of an argument: claims, evidence and reasoning",Reading Informational Text
+ELA.5.R.3.1,5,ela,R,3,"Analyze how figurative language contributes to meaning",Reading Across Genres and Vocabulary
+ELA.5.R.3.2,5,ela,R,3,"Summarize a text: plot and theme, or central idea and details",Reading Across Genres and Vocabulary
+ELA.5.R.3.3,5,ela,R,3,"Compare and contrast primary and secondary sources on the same topic",Reading Across Genres and Vocabulary
+ELA.5.C.1.1,5,ela,C,1,"Demonstrate fluent and legible cursive writing",
+ELA.5.C.1.2,5,ela,C,1,"Write personal or fictional narratives with dialogue, description and transitions",
+ELA.5.C.1.3,5,ela,C,1,"Write to make a claim with logical reasons, relevant evidence and varied transitions",
+ELA.5.C.1.4,5,ela,C,1,"Write expository texts using multiple sources, elaboration and varied transitions",
+ELA.5.C.1.5,5,ela,C,1,"Improve writing by planning, revising and editing",
+ELA.5.C.2.1,5,ela,C,2,"Present information orally in logical sequence with nonverbal cues and pacing",
+ELA.5.C.3.1,5,ela,C,3,"Follow standard English conventions per the Conventions Progression Chart",
+ELA.5.C.4.1,5,ela,C,4,"Conduct research using multiple reliable and valid sources",
+ELA.5.C.5.1,5,ela,C,5,"Arrange multimedia elements for emphasis and clarity",
+ELA.5.C.5.2,5,ela,C,5,"Use digital writing tools to plan, draft and revise",
+ELA.5.V.1.1,5,ela,V,1,"Use grade-level academic vocabulary",
+ELA.5.V.1.2,5,ela,V,1,"Apply Greek and Latin roots and affixes; connect affixes to parts of speech",Reading Across Genres and Vocabulary
+ELA.5.V.1.3,5,ela,V,1,"Use context clues, figurative language, word relationships and references",Reading Across Genres and Vocabulary
+ELA.6.R.1.1,6,ela,R,1,"Analyze how character interaction contributes to plot development",Reading Prose and Poetry
+ELA.6.R.1.2,6,ela,R,1,"Analyze the development of stated or implied themes",Reading Prose and Poetry
+ELA.6.R.1.3,6,ela,R,1,"Explain the influence of multiple narrators and shifts in point of view",Reading Prose and Poetry
+ELA.6.R.1.4,6,ela,R,1,"Describe the impact of various poetic forms on meaning and style",Reading Prose and Poetry
+ELA.6.R.2.1,6,ela,R,2,"Explain how text sections and features convey meaning",Reading Informational Text
+ELA.6.R.2.2,6,ela,R,2,"Analyze the central ideas and their development throughout a text",Reading Informational Text
+ELA.6.R.2.3,6,ela,R,2,"Analyze authors' purposes in multiple accounts of the same event or topic",Reading Informational Text
+ELA.6.R.2.4,6,ela,R,2,"Track argument development, identifying types of reasoning used",Reading Informational Text
+ELA.6.R.3.1,6,ela,R,3,"Explain how figurative language contributes to tone and meaning",Reading Across Genres and Vocabulary
+ELA.6.R.3.2,6,ela,R,3,"Paraphrase content from grade-level texts",
+ELA.6.R.3.3,6,ela,R,3,"Compare and contrast how authors from different time periods address related topics",Reading Across Genres and Vocabulary
+ELA.6.R.3.4,6,ela,R,3,"Identify rhetorical appeals in a text",Reading Across Genres and Vocabulary
+ELA.6.C.1.2,6,ela,C,1,"Write personal or fictional narratives using narrative techniques and precise language",
+ELA.6.C.1.3,6,ela,C,1,"Write and support a claim using logical reasoning and evidence from multiple sources",
+ELA.6.C.1.4,6,ela,C,1,"Write expository texts explaining and analyzing information from multiple sources",
+ELA.6.C.1.5,6,ela,C,1,"Improve writing by planning, revising and editing",
+ELA.6.C.2.1,6,ela,C,2,"Present information orally in logical sequence with nonverbal cues and pacing",
+ELA.6.C.3.1,6,ela,C,3,"Follow standard English conventions per the Conventions Progression Chart",
+ELA.6.C.4.1,6,ela,C,4,"Conduct research from multiple reliable sources, refocusing inquiry as needed",
+ELA.6.C.5.1,6,ela,C,5,"Integrate diverse digital media to enhance audience engagement",
+ELA.6.C.5.2,6,ela,C,5,"Use digital tools to produce writing",
+ELA.6.V.1.1,6,ela,V,1,"Integrate grade-level academic vocabulary",
+ELA.6.V.1.2,6,ela,V,1,"Apply Greek and Latin roots and affixes to determine word meaning",Reading Across Genres and Vocabulary
+ELA.6.V.1.3,6,ela,V,1,"Apply context clues and word relationships to determine connotative and denotative meaning",Reading Across Genres and Vocabulary

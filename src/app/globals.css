@@ -1,0 +1,173 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------ *
+ * Sparkquill design tokens
+ *
+ * Two audiences share this system: a six-year-old who cannot read fluently,
+ * and their parent reading a progress report. The child-facing surfaces lean
+ * on the brighter end of the scale and larger type; the parent and admin
+ * surfaces use the same hues at lower saturation.
+ * ------------------------------------------------------------------ */
+
+@theme {
+  /* Brand */
+  --color-tide-50: #eefaf6;
+  --color-tide-100: #d4f2e8;
+  --color-tide-200: #ace4d4;
+  --color-tide-300: #75cfb9;
+  --color-tide-400: #43b39c;
+  --color-tide-500: #229683;
+  --color-tide-600: #16786a;
+  --color-tide-700: #146056;
+  --color-tide-800: #144d46;
+  --color-tide-900: #13403b;
+
+  --color-spark-50: #fef8ec;
+  --color-spark-100: #fbeccb;
+  --color-spark-200: #f7d693;
+  --color-spark-300: #f2ba5b;
+  --color-spark-400: #eea033;
+  --color-spark-500: #e7811a;
+  --color-spark-600: #cc6112;
+  --color-spark-700: #a94412;
+  --color-spark-800: #8a3616;
+  --color-spark-900: #722d15;
+
+  /* Subject coding: math is tide, ELA is indigo. Never the only signal. */
+  --color-ela-100: #e5e9f9;
+  --color-ela-300: #a5b2e8;
+  --color-ela-500: #5468bf;
+  --color-ela-700: #3a4a92;
+
+  /* Semantic */
+  --color-grow-500: #3f9d4f; /* correct */
+  --color-grow-100: #e3f5e6;
+  --color-ember-500: #d1553a; /* incorrect — never punitive */
+  --color-ember-100: #fbe9e4;
+
+  /* Neutrals, biased slightly toward the brand hue so they read as chosen */
+  --color-ink-50: #f6f8f7;
+  --color-ink-100: #eaefec;
+  --color-ink-200: #d7e0db;
+  --color-ink-300: #b6c4bd;
+  --color-ink-400: #8b9c95;
+  --color-ink-500: #647a72;
+  --color-ink-600: #4b5f59;
+  --color-ink-700: #3a4a46;
+  --color-ink-800: #26332f;
+  --color-ink-900: #16211e;
+
+  /* next/font injects the --font-* variables on <body>; these map them into
+     Tailwind's font scale with real fallbacks so nothing renders silently
+     in Times when a face fails to load. */
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius-card: 1rem;
+  --radius-tile: 0.75rem;
+}
+
+/* ------------------------------------------------------------------ *
+ * Surface tokens, resolved per theme
+ * ------------------------------------------------------------------ */
+
+:root {
+  --surface: #ffffff;
+  --surface-2: var(--color-ink-50);
+  --surface-3: var(--color-ink-100);
+  --border: var(--color-ink-200);
+  --text: var(--color-ink-900);
+  --text-muted: var(--color-ink-500);
+  --brand: var(--color-tide-600);
+  --brand-contrast: #ffffff;
+  --accent: var(--color-spark-500);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #101a18;
+    --surface-2: #16231f;
+    --surface-3: #1e2f2a;
+    --border: #2b403a;
+    --text: var(--color-ink-100);
+    --text-muted: var(--color-ink-300);
+    --brand: var(--color-tide-300);
+    --brand-contrast: #0d1614;
+    --accent: var(--color-spark-300);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --surface: #101a18;
+  --surface-2: #16231f;
+  --surface-3: #1e2f2a;
+  --border: #2b403a;
+  --text: var(--color-ink-100);
+  --text-muted: var(--color-ink-300);
+  --brand: var(--color-tide-300);
+  --brand-contrast: #0d1614;
+  --accent: var(--color-spark-300);
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Children mistype and misclick. Targets stay finger-sized everywhere. */
+button,
+[role="button"],
+a[href] {
+  min-height: 44px;
+}
+button.compact,
+a.compact {
+  min-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
