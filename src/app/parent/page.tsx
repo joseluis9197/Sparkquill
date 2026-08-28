@@ -6,6 +6,8 @@ import { listStudents } from "@/lib/data/students";
 import { skillProgressFor, summaryFor } from "@/lib/data/progress";
 import { billingSummary } from "@/app/actions/billing";
 import BillingPanel from "./BillingPanel";
+import AccountPanel from "./AccountPanel";
+import DeleteStudent from "./DeleteStudent";
 import { hasBlueprint, ordinal } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Parent dashboard" };
@@ -58,6 +60,8 @@ export default async function ParentPage() {
       </div>
 
       <BillingPanel summary={billing} childCount={children.length} />
+
+      <AccountPanel email={session.user.email ?? ""} />
 
       {reports.length === 0 && (
         <p className="mt-8 rounded-[var(--radius-card)] border border-[var(--border)] p-8 text-center text-[var(--text-muted)]">
@@ -168,6 +172,12 @@ export default async function ParentPage() {
                 ? `${ordinal(child.grade)} grade sits FAST, which publishes reporting categories and achievement levels. Once there is enough practice here, this page will show an estimated level with its confidence range.`
                 : `${ordinal(child.grade)} grade sits the Star assessments, which report a percentile and skill domains rather than an achievement level. We show progress by skill instead, because a predicted FAST level for this grade would be a number the state does not publish.`}
             </p>
+
+            <DeleteStudent
+              studentId={child.id}
+              firstName={child.firstName}
+              attemptCount={summary.totalAttempts}
+            />
           </section>
         );
       })}
