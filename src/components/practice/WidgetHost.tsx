@@ -5,7 +5,9 @@ import InteractiveClock from "@/components/widgets/InteractiveClock";
 import BaseTenBlocks from "@/components/widgets/BaseTenBlocks";
 import NumberLine from "@/components/widgets/NumberLine";
 import PlaceValueChart from "@/components/widgets/PlaceValueChart";
+import ShapeViewer from "@/components/widgets/ShapeViewer";
 import type { SolidAttribute, SolidKey } from "@/lib/geometry/solids";
+import type { ShapeKey } from "@/lib/geometry/shapes-2d";
 import type { WidgetSpec } from "@/lib/items/types";
 
 /**
@@ -83,6 +85,17 @@ export default function WidgetHost({
         />
       );
 
+    case "shape-viewer":
+      return (
+        <ShapeViewer
+          shape={config.shape as ShapeKey}
+          highlight={
+            (config.highlight as "sides" | "vertices" | "symmetry") ?? "sides"
+          }
+          className="mt-5"
+        />
+      );
+
     default:
       return null;
   }
@@ -95,4 +108,5 @@ export const IMPLEMENTED_WIDGETS = new Set([
   "base-ten-blocks",
   "number-line-zoom",
   "place-value-chart",
+  "shape-viewer",
 ]);

@@ -11,6 +11,26 @@ import {
 } from "./generators/g2-place-value";
 import { tellTimeToFiveMinutes } from "./generators/g2-time";
 import { solidAttributes, solidRealWorld } from "./generators/g2-solids";
+import {
+  linesOfSymmetry,
+  nameTheShape,
+  perimeter,
+  shapeSides,
+} from "./generators/g2-shapes";
+import {
+  evenOdd,
+  factsToTwenty,
+  repeatedAddition,
+  tenMoreLess,
+  trueOrFalse,
+  unknownNumber,
+} from "./generators/g2-algebra";
+import {
+  countMoney,
+  lengthDifference,
+  partitionShapes,
+  readData,
+} from "./generators/g2-measurement";
 
 /**
  * Every generator in the platform. Keyed lookup so a stored attempt can be
@@ -26,6 +46,20 @@ export const GENERATORS: ItemGenerator[] = [
   tellTimeToFiveMinutes,
   solidAttributes,
   solidRealWorld,
+  shapeSides,
+  nameTheShape,
+  linesOfSymmetry,
+  perimeter,
+  evenOdd,
+  repeatedAddition,
+  trueOrFalse,
+  unknownNumber,
+  tenMoreLess,
+  factsToTwenty,
+  countMoney,
+  lengthDifference,
+  readData,
+  partitionShapes,
 ];
 
 const BY_KEY = new Map(GENERATORS.map((g) => [g.key, g]));

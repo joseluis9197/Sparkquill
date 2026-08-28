@@ -77,10 +77,18 @@ function attributeQuestion(
   });
 }
 
-/** Counting faces, edges and vertices on a solid the child can rotate. */
+/**
+ * Counting faces, edges and vertices on a solid the child can rotate.
+ *
+ * Filed under MA.1.GR.1.1, which is the benchmark that covers sorting 2D and
+ * 3D figures by their defining attributes. It was previously filed under
+ * MA.2.GR.1.2 — that benchmark is about categorising *2D* figures by sides and
+ * vertices, so the dashboard was crediting a standard the child had not
+ * practised.
+ */
 export const solidAttributes: ItemGenerator = {
   key: "g2.geo.solidAttributes",
-  benchmark: "MA.2.GR.1.2",
+  benchmark: "MA.1.GR.1.1",
   skillSlug: "identify-3d-attributes",
   itemTypes: ["multiple_choice"],
 
