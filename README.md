@@ -100,3 +100,22 @@ Sparkquill is an independent study tool, not affiliated with, sponsored by, or
 endorsed by the Florida Department of Education or Cambium Assessment. "FAST"
 and "B.E.S.T." are designations of the State of Florida, used here only
 descriptively.
+
+## Deployment
+
+Sparkquill runs on the Oracle server at `sparkquill.prosperollc.com`, alongside
+other production projects. It is scoped to its own system user, port (3100),
+database and nginx vhost; nothing it installs is shared.
+
+```bash
+./scripts/deploy.sh
+```
+
+The script pulls `main`, installs, migrates, builds, restarts the service, waits
+for a healthy response, and prints the status of the neighbouring services so a
+deploy that disturbed them is visible immediately.
+
+One detail worth remembering: the application's database role is confined to its
+own database through `pg_hba.conf` rules, not through `REVOKE CONNECT`. The
+`CONNECT` privilege is granted to `PUBLIC`, so revoking it from the role is a
+no-op and leaves the role able to open the other projects' databases.
