@@ -119,9 +119,16 @@ export async function openBillingPortal(): Promise<BillingState> {
   }
 
   const customerId = await customerFor(parentId);
+
+  // The account is shared with other products, and its default portal
+  // configuration belongs to them. Naming Sparkquill's own means a parent sees
+  // our heading and our legal links, not another business's.
+  const configuration = process.env.STRIPE_PORTAL_CONFIGURATION;
+
   const portal = await stripe().billingPortal.sessions.create({
     customer: customerId,
     return_url: `${appUrl()}/parent`,
+    ...(configuration ? { configuration } : {}),
   });
 
   redirect(portal.url);
