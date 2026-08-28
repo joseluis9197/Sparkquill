@@ -4,6 +4,8 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import { listStudents } from "@/lib/data/students";
 import { skillProgressFor, summaryFor } from "@/lib/data/progress";
+import { billingSummary } from "@/app/actions/billing";
+import BillingPanel from "./BillingPanel";
 import { hasBlueprint, ordinal } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Parent dashboard" };
@@ -36,6 +38,7 @@ export default async function ParentPage() {
   if (!session?.user?.id) redirect("/login");
 
   const children = await listStudents(session.user.id);
+  const billing = await billingSummary(session.user.id);
 
   const reports = await Promise.all(
     children.map(async (child) => ({
@@ -53,6 +56,8 @@ export default async function ParentPage() {
           Back to profiles
         </Link>
       </div>
+
+      <BillingPanel summary={billing} childCount={children.length} />
 
       {reports.length === 0 && (
         <p className="mt-8 rounded-[var(--radius-card)] border border-[var(--border)] p-8 text-center text-[var(--text-muted)]">
