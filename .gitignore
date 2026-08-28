@@ -42,3 +42,9 @@ next-env.d.ts
 
 # keep the example, never the real one
 !.env.example
+
+# Secrets dropped in the project root. Listed explicitly because `git add -A`
+# would otherwise commit them to a public repository on the next change.
+/stripe.txt
+/*.secret
+/secrets/
