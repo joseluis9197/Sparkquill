@@ -68,9 +68,17 @@ export const additionWithinHundred: ItemGenerator = {
       distractors: [
         { value: String(noCarry), misconception: "no_regrouping" },
         { value: String(columns), misconception: "column_independent" },
-        { value: String(subtracted), misconception: "wrong_operation" },
-        { value: String(sum + 10), misconception: "no_regrouping" },
+        // Only offer the subtraction slip when the result is close enough to
+        // the sum to be tempting. On 30 + 28 it yields 2, which no child
+        // would pick — a distractor nobody chooses wastes one of the four
+        // options and tells us nothing when they get the item wrong.
+        ...(subtracted >= sum - 40
+          ? [{ value: String(subtracted), misconception: "wrong_operation" as const }]
+          : []),
+        { value: String(sum + 10), misconception: "place_value_confusion" },
+        { value: String(sum - 10), misconception: "place_value_confusion" },
         { value: String(sum - 1), misconception: "off_by_one" },
+        { value: String(sum + 1), misconception: "off_by_one" },
       ],
       explanation:
         requiresRegrouping(a, b)

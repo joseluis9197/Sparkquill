@@ -1,0 +1,170 @@
+"use client";
+
+import { useState } from "react";
+import { Volume2 } from "lucide-react";
+import type { MultipleChoiceItem, ScoreResult } from "@/lib/items/types";
+import { speak } from "@/lib/audio/speak";
+import { cn } from "@/lib/utils";
+import WidgetHost from "./WidgetHost";
+
+/**
+ * Renders one question and collects one answer.
+ *
+ * The stem carries **bold** markers from the generators, which are rendered
+ * rather than shown raw — a seven-year-old reading "Round **47** to the
+ * nearest ten" would be reading punctuation as part of the number.
+ */
+function renderStem(stem: string) {
+  return stem.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
+    part.startsWith("**") && part.endsWith("**") ? (
+      <strong key={i} className="font-bold text-[var(--brand)]">
+        {part.slice(2, -2)}
+      </strong>
+    ) : (
+      <span key={i}>{part}</span>
+    ),
+  );
+}
+
+export interface ItemCardProps {
+  item: MultipleChoiceItem;
+  onAnswer: (choiceId: string, result: ScoreResult, timeMs: number) => void;
+  onNext: () => void;
+  result: ScoreResult | null;
+  chosenId: string | null;
+  audio: boolean;
+}
+
+export default function ItemCard({
+  item,
+  onAnswer,
+  onNext,
+  result,
+  chosenId,
+  audio,
+}: ItemCardProps) {
+  const [startedAt] = useState(() => Date.now());
+  const [hintsShown, setHintsShown] = useState(0);
+  const answered = result !== null;
+
+  return (
+    <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+      <div className="flex items-start gap-3">
+        <h2 className="flex-1 font-sans text-2xl font-bold leading-snug sm:text-3xl">
+          {renderStem(item.stem)}
+        </h2>
+        {audio && (
+          <button
+            type="button"
+            onClick={() => speak(item.audioText)}
+            aria-label="Read the question out loud"
+            className="compact flex h-11 w-11 flex-none items-center justify-center rounded-full border border-[var(--border)] transition hover:bg-[var(--surface-2)]"
+          >
+            <Volume2 className="h-5 w-5" aria-hidden />
+          </button>
+        )}
+      </div>
+
+      <WidgetHost widget={item.widget} audio={audio} />
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        {item.choices.map((choice) => {
+          const isChosen = chosenId === choice.id;
+          const isCorrect = choice.id === item.correctId;
+          const reveal = answered && (isChosen || isCorrect);
+
+          return (
+            <button
+              key={choice.id}
+              type="button"
+              disabled={answered}
+              onClick={() => {
+                if (answered) return;
+                const timeMs = Date.now() - startedAt;
+                onAnswer(
+                  choice.id,
+                  {
+                    correct: choice.id === item.correctId,
+                    misconception: choice.misconception,
+                    partialCredit: choice.id === item.correctId ? 1 : 0,
+                  },
+                  timeMs,
+                );
+              }}
+              className={cn(
+                "rounded-[var(--radius-tile)] border-2 px-5 py-4 text-left text-xl font-bold tabular-nums transition",
+                !answered &&
+                  "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--brand)] hover:bg-[var(--surface-2)]",
+                reveal &&
+                  isCorrect &&
+                  "border-[var(--color-grow-500)] bg-[var(--color-grow-100)] text-[var(--color-ink-900)]",
+                reveal &&
+                  !isCorrect &&
+                  isChosen &&
+                  "border-[var(--color-ember-500)] bg-[var(--color-ember-100)] text-[var(--color-ink-900)]",
+                answered && !reveal && "border-[var(--border)] opacity-45",
+              )}
+            >
+              {choice.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Hints: available before answering, never after. */}
+      {!answered && item.hints.length > 0 && (
+        <div className="mt-5">
+          {hintsShown < item.hints.length ? (
+            <button
+              type="button"
+              onClick={() => setHintsShown((n) => n + 1)}
+              className="compact text-sm font-semibold text-[var(--brand)] underline underline-offset-4"
+            >
+              {hintsShown === 0 ? "Give me a hint" : "Another hint"}
+            </button>
+          ) : null}
+          <ul className="mt-3 space-y-2">
+            {item.hints.slice(0, hintsShown).map((hint, i) => (
+              <li
+                key={i}
+                className="rounded-[var(--radius-tile)] bg-[var(--surface-2)] px-4 py-3 text-[15px]"
+              >
+                {hint}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {answered && (
+        <div
+          aria-live="polite"
+          className={cn(
+            "mt-6 rounded-[var(--radius-tile)] border-l-4 px-5 py-4",
+            result.correct
+              ? "border-[var(--color-grow-500)] bg-[var(--color-grow-100)]"
+              : "border-[var(--color-ember-500)] bg-[var(--color-ember-100)]",
+          )}
+        >
+          <p className="font-bold text-[var(--color-ink-900)]">
+            {result.correct ? "That's right." : "Not quite."}
+          </p>
+          <p className="mt-1 text-[15px] text-[var(--color-ink-800)]">
+            {item.explanation}
+          </p>
+        </div>
+      )}
+
+      {answered && (
+        <button
+          type="button"
+          onClick={onNext}
+          autoFocus
+          className="mt-6 w-full rounded-full bg-[var(--brand)] px-8 text-lg font-bold text-[var(--brand-contrast)] leading-[52px] transition hover:opacity-90 sm:w-auto sm:px-12"
+        >
+          Next question
+        </button>
+      )}
+    </div>
+  );
+}
