@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Nunito, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import SiteHeader from "@/components/SiteHeader";
-import SiteFooter from "@/components/SiteFooter";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -51,21 +49,7 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${nunito.variable} ${plexMono.variable} antialiased`}
       >
-        {/* Skip link first, so a keyboard user is not made to tab through the
-            whole header on every page. */}
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[var(--brand)] focus:px-5 focus:py-3 focus:font-bold focus:text-[var(--brand-contrast)]"
-        >
-          Skip to content
-        </a>
-        <div className="flex min-h-dvh flex-col">
-          <SiteHeader />
-          <div id="main" className="flex-1">
-            {children}
-          </div>
-          <SiteFooter />
-        </div>
+        {children}
       </body>
     </html>
   );
