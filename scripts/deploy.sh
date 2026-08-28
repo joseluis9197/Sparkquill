@@ -22,7 +22,25 @@ SERVICE="${SERVICE}"
 PORT="${PORT}"
 
 run_as_app() { sudo -n -u sparkquill "\$@"; }
-app_env() { sudo -n cat /etc/sparkquill/app.env | xargs; }
+
+# Runs a command as the app user with the environment file loaded.
+#
+# Sourced, not piped through xargs. xargs splits on whitespace and strips
+# quotes, so any value containing a space -- a Gmail app password, a display
+# name in EMAIL_FROM -- was torn into fragments and passed as bogus command
+# names. systemd's EnvironmentFile parses these correctly, so only this
+# script ever had the problem.
+#
+# Note for future edits: this whole block is inside an unquoted heredoc, so
+# backticks here would be executed on the remote host.
+with_env() {
+  sudo -n -u sparkquill bash -c '
+    set -a
+    . /etc/sparkquill/app.env
+    set +a
+    exec "\$@"
+  ' _ "\$@"
+}
 
 cd "\$APP_DIR"
 
@@ -41,17 +59,17 @@ echo "--> Installing dependencies"
 run_as_app npm ci --no-audit --no-fund --silent
 
 echo "--> Applying migrations"
-run_as_app env \$(app_env) npx drizzle-kit migrate 2>&1 | tail -3
+with_env npx drizzle-kit migrate 2>&1 | tail -3
 
 # Skills are derived from the generator registry, so a deploy that adds a
 # generator has to refresh them or the new questions have nowhere to record
 # attempts against.
 echo "--> Seeding curriculum and skills"
-run_as_app env \$(app_env) npx tsx scripts/seed-curriculum.ts 2>&1 | tail -2
-run_as_app env \$(app_env) npx tsx scripts/seed-skills.ts 2>&1 | tail -2
+with_env npx tsx scripts/seed-curriculum.ts 2>&1 | tail -2
+with_env npx tsx scripts/seed-skills.ts 2>&1 | tail -2
 
 echo "--> Building"
-run_as_app env \$(app_env) npm run build 2>&1 | tail -3
+with_env npm run build 2>&1 | tail -3
 
 echo "--> Restarting \$SERVICE"
 sudo -n systemctl restart "\$SERVICE"
