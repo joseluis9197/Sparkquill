@@ -57,6 +57,19 @@ async function main() {
     );
   }
 
+  const tokens = await sql`
+    select left(t.token_hash, 12) as h, t.expires_at, t.used_at, p.email
+    from password_reset_tokens t join parents p on p.id = t.parent_id
+    order by t.created_at desc limit 5`;
+  console.log(`
+Password reset tokens (${tokens.length}):`);
+  for (const t of tokens) {
+    const expired = new Date(t.expires_at) < new Date();
+    console.log(
+      `  ${t.email}  hash ${t.h}...  ${t.used_at ? "used" : expired ? "expired" : "live"}`,
+    );
+  }
+
   await sql.end();
 }
 

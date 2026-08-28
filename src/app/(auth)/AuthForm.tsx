@@ -44,6 +44,17 @@ export default function AuthForm({
         hint={isSignup ? "At least 10 characters." : undefined}
       />
 
+      {!isSignup && (
+        <p className="-mt-2 text-right text-sm">
+          <Link
+            href="/forgot-password"
+            className="font-semibold text-[var(--text-muted)] underline underline-offset-4 hover:text-[var(--brand)]"
+          >
+            Forgotten your password?
+          </Link>
+        </p>
+      )}
+
       {state.error && (
         <p
           role="alert"

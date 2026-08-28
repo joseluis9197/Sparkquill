@@ -418,6 +418,34 @@ export const stripeEvents = pgTable("stripe_events", {
 });
 
 /**
+ * Password reset tokens.
+ *
+ * The token is stored as a SHA-256 hash, never in the clear: a leaked database
+ * would otherwise hand over working reset links for every pending request.
+ * Single use, short-lived, and superseded whenever a newer one is issued for
+ * the same address.
+ */
+export const passwordResetTokens = pgTable(
+  "password_reset_tokens",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    parentId: uuid("parent_id")
+      .notNull()
+      .references(() => parents.id, { onDelete: "cascade" }),
+    tokenHash: text("token_hash").notNull().unique(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [
+    index("password_reset_parent_idx").on(t.parentId),
+    index("password_reset_expires_idx").on(t.expiresAt),
+  ],
+);
+
+/**
  * Failed-attempt counter for anything guessable.
  *
  * A four-digit PIN has ten thousand possibilities, and a password has however
