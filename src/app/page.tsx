@@ -8,7 +8,7 @@ const FEATURES = [
   },
   {
     title: "Every question is read aloud",
-    body: "A first grader who cannot yet read fluently can still practise mathematics. Instructions, questions and answer choices all have audio.",
+    body: "A first grader who cannot read fluently yet can still practise mathematics. Every question, instruction and answer choice can be spoken aloud on demand.",
   },
   {
     title: "Built on the actual standards",
@@ -69,7 +69,7 @@ export default function HomePage() {
           {GRADES.map((g) => (
             <Link
               key={g}
-              href={`/curriculum/${g}`}
+              href="/curriculum"
               className="group flex flex-col justify-between rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-5 transition hover:border-[var(--brand)] hover:shadow-sm"
             >
               <span className="font-display text-3xl font-semibold text-[var(--brand)]">
@@ -97,17 +97,46 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="border-t border-[var(--border)]">
-        <div className="mx-auto max-w-5xl px-6 py-10">
-          <p className="max-w-3xl text-sm text-[var(--text-muted)]">
-            Sparkquill is an independent study tool. It is not affiliated with,
-            sponsored by, or endorsed by the Florida Department of Education or
-            Cambium Assessment. &ldquo;FAST&rdquo; and &ldquo;B.E.S.T.&rdquo;
-            are designations of the State of Florida and are used here only to
-            describe what this tool helps students prepare for.
-          </p>
+      {/* Pricing */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <h2 className="text-2xl">One subscription for the family</h2>
+        <p className="mt-2 max-w-2xl text-[var(--text-muted)]">
+          $10 per child each month, on one invoice with one renewal date. Seven
+          days free to start, and cancelling takes one click.
+        </p>
+
+        <div className="mt-7 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6">
+            <p className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
+              Monthly
+            </p>
+            <p className="mt-1 font-display text-4xl font-semibold">$10</p>
+            <p className="text-sm text-[var(--text-muted)]">per child, per month</p>
+          </div>
+          <div className="rounded-[var(--radius-card)] border-2 border-[var(--brand)] bg-[var(--surface-2)] p-6">
+            <p className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
+              Yearly
+            </p>
+            <p className="mt-1 font-display text-4xl font-semibold">$100</p>
+            <p className="text-sm text-[var(--text-muted)]">
+              per child, per year — two months free
+            </p>
+          </div>
         </div>
-      </footer>
+
+        <p className="mt-5 max-w-2xl text-sm text-[var(--text-muted)]">
+          Adding a child is prorated so they can start the same day. Removing
+          one is not refunded, and their seat keeps working until the period you
+          already paid for ends.
+        </p>
+
+        <Link
+          href="/signup"
+          className="mt-7 inline-flex items-center rounded-full bg-[var(--brand)] px-8 text-base font-bold text-[var(--brand-contrast)] leading-[48px] transition hover:opacity-90"
+        >
+          Start a 7-day trial
+        </Link>
+      </section>
     </main>
   );
 }

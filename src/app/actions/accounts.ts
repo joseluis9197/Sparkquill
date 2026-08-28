@@ -9,6 +9,12 @@ import { db } from "@/db";
 import { parents, students } from "@/db/schema";
 import { auth, hashPassword, hashPin, signIn, verifyPin } from "@/auth";
 import { clearActiveStudent, setActiveStudent } from "@/lib/student-session";
+import {
+  checkThrottle,
+  clearThrottle,
+  recordFailure,
+  waitMessage,
+} from "@/lib/auth/throttle";
 import { getStudentForParent } from "@/lib/data/students";
 
 export interface ActionState {
@@ -76,11 +82,19 @@ export async function logIn(
     return { error: "Enter your email address and password." };
   }
 
+  const key = `login:${email}`;
+  const throttle = await checkThrottle(key);
+  if (!throttle.allowed) {
+    return { error: waitMessage(throttle.retryAfter) };
+  }
+
   try {
     await signIn("credentials", { email, password, redirectTo: "/students" });
+    await clearThrottle(key);
     return {};
   } catch (err) {
     if (err instanceof AuthError) {
+      await recordFailure(key);
       // Never distinguish "no such account" from "wrong password": the
       // difference tells an attacker which addresses are registered.
       return { error: "Those details did not match an account." };
@@ -169,11 +183,25 @@ export async function selectStudent(
   const student = await getStudentForParent(studentId, parentId);
   if (!student) return { error: "That profile is not on this account." };
 
-  if (!(await verifyPin(pin, student.pinHash))) {
-    // Written for a seven-year-old reading it, not for a developer.
-    return { error: "That is not the right PIN. Try again." };
+  // Four digits is ten thousand possibilities. Without a limit that is not a
+  // secret, it is a formality.
+  const key = `pin:${student.id}`;
+  const throttle = await checkThrottle(key);
+  if (!throttle.allowed) {
+    return { error: waitMessage(throttle.retryAfter) };
   }
 
+  if (!(await verifyPin(pin, student.pinHash))) {
+    const next = await recordFailure(key);
+    // Written for a seven-year-old reading it, not for a developer.
+    return {
+      error: next.allowed
+        ? "That is not the right PIN. Try again."
+        : waitMessage(next.retryAfter),
+    };
+  }
+
+  await clearThrottle(key);
   await setActiveStudent(student.id);
   redirect("/learn");
 }

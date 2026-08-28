@@ -417,6 +417,33 @@ export const stripeEvents = pgTable("stripe_events", {
   payload: jsonb("payload"),
 });
 
+/**
+ * Failed-attempt counter for anything guessable.
+ *
+ * A four-digit PIN has ten thousand possibilities, and a password has however
+ * many the parent chose. Neither is safe without a limit on how fast they can
+ * be tried, and this table is the limit — there is no Redis on the box, and a
+ * counter that survives a restart is better than one that does not.
+ *
+ * `key` is scoped by kind, e.g. `login:parent@example.com` or `pin:<uuid>`.
+ */
+export const authThrottle = pgTable(
+  "auth_throttle",
+  {
+    key: text("key").primaryKey(),
+    failures: integer("failures").notNull().default(0),
+    /** Nothing is accepted for this key until this moment passes. */
+    lockedUntil: timestamp("locked_until", { withTimezone: true }),
+    firstFailureAt: timestamp("first_failure_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (t) => [index("auth_throttle_updated_idx").on(t.updatedAt)],
+);
+
 export const adminUsers = pgTable("admin_users", {
   id: uuid("id").defaultRandom().primaryKey(),
   email: text("email").notNull().unique(),
