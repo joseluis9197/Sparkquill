@@ -1,5 +1,5 @@
 {
-  "id": "4a1ef39d-a2cd-40fc-8bd2-0f6ef0ef5e52",
+  "id": "f2c905c3-340c-411e-ae1c-eb62e6223b56",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -95,9 +95,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "item_id": {
-          "name": "item_id",
-          "type": "uuid",
+        "template_key": {
+          "name": "template_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seed": {
+          "name": "seed",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
@@ -124,6 +130,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": false
+        },
+        "item_difficulty": {
+          "name": "item_difficulty",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1000
         },
         "time_ms": {
           "name": "time_ms",
@@ -224,19 +237,6 @@
             "id"
           ],
           "onDelete": "set null",
-          "onUpdate": "no action"
-        },
-        "attempts_item_id_items_id_fk": {
-          "name": "attempts_item_id_items_id_fk",
-          "tableFrom": "attempts",
-          "tableTo": "items",
-          "columnsFrom": [
-            "item_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
           "onUpdate": "no action"
         },
         "attempts_skill_id_skills_id_fk": {

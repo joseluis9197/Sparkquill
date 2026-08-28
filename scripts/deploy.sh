@@ -43,6 +43,13 @@ run_as_app npm ci --no-audit --no-fund --silent
 echo "--> Applying migrations"
 run_as_app env \$(app_env) npx drizzle-kit migrate 2>&1 | tail -3
 
+# Skills are derived from the generator registry, so a deploy that adds a
+# generator has to refresh them or the new questions have nowhere to record
+# attempts against.
+echo "--> Seeding curriculum and skills"
+run_as_app env \$(app_env) npx tsx scripts/seed-curriculum.ts 2>&1 | tail -2
+run_as_app env \$(app_env) npx tsx scripts/seed-skills.ts 2>&1 | tail -2
+
 echo "--> Building"
 run_as_app env \$(app_env) npm run build 2>&1 | tail -3
 

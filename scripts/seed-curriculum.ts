@@ -1,4 +1,8 @@
-import "dotenv/config";
+import { config } from "dotenv";
+
+// Same precedence as Next: .env.local wins over .env.
+config({ path: ".env.local" });
+config({ path: ".env" });
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { drizzle } from "drizzle-orm/postgres-js";

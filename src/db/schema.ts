@@ -487,9 +487,14 @@ export const attempts = pgTable(
     sessionId: uuid("session_id").references(() => practiceSessions.id, {
       onDelete: "set null",
     }),
-    itemId: uuid("item_id")
-      .notNull()
-      .references(() => items.id),
+    /**
+     * Items are generated, not stored: a template key plus a seed reproduces
+     * the exact question byte for byte. Recording those two is enough to
+     * replay what the child saw, which is why there is no foreign key to a
+     * row in `items` here — that table is for the static ELA bank.
+     */
+    templateKey: text("template_key").notNull(),
+    seed: integer("seed").notNull(),
     skillId: uuid("skill_id")
       .notNull()
       .references(() => skills.id),
@@ -497,6 +502,12 @@ export const attempts = pgTable(
     correct: boolean("correct").notNull(),
     /** Which catalogued misconception the chosen distractor maps to. */
     misconception: text("misconception"),
+    /**
+     * Difficulty of the item as served, kept so mastery can be recomputed
+     * later without re-deriving it — the rule only counts attempts at or
+     * above grade level, so this number is part of the evidence.
+     */
+    itemDifficulty: real("item_difficulty").notNull().default(1000),
     timeMs: integer("time_ms").notNull(),
     hintsUsed: integer("hints_used").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true })
