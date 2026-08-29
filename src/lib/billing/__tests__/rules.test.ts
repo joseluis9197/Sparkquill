@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   accessFor,
+  grantsPractice,
+  grantsReports,
   canPractise,
   canViewReports,
   monthlyCents,
@@ -64,6 +66,35 @@ describe("access rules", () => {
   it("never grants practice without also granting reports", () => {
     for (const status of [...ALL_STATUSES, null]) {
       if (canPractise(status)) expect(canViewReports(status)).toBe(true);
+    }
+  });
+});
+
+describe("complimentary access", () => {
+  it("lets a family with free access practise", () => {
+    // Beta families, a school pilot, or making good after an outage. If this
+    // ever stops granting practice, the people we deliberately gave access to
+    // are the ones locked out.
+    expect(grantsPractice("complimentary")).toBe(true);
+    expect(grantsReports("complimentary")).toBe(true);
+  });
+
+  it("is not the same thing as paying", () => {
+    // A separate state, so the dashboard can tell the family the truth and the
+    // revenue figures do not count them.
+    expect(accessFor("active")).toBe("active");
+    expect(grantsPractice("none")).toBe(false);
+  });
+
+  it("agrees with the paid states about who may practise", () => {
+    expect(grantsPractice("active")).toBe(true);
+    expect(grantsPractice("grace")).toBe(false);
+    expect(grantsPractice("none")).toBe(false);
+  });
+
+  it("never grants practice without reports", () => {
+    for (const s of ["active", "grace", "none", "complimentary"] as const) {
+      if (grantsPractice(s)) expect(grantsReports(s)).toBe(true);
     }
   });
 });

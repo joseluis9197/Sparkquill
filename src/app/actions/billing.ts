@@ -159,8 +159,8 @@ export async function changeSeatCount(
   }
 
   const entitlement = await entitlementFor(parentId);
-  if (entitlement.state === "none") {
-    return { error: "There is no active subscription to change." };
+  if (entitlement.state === "none" || entitlement.state === "complimentary") {
+    return { error: "There is no subscription to change." };
   }
 
   const sub = entitlement.subscription;
@@ -211,14 +211,23 @@ export async function billingSummary(parentId: string) {
     .where(eq(subscriptions.parentId, parentId))
     .limit(1);
 
+  const seated =
+    entitlement.state === "active" || entitlement.state === "grace"
+      ? entitlement.seatsUsed
+      : 0;
+
   return {
     configured: billingConfigured(),
     state: entitlement.state,
     seatsPaid: sub?.seatQuantity ?? 0,
-    seatsUsed: entitlement.state === "none" ? 0 : entitlement.seatsUsed,
+    seatsUsed: seated,
     status: sub?.status ?? null,
     currentPeriodEnd: sub?.currentPeriodEnd ?? null,
     cancelAtPeriodEnd: sub?.cancelAtPeriodEnd ?? false,
     trialEnd: sub?.trialEnd ?? null,
+    complimentaryUntil:
+      entitlement.state === "complimentary" ? entitlement.until : null,
+    complimentaryReason:
+      entitlement.state === "complimentary" ? entitlement.reason : null,
   };
 }

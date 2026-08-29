@@ -6,7 +6,7 @@ import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { db } from "@/db";
-import { adminUsers, students, subscriptions } from "@/db/schema";
+import { adminUsers, parents, students, subscriptions } from "@/db/schema";
 import { hashPin } from "@/auth";
 import {
   atLeast,
@@ -349,4 +349,115 @@ export async function adminExportFamily(
       2,
     ),
   };
+}
+
+/* ------------------------------------------------------------------ *
+ * Free access
+ * ------------------------------------------------------------------ */
+
+const compSchema = z.object({
+  parentId: z.string().uuid(),
+  days: z.coerce.number().int().min(1).max(3650),
+  reason: z.string().trim().min(3, "Say why, in a few words").max(200),
+});
+
+/**
+ * Grants a family free access.
+ *
+ * For beta families, a school trying it out, your own household, or making
+ * good after something went wrong. Always dated: free access with no end
+ * quietly accumulates until nobody can tell who is paying and who is not.
+ *
+ * The reason is required because "why does this family not pay" is a question
+ * somebody will ask a year from now, and the audit log should answer it
+ * without anyone having to remember.
+ */
+export async function adminGrantComplimentary(
+  _prev: AdminState,
+  formData: FormData,
+): Promise<AdminState> {
+  const admin = await requireAdmin("owner");
+  if (!admin) return { error: "This needs an owner account." };
+
+  const parsed = compSchema.safeParse({
+    parentId: formData.get("parentId"),
+    days: formData.get("days"),
+    reason: formData.get("reason"),
+  });
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+
+  const [parent] = await db
+    .select()
+    .from(parents)
+    .where(eq(parents.id, parsed.data.parentId))
+    .limit(1);
+  if (!parent) return { error: "No such account." };
+
+  const until = new Date(Date.now() + parsed.data.days * 86_400_000);
+
+  await db
+    .update(parents)
+    .set({ complimentaryUntil: until, complimentaryReason: parsed.data.reason })
+    .where(eq(parents.id, parent.id));
+
+  await recordAudit({
+    actor: admin,
+    action: "parent.complimentary_granted",
+    targetType: "parent",
+    targetId: parent.id,
+    before: {
+      until: parent.complimentaryUntil,
+      reason: parent.complimentaryReason,
+    },
+    after: { until, reason: parsed.data.reason, days: parsed.data.days },
+  });
+
+  revalidatePath(`/admin/accounts/${parent.id}`);
+  return {
+    success: `Free access until ${until.toLocaleDateString("en-US", {
+      dateStyle: "medium",
+    })}.`,
+  };
+}
+
+/**
+ * Ends free access.
+ *
+ * Immediate: practice stops at the next page load unless the family has a
+ * paid subscription behind it. Nothing recorded about their children is
+ * touched, so restoring access restores everything with it.
+ */
+export async function adminRevokeComplimentary(
+  _prev: AdminState,
+  formData: FormData,
+): Promise<AdminState> {
+  const admin = await requireAdmin("owner");
+  if (!admin) return { error: "This needs an owner account." };
+
+  const parentId = String(formData.get("parentId") ?? "");
+  const [parent] = await db
+    .select()
+    .from(parents)
+    .where(eq(parents.id, parentId))
+    .limit(1);
+  if (!parent) return { error: "No such account." };
+
+  await db
+    .update(parents)
+    .set({ complimentaryUntil: null, complimentaryReason: null })
+    .where(eq(parents.id, parent.id));
+
+  await recordAudit({
+    actor: admin,
+    action: "parent.complimentary_revoked",
+    targetType: "parent",
+    targetId: parent.id,
+    before: {
+      until: parent.complimentaryUntil,
+      reason: parent.complimentaryReason,
+    },
+  });
+
+  revalidatePath(`/admin/accounts/${parent.id}`);
+  return { success: "Free access ended. Their progress is untouched." };
 }

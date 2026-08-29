@@ -1,7 +1,7 @@
 import "server-only";
 import { and, asc, eq, isNull } from "drizzle-orm";
 import { db } from "@/db";
-import { studentSeats, students, subscriptions } from "@/db/schema";
+import { parents, studentSeats, students, subscriptions } from "@/db/schema";
 import { accessFor, type SubscriptionStatus } from "@/lib/billing/rules";
 
 export type Subscription = typeof subscriptions.$inferSelect;
@@ -9,6 +9,13 @@ export type Subscription = typeof subscriptions.$inferSelect;
 export type Entitlement =
   | { state: "active"; subscription: Subscription; seatsUsed: number }
   | { state: "grace"; subscription: Subscription; seatsUsed: number }
+  /**
+   * Free access granted by staff. Deliberately its own state rather than a
+   * pretend subscription: the dashboard should tell a family the truth about
+   * why they are not being charged, and the metrics should not count them as
+   * revenue.
+   */
+  | { state: "complimentary"; until: Date; reason: string | null }
   | { state: "none" };
 
 /**
@@ -19,6 +26,25 @@ export type Entitlement =
  * Reports stay visible; only practice stops.
  */
 export async function entitlementFor(parentId: string): Promise<Entitlement> {
+  // Checked before Stripe, so a family given free access is not blocked by a
+  // lapsed card from before the grant.
+  const [parent] = await db
+    .select({
+      until: parents.complimentaryUntil,
+      reason: parents.complimentaryReason,
+    })
+    .from(parents)
+    .where(eq(parents.id, parentId))
+    .limit(1);
+
+  if (parent?.until && parent.until.getTime() > Date.now()) {
+    return {
+      state: "complimentary",
+      until: parent.until,
+      reason: parent.reason,
+    };
+  }
+
   const [sub] = await db
     .select()
     .from(subscriptions)

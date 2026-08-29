@@ -5,6 +5,7 @@ import { familyDetail, studentAttempts } from "@/lib/data/admin-queries";
 import { ordinal } from "@/lib/utils";
 import StudentTools from "./StudentTools";
 import SeatTool from "./SeatTool";
+import ComplimentaryTool from "./ComplimentaryTool";
 
 const WHEN = new Intl.DateTimeFormat("en-US", {
   dateStyle: "medium",
@@ -74,8 +75,17 @@ export default async function FamilyPage(props: {
           </>
         ) : (
           <p className="mt-2 text-sm text-[var(--text-muted)]">
-            No subscription. This family is using whatever is open.
+            No subscription.
           </p>
+        )}
+
+        {admin.role === "owner" && (
+          <ComplimentaryTool
+            parentId={family.parent.id}
+            until={family.parent.complimentaryUntil}
+            reason={family.parent.complimentaryReason}
+            active={family.complimentaryActive}
+          />
         )}
       </section>
 

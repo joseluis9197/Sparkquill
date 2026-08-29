@@ -4,6 +4,7 @@ import Link from "next/link";
 import { requireActiveStudent } from "@/lib/data/students";
 import { nextQuestion } from "@/app/actions/practice";
 import { entitlementFor } from "@/lib/data/subscriptions";
+import { grantsPractice } from "@/lib/billing/rules";
 import { billingConfigured } from "@/lib/stripe";
 import { ordinal } from "@/lib/utils";
 import LearnSession from "./LearnSession";
@@ -22,8 +23,10 @@ export default async function LearnPage() {
    */
   if (billingConfigured()) {
     const entitlement = await entitlementFor(active.parentId);
-    if (entitlement.state !== "active") {
-      return <Locked state={entitlement.state} name={active.student.firstName} />;
+    if (!grantsPractice(entitlement.state)) {
+      return (
+        <Locked state={entitlement.state} name={active.student.firstName} />
+      );
     }
   }
 

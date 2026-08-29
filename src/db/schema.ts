@@ -319,6 +319,17 @@ export const parents = pgTable("parents", {
   passwordHash: text("password_hash"),
   image: text("image"),
   stripeCustomerId: text("stripe_customer_id").unique(),
+  /**
+   * Free access granted by staff: beta families, a school trying it out, or
+   * making good after something went wrong.
+   *
+   * Always dated rather than a boolean. Free access with no end quietly
+   * accumulates until nobody knows who is paying and who is not, and the
+   * reason is stored because "why does this family not pay" is a question
+   * somebody will ask a year from now.
+   */
+  complimentaryUntil: timestamp("complimentary_until", { withTimezone: true }),
+  complimentaryReason: text("complimentary_reason"),
   /** Parent-configurable: daily practice goal in minutes. */
   dailyGoalMinutes: integer("daily_goal_minutes").notNull().default(15),
   createdAt: timestamp("created_at", { withTimezone: true })

@@ -62,4 +62,6 @@ export const ACTION_LABEL: Record<string, string> = {
   "student.deleted": "Deleted a child and their history",
   "parent.data_exported": "Exported a family's data",
   "subscription.seats_changed": "Changed the number of seats",
+  "parent.complimentary_granted": "Granted free access",
+  "parent.complimentary_revoked": "Ended free access",
 };

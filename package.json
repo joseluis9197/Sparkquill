@@ -20,7 +20,8 @@
     "db:seed:all": "tsx scripts/seed-curriculum.ts && tsx scripts/seed-skills.ts",
     "db:inspect": "tsx scripts/inspect-progress.ts",
     "db:verify-cascade": "tsx scripts/verify-cascade.ts",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "db:verify-complimentary": "tsx --tsconfig tsconfig.scripts.json scripts/verify-complimentary.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

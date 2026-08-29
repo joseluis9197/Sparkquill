@@ -147,6 +147,12 @@ export async function searchAccounts(query: string): Promise<AccountRow[]> {
 
 export interface FamilyDetail {
   parent: typeof parents.$inferSelect;
+  /**
+   * Whether a free-access grant is still running. Derived here rather than in
+   * the page, so the clock that decides is the server's — the same one the
+   * practice gate consults — and not the browser's.
+   */
+  complimentaryActive: boolean;
   subscription: typeof subscriptions.$inferSelect | null;
   children: {
     student: typeof students.$inferSelect;
@@ -167,6 +173,10 @@ export async function familyDetail(
     .where(eq(parents.id, parentId))
     .limit(1);
   if (!parent) return null;
+
+  const complimentaryActive =
+    parent.complimentaryUntil !== null &&
+    parent.complimentaryUntil.getTime() > Date.now();
 
   const [subscription] = await db
     .select()
@@ -223,7 +233,12 @@ export async function familyDetail(
     }),
   );
 
-  return { parent, subscription: subscription ?? null, children };
+  return {
+    parent,
+    complimentaryActive,
+    subscription: subscription ?? null,
+    children,
+  };
 }
 
 /** What a child actually saw, for answering "my daughter says it was wrong". */

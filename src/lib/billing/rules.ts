@@ -20,6 +20,26 @@ export type SubscriptionStatus =
 export type AccessState = "active" | "grace" | "none";
 
 /**
+ * Every way a family can be entitled, including free access granted by staff.
+ *
+ * Kept as one type with one predicate so a new state cannot be added and then
+ * forgotten at one of the several places that gate practice.
+ */
+export type EntitlementState = AccessState | "complimentary";
+
+/** Whether a child may practise, whoever is paying — or nobody. */
+export function grantsPractice(
+  state: EntitlementState,
+): state is "active" | "complimentary" {
+  return state === "active" || state === "complimentary";
+}
+
+/** Whether the parent may read reports. */
+export function grantsReports(state: EntitlementState): boolean {
+  return state !== "none";
+}
+
+/**
  * What a status entitles the family to.
  *
  * `trialing` grants full access: a trial that does not let the child practise

@@ -10,13 +10,15 @@ import {
 
 export interface BillingSummary {
   configured: boolean;
-  state: "active" | "grace" | "none";
+  state: "active" | "grace" | "none" | "complimentary";
   seatsPaid: number;
   seatsUsed: number;
   status: string | null;
   currentPeriodEnd: Date | null;
   cancelAtPeriodEnd: boolean;
   trialEnd: Date | null;
+  complimentaryUntil: Date | null;
+  complimentaryReason: string | null;
 }
 
 const DATE = new Intl.DateTimeFormat("en-US", {
@@ -32,6 +34,34 @@ export default function BillingPanel({
   summary: BillingSummary;
   childCount: number;
 }) {
+  // Checked before the "billing is off" notice: a family that has been given
+  // free access should be told that, not told the deployment has no Stripe
+  // keys. The reason they are not paying is the specific one, not the generic.
+  if (summary.state === "complimentary") {
+    return (
+      <Card>
+        <div className="flex flex-wrap items-baseline justify-between gap-2">
+          <h2 className="text-xl">Subscription</h2>
+          <span className="rounded-full bg-[var(--color-grow-100)] px-3 py-1 text-xs font-bold text-[var(--color-grow-500)]">
+            Free access
+          </span>
+        </div>
+        <p className="mt-3 text-sm text-[var(--text-muted)]">
+          You have free access to Sparkquill
+          {summary.complimentaryUntil
+            ? ` until ${DATE.format(new Date(summary.complimentaryUntil))}`
+            : ""}
+          . Nothing is being charged, and there is no card on file.
+        </p>
+        {summary.complimentaryReason && (
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
+            Reason on file: {summary.complimentaryReason}
+          </p>
+        )}
+      </Card>
+    );
+  }
+
   if (!summary.configured) {
     return (
       <Card>
@@ -279,7 +309,7 @@ function StatusPill({
   state,
   status,
 }: {
-  state: "active" | "grace";
+  state: "active" | "grace" | "none" | "complimentary";
   status: string | null;
 }) {
   const label =
