@@ -26,6 +26,16 @@ function renderStem(stem: string) {
   );
 }
 
+/**
+ * Splits a passage into paragraphs (prose) or stanzas (poetry).
+ *
+ * A blank line is the separator in both cases; single newlines inside a
+ * stanza are kept, because a line break in a poem is part of the poem.
+ */
+function splitBlocks(text: string): string[] {
+  return text.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
+}
+
 export interface ItemCardProps {
   item: MultipleChoiceItem;
   onAnswer: (choiceId: string, result: ScoreResult, timeMs: number) => void;
@@ -49,8 +59,58 @@ export default function ItemCard({
 
   return (
     <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
+      {item.passage && (
+        <article
+          // Scrolls inside itself so a long passage never pushes the question
+          // and the options off the screen. A student has to be able to look
+          // at both, which is what re-reading a passage actually means.
+          className="mb-6 max-h-[22rem] overflow-y-auto rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface-2)] p-5"
+          aria-label={`Passage: ${item.passage.title}`}
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h3 className="font-sans text-lg font-bold">
+                {item.passage.title}
+              </h3>
+              <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-muted)]">
+                {item.passage.genre === "informational"
+                  ? "Informational text"
+                  : item.passage.genre === "poetry"
+                    ? "Poem"
+                    : "Story"}
+              </p>
+            </div>
+            {audio && (
+              <button
+                type="button"
+                onClick={() => speak(item.passage!.text)}
+                aria-label="Read the passage out loud"
+                className="compact flex h-9 w-9 flex-none items-center justify-center rounded-full border border-[var(--border)] transition hover:bg-[var(--surface)]"
+              >
+                <Volume2 className="h-4 w-4" aria-hidden />
+              </button>
+            )}
+          </div>
+          <div className="mt-3 space-y-3 text-[0.975rem] leading-relaxed">
+            {splitBlocks(item.passage.text).map((para, i) => (
+              <p key={i} className={item.passage!.genre === "poetry" ? "whitespace-pre-line" : ""}>
+                {para}
+              </p>
+            ))}
+          </div>
+        </article>
+      )}
+
       <div className="flex items-start gap-3">
-        <h2 className="flex-1 font-sans text-2xl font-bold leading-snug sm:text-3xl">
+        <h2
+          className={cn(
+            "flex-1 font-sans font-bold leading-snug",
+            // A reading question sits under a passage the student has just
+            // read, so it does not need to shout for attention the way a
+            // standalone arithmetic prompt does.
+            item.passage ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl",
+          )}
+        >
           {renderStem(item.stem)}
         </h2>
         {audio && (

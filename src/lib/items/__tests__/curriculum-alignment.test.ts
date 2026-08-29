@@ -61,12 +61,28 @@ describe("generator alignment with the curriculum", () => {
   );
 
   it.each(GENERATORS.map((g) => [g.key, g] as const))(
-    "%s uses a mathematics benchmark",
+    "%s sits in the subject its key claims",
     (_key, generator) => {
-      // Every generator so far is mathematics. When ELA generators arrive this
-      // assertion moves onto a per-generator subject field rather than being
-      // deleted.
-      expect(BENCHMARKS.get(generator.benchmark)?.subject).toBe("math");
+      // Keys are namespaced by subject: "ela.*" for English Language Arts and
+      // "g<grade>.*" for mathematics. A generator filed under the wrong
+      // subject would be offered to a child who chose the other one — the
+      // subject-level version of the grade bug this suite exists to prevent.
+      const expected = generator.key.startsWith("ela.") ? "ela" : "math";
+      expect(
+        BENCHMARKS.get(generator.benchmark)?.subject,
+        `${generator.key} looks like ${expected} but ${generator.benchmark} is not`,
+      ).toBe(expected);
+    },
+  );
+
+  it.each(GENERATORS.filter((g) => g.key.startsWith("ela.")).map((g) => [g.key, g] as const))(
+    "%s targets the grade its key names",
+    (_key, generator) => {
+      // ELA generators are produced from a table that fills the grade into
+      // both the key and the benchmark. If those two ever disagree, a fifth
+      // grader gets a second grade passage under a fifth grade standard.
+      const fromKey = Number(generator.key.match(/^ela\.g(\d)\./)?.[1]);
+      expect(BENCHMARKS.get(generator.benchmark)?.grade).toBe(fromKey);
     },
   );
 

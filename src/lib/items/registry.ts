@@ -1,4 +1,5 @@
 import type { ItemGenerator } from "./types";
+import { ELA_GENERATORS } from "./generators/ela-registry";
 import {
   additionWithinHundred,
   subtractionWithinHundred,
@@ -457,6 +458,14 @@ export const GENERATORS: ItemGenerator[] = [
   g6Distribution,
   g6Histogram,
   g6ChangeEffect,
+
+  /*
+   * English Language Arts.
+   *
+   * Built from a table rather than written out one by one; see
+   * generators/ela-registry.ts for why.
+   */
+  ...ELA_GENERATORS,
 ];
 
 const BY_KEY = new Map(GENERATORS.map((g) => [g.key, g]));

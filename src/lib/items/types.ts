@@ -89,6 +89,17 @@ export type MisconceptionKey =
   | "mean_median_confusion"
   | "range_as_sum"
   | "read_scale_by_ones" // ignored a scaled axis on a graph
+  /* Reading and vocabulary */
+  | "plausible_but_absent" // sounds right, but the text does not say it
+  | "wrong_text" // true of a different passage, not this one
+  | "detail_not_central_idea" // named a supporting detail as the main point
+  | "surface_word_match" // chose the option that repeats the passage's words
+  | "literal_reading_of_figurative"
+  | "wrong_character_perspective"
+  | "confused_author_purpose"
+  | "wrong_context_sense" // a real meaning of the word, but not this one
+  | "affix_misread"
+  | "sequence_out_of_order"
   | "distractor_plausible"; // near miss with no single named cause
 
 /** An interactive manipulative attached to an item or a lesson. */
@@ -113,6 +124,17 @@ interface ItemBase {
    */
   audioText: string;
   widget?: WidgetSpec;
+  /**
+   * The text a reading question is about.
+   *
+   * Kept apart from the stem rather than pasted into it. A reading item is
+   * two things a student moves between — a passage they re-read and a
+   * question they answer — and running them together makes the passage look
+   * like part of the question, which is exactly the reading habit the test
+   * punishes. It also lets the narrator read the passage and the question
+   * separately.
+   */
+  passage?: { id: string; title: string; text: string; genre: string };
   /** Shown after answering, never before. */
   explanation: string;
   /** Progressive hints, cheapest first. */

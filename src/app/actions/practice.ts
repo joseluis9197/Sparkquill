@@ -159,6 +159,7 @@ function toPublicItem(item: MultipleChoiceItem): PublicItem {
     stem: item.stem,
     audioText: item.audioText,
     widget: item.widget,
+    passage: item.passage,
     hints: item.hints,
     difficulty: item.difficulty,
     // The misconception label on each distractor is a giveaway too, so the

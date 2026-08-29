@@ -31,6 +31,7 @@ export function buildMultipleChoice(opts: {
   hints?: string[];
   difficulty?: number;
   widget?: { key: string; config: Record<string, unknown> };
+  passage?: { id: string; title: string; text: string; genre: string };
   /** Filler used only if deduplication leaves too few options. */
   fallback?: (taken: Set<string>) => string | null;
 }): MultipleChoiceItem {
@@ -81,6 +82,7 @@ export function buildMultipleChoice(opts: {
     hints: opts.hints ?? [],
     difficulty: opts.difficulty ?? 1000,
     widget: opts.widget,
+    passage: opts.passage,
   };
 }
 
@@ -222,6 +224,7 @@ export function mcGenerator(spec: {
     hints?: string[];
     difficulty?: number;
     widget?: { key: string; config: Record<string, unknown> };
+    passage?: { id: string; title: string; text: string; genre: string };
     fallback?: (taken: Set<string>) => string | null;
   };
 }): ItemGenerator {

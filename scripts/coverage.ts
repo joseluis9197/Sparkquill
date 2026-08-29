@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { GENERATORS } from "../src/lib/items/registry";
+import { isNotPractised } from "../src/lib/curriculum/not-practised";
 
 /**
  * Which benchmarks have practice behind them, and which do not.
@@ -29,20 +30,30 @@ const showGaps = process.argv.includes("--gaps");
 
 let total = 0;
 let done = 0;
+let excluded = 0;
 
 for (const subject of ["math", "ela"] as const) {
   console.log(`\n${subject.toUpperCase()}`);
   for (let grade = 1; grade <= 6; grade++) {
-    const rows = benchmarks.filter(
+    const all = benchmarks.filter(
       (b) => b.subject === subject && b.grade === grade,
     );
+    // Performance standards — handwriting, speaking aloud, doing research —
+    // are counted apart rather than as gaps. They are not missing work; they
+    // are work a multiple-choice question cannot honestly assess. See
+    // src/lib/curriculum/not-practised.ts.
+    const rows = all.filter((b) => !isNotPractised(b.code));
+    const skipped = all.length - rows.length;
+    excluded += skipped;
+
     const hit = rows.filter((b) => covered.has(b.code));
     total += rows.length;
     done += hit.length;
     const pct = rows.length ? Math.round((hit.length / rows.length) * 100) : 0;
     const bar = "#".repeat(Math.round(pct / 5)).padEnd(20, ".");
     console.log(
-      `  grade ${grade}  ${bar} ${String(hit.length).padStart(3)}/${String(rows.length).padEnd(3)} ${String(pct).padStart(3)}%`,
+      `  grade ${grade}  ${bar} ${String(hit.length).padStart(3)}/${String(rows.length).padEnd(3)} ${String(pct).padStart(3)}%` +
+        (skipped ? `   +${skipped} taught in class, not practised here` : ""),
     );
     if (showGaps) {
       for (const b of rows) {
@@ -61,5 +72,9 @@ if (orphans.length) {
 }
 
 console.log(
-  `\n${done}/${total} benchmarks covered (${Math.round((done / total) * 100)}%), ${GENERATORS.length} generators.`,
+  `
+${done}/${total} assessable benchmarks covered (${Math.round((done / total) * 100)}%), from ${GENERATORS.length} generators.`,
+);
+console.log(
+  `${excluded} further standards are classroom performance tasks — writing, speaking, handwriting, research — which this platform does not claim to assess.`,
 );
