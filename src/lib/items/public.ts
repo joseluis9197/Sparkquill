@@ -7,6 +7,7 @@ import type {
   MultiselectItem,
   TableMatchItem,
 } from "./types";
+import { passageClipUrl } from "@/lib/audio/clips";
 
 /**
  * Items as the browser is allowed to see them.
@@ -38,7 +39,14 @@ interface PublicBase {
   stem: string;
   audioText: string;
   widget?: { key: string; config: Record<string, unknown> };
-  passage?: { id: string; title: string; text: string; genre: string };
+  passage?: {
+    id: string;
+    title: string;
+    text: string;
+    genre: string;
+    /** Pre-generated narration, when a clip has been built for this text. */
+    clipUrl?: string;
+  };
   hints: string[];
   difficulty: number;
 }
@@ -79,7 +87,12 @@ function base(item: Item): PublicBase {
     stem: item.stem,
     audioText: item.audioText,
     widget: item.widget,
-    passage: item.passage,
+    // The clip path is derived here rather than stored on the item, so a
+    // passage recorded after an item was generated is picked up without the
+    // item having to be regenerated.
+    passage: item.passage
+      ? { ...item.passage, clipUrl: passageClipUrl(item.passage.text) }
+      : undefined,
     hints: item.hints,
     difficulty: item.difficulty,
   };

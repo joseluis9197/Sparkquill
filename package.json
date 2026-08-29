@@ -23,7 +23,8 @@
     "admin:create": "tsx scripts/create-admin.ts",
     "db:verify-complimentary": "tsx --tsconfig tsconfig.scripts.json scripts/verify-complimentary.ts",
     "coverage": "tsx --tsconfig tsconfig.scripts.json scripts/coverage.ts",
-    "db:seed:prereqs": "tsx --tsconfig tsconfig.scripts.json scripts/seed-prerequisites.ts"
+    "db:seed:prereqs": "tsx --tsconfig tsconfig.scripts.json scripts/seed-prerequisites.ts",
+    "audio:build": "tsx --tsconfig tsconfig.scripts.json scripts/generate-audio.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

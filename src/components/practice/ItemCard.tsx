@@ -103,7 +103,9 @@ export default function ItemCard({
             {audio && (
               <button
                 type="button"
-                onClick={() => speak(item.passage!.text)}
+                onClick={() =>
+                  speak(item.passage!.text, { clipUrl: item.passage!.clipUrl })
+                }
                 aria-label="Read the passage out loud"
                 className="compact flex h-9 w-9 flex-none items-center justify-center rounded-full border border-[var(--border)] transition hover:bg-[var(--surface)]"
               >
