@@ -1,7 +1,14 @@
 import "server-only";
 import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { attempts, benchmarks, skillMastery, skills } from "@/db/schema";
+import {
+  attempts,
+  benchmarks,
+  reportingCategories,
+  skillMastery,
+  skillPrerequisites,
+  skills,
+} from "@/db/schema";
 import {
   applyAttempt,
   initialSkillState,
@@ -346,3 +353,75 @@ export async function recentAttempts(studentId: string, limit = 20) {
 }
 
 export { inArray };
+
+/**
+ * The prerequisite graph, as slug to prerequisite slugs.
+ *
+ * Read from the database rather than from the source file so the graph can be
+ * corrected without a deploy, and so an edge pointing at a skill that does not
+ * exist simply does not load rather than crashing the practice page.
+ */
+export async function loadPrerequisites(): Promise<Map<string, string[]>> {
+  const rows = await db
+    .select({
+      skill: skills.slug,
+      prerequisite: sql<string>`prereq.slug`,
+    })
+    .from(skillPrerequisites)
+    .innerJoin(skills, eq(skills.id, skillPrerequisites.skillId))
+    .innerJoin(
+      sql`${skills} as prereq`,
+      sql`prereq.id = ${skillPrerequisites.prerequisiteId}`,
+    );
+
+  const out = new Map<string, string[]>();
+  for (const r of rows) {
+    const list = out.get(r.skill) ?? [];
+    list.push(r.prerequisite);
+    out.set(r.skill, list);
+  }
+  return out;
+}
+
+/**
+ * How much each reporting category is worth on the real test, as a fraction.
+ *
+ * Florida publishes a range rather than a fixed percentage, so the midpoint is
+ * used: it is the best single estimate available, and the selector only needs
+ * the weights to rank categories against each other.
+ *
+ * Worth knowing before anyone "fixes" this: within a single grade Florida's
+ * mathematics blueprint gives every category the same band — four categories
+ * at 23-29% each, or three at 31-37%. That is the real published blueprint,
+ * not missing data. The weight therefore separates almost nothing inside a
+ * grade, and the work in the selector's ranking is done by how weak the child
+ * is in each category. The weights still matter across grades, where a
+ * child's pool spans several.
+ *
+ * Grades 1 and 2 have no published blueprint and return nothing, which the
+ * selector reads as "weight every skill equally" — the honest position when
+ * there is no blueprint to weight by.
+ */
+export async function loadCategoryWeights(
+  grade: number,
+  subject: Subject,
+): Promise<{ name: string; weight: number }[]> {
+  const rows = await db
+    .select({
+      name: reportingCategories.name,
+      min: reportingCategories.weightMin,
+      max: reportingCategories.weightMax,
+    })
+    .from(reportingCategories)
+    .where(
+      and(
+        eq(reportingCategories.grade, grade),
+        eq(reportingCategories.subject, subject),
+      ),
+    );
+
+  return rows.map((r) => ({
+    name: r.name,
+    weight: (Number(r.min) + Number(r.max)) / 2,
+  }));
+}

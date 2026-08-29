@@ -27,6 +27,32 @@ export interface SkillCandidate {
   state: SkillState;
 }
 
+/**
+ * Whether a prerequisite should be treated as missing.
+ *
+ * Not "has the child mastered it" — that would gate every new student out of
+ * their own grade. A fresh fifth grader has mastered nothing, and a graph
+ * read that way would send them to first grade counting on their first
+ * question, which is both wrong and insulting.
+ *
+ * A prerequisite is missing only when there is *evidence* it is missing: the
+ * child has attempted it enough times to say something, and is still not
+ * getting it right. Until then, an untouched prerequisite is simply unknown,
+ * and unknown is not the same as absent.
+ */
+export function isMissingFoundation(state: SkillState): boolean {
+  const ATTEMPTS_BEFORE_JUDGING = 3;
+  if (state.attemptCount < ATTEMPTS_BEFORE_JUDGING) return false;
+  if (state.level === "mastered" || state.level === "practicing") return false;
+  // Recent performance rather than lifetime accuracy: a child who struggled
+  // in September and has it now should not be dragged back by their own
+  // history.
+  const recent = state.recentResults.slice(-5);
+  if (recent.length === 0) return true;
+  const correct = recent.filter(Boolean).length;
+  return correct / recent.length < 0.6;
+}
+
 export interface CategoryWeight {
   name: string;
   /** Midpoint of the published range, as a fraction of the test. */

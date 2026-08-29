@@ -181,17 +181,39 @@ export async function nextQuestion(
   const active = await requireActiveStudent();
   if (!active) return null;
 
-  const { selectNextSkill } = await import("@/lib/adaptive/select");
-  const { listSkills } = await import("@/lib/data/progress");
+  const { selectNextSkill, isMissingFoundation } = await import(
+    "@/lib/adaptive/select"
+  );
+  const { listSkills, loadPrerequisites, loadCategoryWeights } = await import(
+    "@/lib/data/progress"
+  );
   const { GENERATORS } = await import("@/lib/items/registry");
 
   // Bounded by the child's own grade. The ceiling is the important half: the
   // selector will happily reach down for a missing prerequisite, but nothing
   // should ever hand a child work from a grade they have not reached.
-  const [allSkills, mastery] = await Promise.all([
+  const [allSkills, mastery, prerequisites, categoryWeights] = await Promise.all([
     listSkills({ upToGrade: active.student.grade, subject }),
     loadMastery(active.student.id),
+    loadPrerequisites(),
+    loadCategoryWeights(active.student.grade, subject),
   ]);
+
+  /*
+   * A prerequisite is passed to the selector only when there is evidence the
+   * child is actually missing it. Handing over the whole graph would gate a
+   * new student out of their own grade — nothing is mastered on day one, so
+   * every skill with a prerequisite would look blocked and the selector would
+   * drop them into first grade counting.
+   *
+   * Filtering here rather than inside the selector keeps the selector pure and
+   * makes the rule visible next to the data it applies to.
+   */
+  const bySlug = new Map(allSkills.map((s) => [s.slug, s.id]));
+  const struggling = (skillId: string) => {
+    const state = mastery.get(skillId);
+    return state !== undefined && isMissingFoundation(state);
+  };
 
   const selection = selectNextSkill({
     candidates: allSkills.map((s) => ({
@@ -199,11 +221,14 @@ export async function nextQuestion(
       skillSlug: s.slug,
       benchmark: s.benchmarkCode,
       reportingCategory: s.reportingCategory,
-      prerequisiteIds: [],
+      prerequisiteIds: (prerequisites.get(s.slug) ?? [])
+        .map((slug) => bySlug.get(slug))
+        .filter((id): id is string => id !== undefined && struggling(id)),
       state: mastery.get(s.id) ?? initialSkillState(),
     })),
-    // Grades 1-2 have no published blueprint, so nothing is weighted here.
-    categoryWeights: [],
+    // Empty for grades 1 and 2, which have no published blueprint. The
+    // selector already treats every skill as equally weighted in that case.
+    categoryWeights,
     now: new Date(),
     recentlyServed,
   });
