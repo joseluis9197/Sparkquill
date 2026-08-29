@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { sendVerificationEmail } from "./verify-email";
 import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
@@ -63,6 +64,17 @@ export async function signUp(
     email,
     passwordHash: await hashPassword(password),
   });
+
+  /*
+   * The confirmation email is sent, and its outcome deliberately ignored.
+   *
+   * Signing up must not fail because a mail provider is slow or a key has
+   * expired: the account exists, the card is about to be taken, and blocking
+   * the parent at that moment over an email nobody has read yet would be a
+   * self-inflicted wound. The dashboard carries a standing reminder with a
+   * resend control, which is where an unconfirmed address gets resolved.
+   */
+  void sendVerificationEmail(email).catch(() => {});
 
   await signIn("credentials", {
     email,

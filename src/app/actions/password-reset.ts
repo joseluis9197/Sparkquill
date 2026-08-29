@@ -1,6 +1,7 @@
 "use server";
 
 import { z } from "zod";
+import { appUrl } from "@/lib/app-url";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { parents, passwordResetTokens } from "@/db/schema";
@@ -28,10 +29,6 @@ export interface ResetRequestState {
   done?: boolean;
   /** Set when email is not configured, so the page can say so honestly. */
   unavailable?: boolean;
-}
-
-function appUrl() {
-  return process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 }
 
 /**

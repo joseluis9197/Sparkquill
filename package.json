@@ -24,7 +24,8 @@
     "db:verify-complimentary": "tsx --tsconfig tsconfig.scripts.json scripts/verify-complimentary.ts",
     "coverage": "tsx --tsconfig tsconfig.scripts.json scripts/coverage.ts",
     "db:seed:prereqs": "tsx --tsconfig tsconfig.scripts.json scripts/seed-prerequisites.ts",
-    "audio:build": "tsx --tsconfig tsconfig.scripts.json scripts/generate-audio.ts"
+    "audio:build": "tsx --tsconfig tsconfig.scripts.json scripts/generate-audio.ts",
+    "db:verify-email": "tsx --tsconfig tsconfig.scripts.json scripts/verify-email-flow.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

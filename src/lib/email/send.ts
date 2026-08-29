@@ -154,3 +154,48 @@ Sparkquill`;
 export function emailTransport(): Transport {
   return transport();
 }
+
+/**
+ * The email that confirms an address belongs to the person who typed it.
+ *
+ * Deliberately says what happens if it is ignored, because something does:
+ * the account keeps working. A verification email that implies the account is
+ * suspended until you click is a lie, and one that says nothing leaves the
+ * parent unsure whether they have to act now or can finish their coffee.
+ */
+export function verifyEmailMessage(opts: {
+  name: string | null;
+  url: string;
+  hours: number;
+}): Pick<EmailMessage, "subject" | "text" | "html"> {
+  const greeting = opts.name ? `Hello ${opts.name},` : "Hello,";
+  const text = `${greeting}
+
+Please confirm this is your email address:
+
+${opts.url}
+
+The link expires in ${opts.hours} hours.
+
+This matters for one practical reason: if the address on the account is wrong, the "forgot password" link goes somewhere you cannot read, and there is no way back into your account.
+
+Your account works either way in the meantime.
+
+If you did not sign up for Sparkquill, ignore this email - no account can be used at this address without this link.
+
+Sparkquill`;
+
+  const html = `<!doctype html><html><body style="font-family:system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.6;color:#16211e;max-width:520px;margin:0 auto;padding:24px">
+<p>${greeting}</p>
+<p>Please confirm this is your email address.</p>
+<p style="margin:28px 0">
+  <a href="${opts.url}" style="background:#16786a;color:#fff;text-decoration:none;padding:14px 28px;border-radius:999px;font-weight:700;display:inline-block">Confirm my email</a>
+</p>
+<p style="color:#647a72;font-size:14px">The link expires in ${opts.hours} hours. Your account works either way in the meantime.</p>
+<p style="color:#647a72;font-size:14px">This matters for one practical reason: if the address on the account is wrong, the &ldquo;forgot password&rdquo; link goes somewhere you cannot read, and there is no way back in.</p>
+<p style="color:#647a72;font-size:14px">If you did not sign up for Sparkquill, ignore this email.</p>
+<p style="color:#647a72;font-size:13px;margin-top:32px">Sparkquill</p>
+</body></html>`;
+
+  return { subject: "Confirm your email for Sparkquill", text, html };
+}

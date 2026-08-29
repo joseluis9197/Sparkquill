@@ -10,7 +10,11 @@ import {
   type MockResult,
 } from "@/lib/data/progress";
 import { billingSummary } from "@/app/actions/billing";
+import { eq } from "drizzle-orm";
+import { db } from "@/db";
+import { parents } from "@/db/schema";
 import BillingPanel from "./BillingPanel";
+import VerifyPanel from "./VerifyPanel";
 import AccountPanel from "./AccountPanel";
 import DeleteStudent from "./DeleteStudent";
 import { hasBlueprint, ordinal } from "@/lib/utils";
@@ -47,6 +51,12 @@ export default async function ParentPage() {
   const children = await listStudents(session.user.id);
   const billing = await billingSummary(session.user.id);
 
+  const [account] = await db
+    .select({ verified: parents.emailVerified })
+    .from(parents)
+    .where(eq(parents.id, session.user.id))
+    .limit(1);
+
   const reports = await Promise.all(
     children.map(async (child) => ({
       child,
@@ -64,6 +74,10 @@ export default async function ParentPage() {
           Back to profiles
         </Link>
       </div>
+
+      {account && !account.verified && session.user.email && (
+        <VerifyPanel email={session.user.email} />
+      )}
 
       <BillingPanel summary={billing} childCount={children.length} />
 
