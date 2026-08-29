@@ -4,6 +4,9 @@ import { G3_G4_PASSAGES } from "./g3-g4";
 import { G5_G6_PASSAGES } from "./g5-g6";
 import { EXTRA_G3_G4_PASSAGES } from "./extra-g3";
 import { EXTRA_PASSAGES } from "./extra-g5";
+import { EXPANSION_G1_G2_PASSAGES } from "./expansion-g1-g2";
+import { EXPANSION_G3_G4_PASSAGES } from "./expansion-g3-g4";
+import { EXPANSION_G5_G6_PASSAGES } from "./expansion-g5-g6";
 
 /**
  * Every passage on the platform, keyed for lookup.
@@ -20,6 +23,9 @@ export const PASSAGES: Passage[] = [
   ...G5_G6_PASSAGES,
   ...EXTRA_G3_G4_PASSAGES,
   ...EXTRA_PASSAGES,
+  ...EXPANSION_G1_G2_PASSAGES,
+  ...EXPANSION_G3_G4_PASSAGES,
+  ...EXPANSION_G5_G6_PASSAGES,
 ];
 
 const BY_ID = new Map(PASSAGES.map((p) => [p.id, p]));
