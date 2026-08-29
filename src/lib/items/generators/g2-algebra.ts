@@ -253,7 +253,21 @@ export const unknownNumber: ItemGenerator = {
         "Check by putting your answer back into the equation.",
       ],
       difficulty: shape === 0 ? 900 : ctx.difficulty === "stretch" ? 1180 : 1080,
-      widget: { key: "balance-scale", config: { total, known, shape } },
+      widget: {
+        key: "balance-scale",
+        // Only the side without the blank gets a weight, so the beam stays
+        // level rather than tipping towards the answer.
+        config:
+          shape === 0
+            ? {
+                leftLabel: `${known} + ${missing}`,
+                rightLabel: "?",
+              }
+            : {
+                leftLabel: shape === 1 ? `${known} + ?` : `? + ${missing}`,
+                rightLabel: String(total),
+              },
+      },
       fallback: (taken) => {
         for (let d = 2; d < 40; d++) {
           for (const v of [answer + d, answer - d]) {
