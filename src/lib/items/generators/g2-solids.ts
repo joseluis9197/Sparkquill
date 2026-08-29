@@ -90,6 +90,7 @@ export const solidAttributes: ItemGenerator = {
   key: "g2.geo.solidAttributes",
   benchmark: "MA.1.GR.1.1",
   skillSlug: "identify-3d-attributes",
+  skillTitle: "Faces, edges and corners of solids",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -123,6 +124,7 @@ export const solidRealWorld: ItemGenerator = {
   key: "g2.geo.solidRealWorld",
   benchmark: "MA.1.GR.1.4",
   skillSlug: "identify-3d-real-world",
+  skillTitle: "Spotting solid shapes in the world",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

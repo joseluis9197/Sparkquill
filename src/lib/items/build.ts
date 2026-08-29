@@ -1,6 +1,8 @@
 import type {
   Choice,
+  GeneratorContext,
   Item,
+  ItemGenerator,
   ItemResponse,
   MisconceptionKey,
   MultipleChoiceItem,
@@ -184,4 +186,82 @@ export function scoreItem(item: Item, response: ItemResponse): ScoreResult {
       };
     }
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * Generator factory
+ * ------------------------------------------------------------------ */
+
+/**
+ * Wraps the boilerplate every multiple-choice generator repeats.
+ *
+ * Across two hundred benchmarks the plumbing — seeding the RNG, echoing the
+ * key and benchmark into the item, wiring the fallback — is identical every
+ * time, and copying it is how a generator ends up quietly filed under the
+ * wrong benchmark. What differs is the mathematics and the distractors, so
+ * those are all a `build` function has to supply.
+ *
+ * Note it takes a plain function rather than a method: `this` inside an object
+ * literal typed as ItemGenerator is a known source of silent breakage when a
+ * generator is later passed around detached from its object.
+ */
+export function mcGenerator(spec: {
+  key: string;
+  benchmark: string;
+  skillSlug: string;
+  skillTitle: string;
+  build: (
+    rng: Rng,
+    ctx: GeneratorContext,
+  ) => {
+    stem: string;
+    audioText: string;
+    correct: string;
+    distractors: { value: string; misconception: MisconceptionKey }[];
+    explanation: string;
+    hints?: string[];
+    difficulty?: number;
+    widget?: { key: string; config: Record<string, unknown> };
+    fallback?: (taken: Set<string>) => string | null;
+  };
+}): ItemGenerator {
+  return {
+    key: spec.key,
+    benchmark: spec.benchmark,
+    skillSlug: spec.skillSlug,
+    skillTitle: spec.skillTitle,
+    itemTypes: ["multiple_choice"],
+    generate(ctx: GeneratorContext): Item {
+      const parts = spec.build(new Rng(ctx.seed), ctx);
+      return buildMultipleChoice({
+        templateKey: spec.key,
+        seed: ctx.seed,
+        benchmark: spec.benchmark,
+        skillSlug: spec.skillSlug,
+        ...parts,
+      });
+    },
+  };
+}
+
+/**
+ * A generic last-resort distractor source: numbers near the answer.
+ *
+ * Used when a generator's named misconceptions collapse into each other for
+ * particular values. Better a plausible near miss than an item that throws.
+ */
+export function nearbyNumbers(
+  correct: number,
+  opts: { min?: number; max?: number; step?: number } = {},
+) {
+  const { min = 0, max = Number.MAX_SAFE_INTEGER, step = 1 } = opts;
+  return (taken: Set<string>): string | null => {
+    for (let d = step; d <= step * 40; d += step) {
+      for (const v of [correct + d, correct - d]) {
+        const s = String(Math.round(v * 1000) / 1000);
+        if (v >= min && v <= max && !taken.has(s)) return s;
+      }
+    }
+    return null;
+  };
 }

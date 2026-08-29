@@ -46,6 +46,7 @@ export const additionWithinHundred: ItemGenerator = {
   key: "g2.add.within100",
   benchmark: "MA.2.NSO.2.3",
   skillSlug: "add-two-digit-within-100",
+  skillTitle: "Adding within 100",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -113,6 +114,7 @@ export const subtractionWithinHundred: ItemGenerator = {
   key: "g2.sub.within100",
   benchmark: "MA.2.NSO.2.3",
   skillSlug: "subtract-two-digit-within-100",
+  skillTitle: "Subtracting within 100",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

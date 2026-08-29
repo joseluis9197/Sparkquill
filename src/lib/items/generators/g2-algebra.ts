@@ -23,6 +23,7 @@ export const evenOdd: ItemGenerator = {
   key: "g2.ar.evenOdd",
   benchmark: "MA.2.AR.3.1",
   skillSlug: "even-and-odd",
+  skillTitle: "Even and odd numbers",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -86,6 +87,7 @@ export const repeatedAddition: ItemGenerator = {
   key: "g2.ar.repeatedAddition",
   benchmark: "MA.2.AR.3.2",
   skillSlug: "repeated-addition-arrays",
+  skillTitle: "Equal groups and arrays",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -142,6 +144,7 @@ export const trueOrFalse: ItemGenerator = {
   key: "g2.ar.trueFalse",
   benchmark: "MA.2.AR.2.1",
   skillSlug: "true-false-equations",
+  skillTitle: "Deciding if an equation is true",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -199,6 +202,7 @@ export const unknownNumber: ItemGenerator = {
   key: "g2.ar.unknown",
   benchmark: "MA.2.AR.2.2",
   skillSlug: "unknown-in-equation",
+  skillTitle: "Finding the missing number",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -267,6 +271,7 @@ export const tenMoreLess: ItemGenerator = {
   key: "g2.nso.tenMoreLess",
   benchmark: "MA.2.NSO.2.2",
   skillSlug: "ten-hundred-more-less",
+  skillTitle: "Ten and a hundred more or less",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -310,6 +315,7 @@ export const factsToTwenty: ItemGenerator = {
   key: "g2.nso.factsToTwenty",
   benchmark: "MA.2.NSO.2.1",
   skillSlug: "facts-to-twenty",
+  skillTitle: "Addition and subtraction facts to 20",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

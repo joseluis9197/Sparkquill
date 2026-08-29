@@ -5,7 +5,8 @@ config({ path: ".env.local" });
 config({ path: ".env" });
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import { inArray } from "drizzle-orm";
+// Aliased: `sql` is taken further down by the postgres.js client itself.
+import { inArray, sql as raw } from "drizzle-orm";
 import { benchmarks, skills } from "../src/db/schema";
 import { GENERATORS } from "../src/lib/items/registry";
 
@@ -19,27 +20,18 @@ import { GENERATORS } from "../src/lib/items/registry";
  * promise the app cannot keep.
  */
 
-/** Human titles, keyed by skill slug. Falls back to the benchmark text. */
-const TITLES: Record<string, string> = {
-  "add-two-digit-within-100": "Adding within 100",
-  "subtract-two-digit-within-100": "Subtracting within 100",
-  "read-write-numbers-to-1000": "Reading and writing numbers to 1,000",
-  "compose-decompose-to-1000": "Breaking numbers into hundreds, tens and ones",
-  "round-to-nearest-ten": "Rounding to the nearest ten",
-  "compare-numbers-to-1000": "Comparing numbers to 1,000",
-  "tell-time-five-minutes": "Telling time to five minutes",
-  "identify-3d-attributes": "Faces, edges and corners of solids",
-  "identify-3d-real-world": "Spotting solid shapes in the world",
-};
-
 async function main() {
   const dryRun = process.argv.includes("--dry-run");
 
   // One row per distinct skill, with the benchmark it belongs to.
-  const bySlug = new Map<string, { benchmark: string; generators: string[] }>();
+  const bySlug = new Map<
+    string,
+    { benchmark: string; title: string; generators: string[] }
+  >();
   for (const g of GENERATORS) {
     const entry = bySlug.get(g.skillSlug) ?? {
       benchmark: g.benchmark,
+      title: g.skillTitle,
       generators: [],
     };
     entry.generators.push(g.key);
@@ -81,19 +73,44 @@ async function main() {
     );
   }
 
-  const rows = [...bySlug.entries()].map(([slug, { benchmark }], i) => ({
-    slug,
-    benchmarkCode: benchmark,
-    title: TITLES[slug] ?? slug,
-    sortOrder: i,
-  }));
+  /*
+   * Ordered by the standard's own code, not by the order the registry happens
+   * to list generators in. The parent report reads top to bottom in this
+   * order, and curriculum order is the only one that means anything to them:
+   * grade, then strand, then standard.
+   *
+   * Each numeric part is padded before comparing, because a plain string sort
+   * puts MA.2.NSO.1.10 ahead of MA.2.NSO.1.2.
+   */
+  const codeOrder = (code: string) =>
+    code
+      .split(".")
+      .map((part) => (/^[0-9]+$/.test(part) ? part.padStart(4, "0") : part))
+      .join(".");
+
+  const rows = [...bySlug.entries()]
+    .sort((a, b) =>
+      codeOrder(a[1].benchmark).localeCompare(codeOrder(b[1].benchmark)),
+    )
+    .map(([slug, { benchmark, title }], i) => ({
+      slug,
+      benchmarkCode: benchmark,
+      title,
+      sortOrder: i,
+    }));
 
   await db
     .insert(skills)
     .values(rows)
     .onConflictDoUpdate({
       target: skills.slug,
-      set: { title: skills.title, benchmarkCode: skills.benchmarkCode },
+      // sortOrder is refreshed too: adding a grade renumbers everything, and
+      // a stale order would interleave the new skills at random in the report.
+      set: {
+        title: raw`excluded.title`,
+        benchmarkCode: raw`excluded.benchmark_code`,
+        sortOrder: raw`excluded.sort_order`,
+      },
     });
 
   console.log(`\nSeeded ${rows.length} skills.`);

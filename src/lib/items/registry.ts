@@ -31,13 +31,86 @@ import {
   partitionShapes,
   readData,
 } from "./generators/g2-measurement";
+import {
+  countSequence,
+  g1Compare,
+  g1ExpandedForm,
+  g1FactsToTen,
+  g1OneTenMoreLess,
+  g1SumsToTwenty,
+  g1TensAndOnes,
+  g1TwoDigitMinusOne,
+  g1TwoDigitPlusOne,
+  g1WordForm,
+} from "./generators/g1-number";
+import {
+  g1AddThree,
+  g1CoinValue,
+  g1ComposeShapes,
+  g1CountCoins,
+  g1HalvesFourths,
+  g1MeasureLength,
+  g1MissingAddend,
+  g1OrderLengths,
+  g1Pictograph,
+  g1ShapeFromAttributes,
+  g1Tallies,
+  g1TellTime,
+  g1TrueFalse,
+  g1UnknownNumber,
+  g1WordProblem,
+} from "./generators/g1-rest";
+import {
+  g2BuildGraph,
+  g2ChooseUnit,
+  g2LengthProblem,
+  g2PartitionTwoWays,
+  g2PerimeterUnits,
+  g2ThreeDigit,
+  g2TwoStepProblem,
+} from "./generators/g2-gaps";
 
 /**
  * Every generator in the platform. Keyed lookup so a stored attempt can be
  * replayed years later from nothing but a template key and a seed.
  */
 export const GENERATORS: ItemGenerator[] = [
+  /* Grade 1 */
+  countSequence,
+  g1WordForm,
+  g1ExpandedForm,
+  g1TensAndOnes,
+  g1Compare,
+  g1FactsToTen,
+  g1SumsToTwenty,
+  g1OneTenMoreLess,
+  g1TwoDigitPlusOne,
+  g1TwoDigitMinusOne,
+  g1HalvesFourths,
+  g1AddThree,
+  g1WordProblem,
+  g1MissingAddend,
+  g1TrueFalse,
+  g1UnknownNumber,
+  g1MeasureLength,
+  g1OrderLengths,
+  g1TellTime,
+  g1CoinValue,
+  g1CountCoins,
+  g1ShapeFromAttributes,
+  g1ComposeShapes,
+  g1Tallies,
+  g1Pictograph,
+
+  /* Grade 2 */
   additionWithinHundred,
+  g2ThreeDigit,
+  g2PartitionTwoWays,
+  g2TwoStepProblem,
+  g2ChooseUnit,
+  g2LengthProblem,
+  g2PerimeterUnits,
+  g2BuildGraph,
   subtractionWithinHundred,
   wordForm,
   expandedFormItem,

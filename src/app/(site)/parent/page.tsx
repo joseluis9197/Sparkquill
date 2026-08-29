@@ -46,7 +46,7 @@ export default async function ParentPage() {
     children.map(async (child) => ({
       child,
       summary: await summaryFor(child.id),
-      skills: await skillProgressFor(child.id),
+      skills: await skillProgressFor(child.id, child.grade),
     })),
   );
 

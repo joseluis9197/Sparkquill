@@ -28,10 +28,13 @@ interface Attempt {
  */
 export default function LearnSession({
   firstQuestion,
+  subject,
   studentName,
   audio,
 }: {
   firstQuestion: NextQuestion | null;
+  /** Fixed for the session; switching subject reloads the page. */
+  subject: "math" | "ela";
   studentName: string;
   audio: boolean;
 }) {
@@ -107,10 +110,10 @@ export default function LearnSession({
     setRevealed(null);
 
     startTransition(async () => {
-      const q = await nextQuestion(nextServed.slice(-2));
+      const q = await nextQuestion(subject, nextServed.slice(-2));
       setCurrent(q);
     });
-  }, [current, served]);
+  }, [current, served, subject]);
 
   if (error) {
     return (

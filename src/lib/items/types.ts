@@ -43,6 +43,7 @@ export type MisconceptionKey =
   | "digit_reversal"
   | "rounded_wrong_direction"
   | "rounded_wrong_place"
+  | "compared_wrong_direction" // answered the smaller when asked for greater
   | "counted_endpoints" // counted both ends of an interval
   | "hour_minute_swap" // read clock hands backwards
   | "minute_by_ones" // read the minute hand as a raw number
@@ -51,6 +52,43 @@ export type MisconceptionKey =
   | "counted_faces_as_vertices"
   | "skipped_hidden_faces" // only counted the faces they could see
   | "used_numerator_only"
+  | "used_part_not_whole" // answered with one part where the total was asked
+  /* Multiplicative reasoning, grades 3-4 */
+  | "added_instead_of_multiplied" // 6 x 4 = 10
+  | "multiplied_instead_of_divided"
+  | "reversed_dividend_divisor" // computed 3 / 12 for "12 divided by 3"
+  | "dropped_remainder"
+  | "remainder_as_whole" // wrote the remainder where the quotient goes
+  | "off_by_one_factor" // recalled a neighbouring fact
+  | "skip_count_wrong_step"
+  /* Fractions, grades 3-5 */
+  | "numerator_denominator_swap"
+  | "added_denominators" // 1/4 + 1/4 = 2/8
+  | "compared_denominators_only" // 1/8 > 1/4 because 8 > 4
+  | "ignored_common_denominator"
+  | "whole_number_part_only" // answered a mixed number's integer part
+  /* Decimals and percent, grades 4-6 */
+  | "decimal_point_misplaced"
+  | "decimal_longer_is_bigger" // 0.45 > 0.5 because it has more digits
+  | "percent_shift_wrong_way"
+  /* Algebraic reasoning, grades 5-6 */
+  | "order_of_operations"
+  | "inverse_operation_missed" // added where they needed to subtract
+  | "sign_error"
+  | "absolute_value_kept_sign"
+  | "exponent_as_multiplication" // 2^4 = 8
+  | "gcf_lcm_swap"
+  | "ratio_order_swap"
+  /* Measurement, geometry and data */
+  | "converted_wrong_direction"
+  | "counted_unit_lengths_not_squares"
+  | "volume_as_area" // multiplied two dimensions instead of three
+  | "surface_area_missing_faces"
+  | "coordinates_swapped"
+  | "quadrant_sign_swap"
+  | "mean_median_confusion"
+  | "range_as_sum"
+  | "read_scale_by_ones" // ignored a scaled axis on a graph
   | "distractor_plausible"; // near miss with no single named cause
 
 /** An interactive manipulative attached to an item or a lesson. */
@@ -171,6 +209,18 @@ export interface ItemGenerator {
   key: string;
   benchmark: string;
   skillSlug: string;
+  /**
+   * What a parent sees this skill called in the report.
+   *
+   * Declared next to the questions rather than in a lookup table beside the
+   * seeding script: with two hundred skills a separate table is a list that
+   * silently falls behind, and a skill whose title has gone missing shows a
+   * parent a URL slug where a sentence should be.
+   *
+   * Written for the parent, not the standard. "Adding within 100" tells them
+   * something; "MA.2.NSO.2.1" does not.
+   */
+  skillTitle: string;
   itemTypes: ItemType[];
   generate(ctx: GeneratorContext): Item;
 }

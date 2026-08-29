@@ -1,5 +1,5 @@
 import "server-only";
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { attempts, benchmarks, skillMastery, skills } from "@/db/schema";
 import {
@@ -18,10 +18,29 @@ export interface SkillRow {
   benchmarkCode: string;
   benchmarkDescription: string;
   reportingCategory: string | null;
+  grade: number;
+  subject: Subject;
 }
 
-/** Every skill that has practice behind it, with its benchmark. */
-export async function listSkills(): Promise<SkillRow[]> {
+export type Subject = "math" | "ela";
+
+/**
+ * Skills a particular child may be asked to practise.
+ *
+ * Bounded by grade, and deliberately inclusive of the grades below. Serving
+ * work from above a child's grade teaches them they are behind when they are
+ * not; serving work from below is the whole point of the remediation tier in
+ * the selector, which reaches for the earlier skill a child is actually
+ * missing rather than repeating the one they keep failing.
+ *
+ * Unbounded is not an option here. Without the ceiling every child received
+ * whatever grade happened to have content, which silently gave a fifth grader
+ * second grade arithmetic and reported it as mastery.
+ */
+export async function listSkills(opts: {
+  upToGrade: number;
+  subject?: Subject;
+}): Promise<SkillRow[]> {
   return db
     .select({
       id: skills.id,
@@ -30,10 +49,43 @@ export async function listSkills(): Promise<SkillRow[]> {
       benchmarkCode: skills.benchmarkCode,
       benchmarkDescription: benchmarks.description,
       reportingCategory: benchmarks.reportingCategory,
+      grade: benchmarks.grade,
+      subject: benchmarks.subject,
     })
     .from(skills)
     .innerJoin(benchmarks, eq(skills.benchmarkCode, benchmarks.code))
+    .where(
+      and(
+        lte(benchmarks.grade, opts.upToGrade),
+        opts.subject ? eq(benchmarks.subject, opts.subject) : undefined,
+      ),
+    )
     .orderBy(skills.sortOrder);
+}
+
+/**
+ * How much practice exists for a grade, counting only that grade's own work.
+ *
+ * The practice page asks before it offers anything. A child whose grade has
+ * nothing behind it must be told so plainly — falling back to a lower grade
+ * would hand them someone else's curriculum and call it theirs.
+ */
+export async function gradeCoverage(
+  grade: number,
+): Promise<Record<Subject, number>> {
+  const rows = await db
+    .select({
+      subject: benchmarks.subject,
+      n: sql<number>`count(*)::int`,
+    })
+    .from(skills)
+    .innerJoin(benchmarks, eq(skills.benchmarkCode, benchmarks.code))
+    .where(eq(benchmarks.grade, grade))
+    .groupBy(benchmarks.subject);
+
+  const out: Record<Subject, number> = { math: 0, ela: 0 };
+  for (const r of rows) out[r.subject] = r.n;
+  return out;
 }
 
 /** Mastery rows for one student, keyed by skill id. */
@@ -189,11 +241,17 @@ export interface SkillProgress extends SkillRow {
   lastSeenAt: Date | null;
 }
 
+/**
+ * `grade` bounds the report the same way it bounds practice, so the parent's
+ * "12 of 40 mastered" denominator counts the work their child is actually
+ * given and not the whole catalogue up to sixth grade.
+ */
 export async function skillProgressFor(
   studentId: string,
+  grade: number,
 ): Promise<SkillProgress[]> {
   const [allSkills, mastery] = await Promise.all([
-    listSkills(),
+    listSkills({ upToGrade: grade }),
     loadMastery(studentId),
   ]);
 

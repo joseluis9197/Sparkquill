@@ -28,6 +28,7 @@ export const countMoney: ItemGenerator = {
   key: "g2.m.countMoney",
   benchmark: "MA.2.M.2.2",
   skillSlug: "count-money",
+  skillTitle: "Counting coins and bills",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -89,6 +90,7 @@ export const lengthDifference: ItemGenerator = {
   key: "g2.m.lengthDifference",
   benchmark: "MA.2.M.1.2",
   skillSlug: "compare-lengths",
+  skillTitle: "Measuring and comparing lengths",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -145,6 +147,7 @@ export const readData: ItemGenerator = {
   key: "g2.dp.readData",
   benchmark: "MA.2.DP.1.2",
   skillSlug: "interpret-data",
+  skillTitle: "Reading graphs and tables",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -251,6 +254,7 @@ export const partitionShapes: ItemGenerator = {
   key: "g2.fr.partition",
   benchmark: "MA.2.FR.1.1",
   skillSlug: "partition-into-equal-parts",
+  skillTitle: "Splitting shapes into equal parts",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

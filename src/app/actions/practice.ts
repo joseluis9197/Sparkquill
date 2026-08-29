@@ -174,6 +174,7 @@ function toPublicItem(item: MultipleChoiceItem): PublicItem {
  * whatever a browser tab happens to remember.
  */
 export async function nextQuestion(
+  subject: "math" | "ela",
   recentlyServed: string[] = [],
 ): Promise<NextQuestion | null> {
   const active = await requireActiveStudent();
@@ -183,8 +184,11 @@ export async function nextQuestion(
   const { listSkills } = await import("@/lib/data/progress");
   const { GENERATORS } = await import("@/lib/items/registry");
 
+  // Bounded by the child's own grade. The ceiling is the important half: the
+  // selector will happily reach down for a missing prerequisite, but nothing
+  // should ever hand a child work from a grade they have not reached.
   const [allSkills, mastery] = await Promise.all([
-    listSkills(),
+    listSkills({ upToGrade: active.student.grade, subject }),
     loadMastery(active.student.id),
   ]);
 

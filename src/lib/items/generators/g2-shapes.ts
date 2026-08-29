@@ -20,6 +20,7 @@ export const shapeSides: ItemGenerator = {
   key: "g2.geo.shapeSides",
   benchmark: "MA.2.GR.1.2",
   skillSlug: "categorize-2d-figures",
+  skillTitle: "Sorting flat shapes by their sides",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -72,6 +73,7 @@ export const nameTheShape: ItemGenerator = {
   key: "g2.geo.nameTheShape",
   benchmark: "MA.2.GR.1.1",
   skillSlug: "identify-2d-figures",
+  skillTitle: "Naming flat shapes",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -119,6 +121,7 @@ export const linesOfSymmetry: ItemGenerator = {
   key: "g2.geo.symmetry",
   benchmark: "MA.2.GR.1.3",
   skillSlug: "lines-of-symmetry",
+  skillTitle: "Lines of symmetry",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -178,6 +181,7 @@ export const perimeter: ItemGenerator = {
   key: "g2.geo.perimeter",
   benchmark: "MA.2.GR.2.2",
   skillSlug: "perimeter-of-polygon",
+  skillTitle: "Perimeter of a shape",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

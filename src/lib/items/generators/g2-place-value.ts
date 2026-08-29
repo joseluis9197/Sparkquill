@@ -32,6 +32,7 @@ export const wordForm: ItemGenerator = {
   key: "g2.pv.wordForm",
   benchmark: "MA.2.NSO.1.1",
   skillSlug: "read-write-numbers-to-1000",
+  skillTitle: "Reading and writing numbers to 1,000",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -95,6 +96,7 @@ export const expandedFormItem: ItemGenerator = {
   key: "g2.pv.expandedForm",
   benchmark: "MA.2.NSO.1.2",
   skillSlug: "compose-decompose-to-1000",
+  skillTitle: "Breaking numbers into hundreds, tens and ones",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -151,6 +153,7 @@ export const roundToTen: ItemGenerator = {
   key: "g2.pv.roundToTen",
   benchmark: "MA.2.NSO.1.4",
   skillSlug: "round-to-nearest-ten",
+  skillTitle: "Rounding to the nearest ten",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
@@ -221,6 +224,7 @@ export const compareNumbers: ItemGenerator = {
   key: "g2.pv.compare",
   benchmark: "MA.2.NSO.1.3",
   skillSlug: "compare-numbers-to-1000",
+  skillTitle: "Comparing numbers to 1,000",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {

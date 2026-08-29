@@ -29,6 +29,7 @@ export const tellTimeToFiveMinutes: ItemGenerator = {
   key: "g2.time.toFiveMinutes",
   benchmark: "MA.2.M.2.1",
   skillSlug: "tell-time-five-minutes",
+  skillTitle: "Telling time to five minutes",
   itemTypes: ["multiple_choice"],
 
   generate(ctx: GeneratorContext): Item {
