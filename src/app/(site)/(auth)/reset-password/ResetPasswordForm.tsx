@@ -29,7 +29,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
           autoComplete="new-password"
           required
           autoFocus
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base outline-none transition focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base transition focus:border-[var(--brand)]"
         />
       </label>
 
@@ -42,7 +42,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
           type="password"
           autoComplete="new-password"
           required
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base outline-none transition focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base transition focus:border-[var(--brand)]"
         />
       </label>
 

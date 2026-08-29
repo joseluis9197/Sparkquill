@@ -5,7 +5,7 @@ import type { PublicItem } from "@/lib/items/public";
 import type { ItemResponse } from "@/lib/items/types";
 import type { Reveal } from "@/lib/items/public";
 import { cn } from "@/lib/utils";
-import { optionClasses, revealedIds } from "./shared";
+import { optionClasses, optionStatus, revealedIds } from "./shared";
 
 /**
  * One answer from four. The plain case, and still the commonest.
@@ -34,7 +34,10 @@ export default function ChoiceGrid({
         <button
           key={choice.id}
           type="button"
-          disabled={answered}
+          // aria-disabled rather than disabled: a disabled button leaves the
+          // tab order, so a screen reader user could never move back over the
+          // options to hear which one was right.
+          aria-disabled={answered}
           aria-pressed={chosen === choice.id}
           onClick={() => {
             if (answered) return;
@@ -52,6 +55,14 @@ export default function ChoiceGrid({
           )}
         >
           {choice.label}
+          {(() => {
+            const status = optionStatus({
+              answered,
+              chosen: chosen === choice.id,
+              correct: right.has(choice.id),
+            });
+            return status ? <span className="sr-only"> — {status}</span> : null;
+          })()}
         </button>
       ))}
     </div>

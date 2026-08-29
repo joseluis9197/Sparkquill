@@ -5,7 +5,7 @@ import type { PublicItem } from "@/lib/items/public";
 import type { ItemResponse } from "@/lib/items/types";
 import type { Reveal } from "@/lib/items/public";
 import { cn } from "@/lib/utils";
-import { revealedIds } from "./shared";
+import { optionStatus, revealedIds } from "./shared";
 
 /**
  * Select words or sentences inside a text — FAST's Hot Text item.
@@ -49,17 +49,21 @@ export default function HotText({
             <button
               key={token.id}
               type="button"
-              disabled={answered}
+              // aria-disabled, not disabled: see optionStatus. The sentence
+              // a child picked, and the one that was right, have to stay
+              // reachable by keyboard once the answer is shown.
+              aria-disabled={answered}
               aria-pressed={picked.includes(token.id)}
-              onClick={() =>
+              onClick={() => {
+                if (answered) return;
                 setPicked((prev) =>
                   prev.includes(token.id)
                     ? prev.filter((id) => id !== token.id)
                     : prev.length >= want
                       ? prev
                       : [...prev, token.id],
-                )
-              }
+                );
+              }}
               className={cn(
                 "mr-1 rounded-[4px] px-1 text-left transition",
                 !answered &&
@@ -76,6 +80,16 @@ export default function HotText({
               )}
             >
               {token.text}
+              {(() => {
+                const status = optionStatus({
+                  answered,
+                  chosen: picked.includes(token.id),
+                  correct: right.has(token.id),
+                });
+                return status ? (
+                  <span className="sr-only"> ({status}) </span>
+                ) : null;
+              })()}
             </button>
           ) : (
             <span key={token.id} className="mr-1">

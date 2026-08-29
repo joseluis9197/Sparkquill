@@ -61,7 +61,7 @@ export default function ForgotPasswordForm() {
           autoComplete="email"
           required
           autoFocus
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base outline-none transition focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-base transition focus:border-[var(--brand)]"
         />
       </label>
 

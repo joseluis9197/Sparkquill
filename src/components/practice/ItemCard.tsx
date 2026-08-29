@@ -98,7 +98,15 @@ export default function ItemCard({
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h3 className="font-sans text-lg font-bold">{item.passage.title}</h3>
+              {/*
+                h2, not h3. The passage sits beside the question rather than
+                inside it, and both hang off the page's h1 — so h3 here made
+                the heading order jump h1, h3, h2. Somebody navigating by
+                headings, which is how a screen reader user skims a page, was
+                being told the passage was part of a section that did not
+                exist. The size is set by the class either way.
+              */}
+              <h2 className="font-sans text-lg font-bold">{item.passage.title}</h2>
               <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-muted)]">
                 {item.passage.genre === "informational"
                   ? "Informational text"

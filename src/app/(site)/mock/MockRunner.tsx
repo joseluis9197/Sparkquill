@@ -186,9 +186,17 @@ export default function MockRunner({
         />
       </div>
 
-      <p className="mb-4 font-mono text-xs text-[var(--text-muted)]">
+      {/*
+        An h1, not a paragraph. While the test is running this was the only
+        page in the product with no top-level heading at all: the question
+        itself is an h2, so it hung under nothing, and a student navigating by
+        headings had no way to get back to the top of the page. The line was
+        already saying what the page was about — it just was not saying it as
+        a heading. The styling is unchanged.
+      */}
+      <h1 className="mb-4 font-mono text-xs font-normal tracking-normal text-[var(--text-muted)]">
         Question {index + 1} of {session.total}
-      </p>
+      </h1>
 
       {item ? (
         <ItemCard

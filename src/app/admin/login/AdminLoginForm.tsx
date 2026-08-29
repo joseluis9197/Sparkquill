@@ -19,7 +19,7 @@ export default function AdminLoginForm() {
           autoComplete="username"
           required
           autoFocus
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 outline-none focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 focus:border-[var(--brand)]"
         />
       </label>
       <label className="block">
@@ -29,7 +29,7 @@ export default function AdminLoginForm() {
           type="password"
           autoComplete="current-password"
           required
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 outline-none focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 focus:border-[var(--brand)]"
         />
       </label>
 

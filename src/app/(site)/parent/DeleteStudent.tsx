@@ -81,7 +81,7 @@ export default function DeleteStudent({
           value={typed}
           onChange={(e) => setTyped(e.target.value)}
           autoComplete="off"
-          className="mt-1 w-full max-w-xs rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2 outline-none focus:border-[var(--color-ember-500)]"
+          className="mt-1 w-full max-w-xs rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-3 py-2 focus:border-[var(--color-ember-500)]"
         />
       </label>
 

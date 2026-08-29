@@ -103,7 +103,14 @@ export default function NumberLine({
             className="absolute top-0 -translate-x-1/2"
             style={{ left: `${pos(n)}%` }}
           >
-            <span className="block whitespace-nowrap rounded-full bg-[var(--accent)] px-2.5 py-1 text-xs font-bold tabular-nums text-white">
+            {/*
+              Dark text, not white. White on the accent orange measures
+              2.78:1 — well under the 4.5:1 small text needs — and these
+              pills carry the numbers the whole widget is about. Ink reads
+              5.95:1 on the light accent and 9.41:1 on the dark-mode one,
+              so the same choice works in both themes.
+            */}
+            <span className="block whitespace-nowrap rounded-full bg-[var(--accent)] px-2.5 py-1 text-xs font-bold tabular-nums text-[var(--color-ink-900)]">
               {n}
             </span>
             <div className="mx-auto mt-1 h-6 w-0.5 bg-[var(--accent)]" />

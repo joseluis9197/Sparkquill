@@ -78,10 +78,26 @@
   --surface-3: var(--color-ink-100);
   --border: var(--color-ink-200);
   --text: var(--color-ink-900);
-  --text-muted: var(--color-ink-500);
+  /*
+   * ink-600, not ink-500. Muted text at ink-500 measures 4.31:1 against white
+   * — just under the 4.5:1 WCAG AA needs for body text, and it was used for
+   * the footer links, the passage genre label and every caption in the
+   * product. Close enough to pass a glance, not close enough to pass.
+   */
+  --text-muted: var(--color-ink-600);
   --brand: var(--color-tide-600);
   --brand-contrast: #ffffff;
   --accent: var(--color-spark-500);
+  /*
+   * The focus ring is its own token, not the accent.
+   *
+   * WCAG 1.4.11 wants 3:1 for a focus indicator, and the accent orange gives
+   * 2.78:1 on the page and 2.61:1 on a panel — a ring a keyboard user has to
+   * hunt for. Darkening the accent itself was the wrong lever: it also paints
+   * the number-line pills, whose ink text needs the accent to stay light.
+   * Splitting the two lets each meet the rule it is actually bound by.
+   */
+  --focus: var(--color-spark-700);
   color-scheme: light;
 }
 
@@ -96,6 +112,7 @@
     --brand: var(--color-tide-300);
     --brand-contrast: #0d1614;
     --accent: var(--color-spark-300);
+    --focus: var(--color-spark-300);
     color-scheme: dark;
   }
 }
@@ -110,6 +127,7 @@
   --brand: var(--color-tide-300);
   --brand-contrast: #0d1614;
   --accent: var(--color-spark-300);
+  --focus: var(--color-spark-300);
   color-scheme: dark;
 }
 
@@ -145,7 +163,7 @@ h3 {
 }
 
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--focus);
   outline-offset: 2px;
   border-radius: 4px;
 }

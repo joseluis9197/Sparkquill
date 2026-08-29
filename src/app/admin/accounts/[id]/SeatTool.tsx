@@ -30,7 +30,7 @@ export default function SeatTool({
         <select
           name="seats"
           defaultValue={String(current)}
-          className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm outline-none focus:border-[var(--brand)]"
+          className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm focus:border-[var(--brand)]"
         >
           {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
             <option key={n} value={n}>

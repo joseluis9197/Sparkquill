@@ -134,7 +134,7 @@ export default function ComplimentaryTool({
               <select
                 name="days"
                 defaultValue="90"
-                className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm outline-none focus:border-[var(--brand)]"
+                className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm focus:border-[var(--brand)]"
               >
                 {PRESETS.map((p) => (
                   <option key={p.days} value={p.days}>
@@ -153,7 +153,7 @@ export default function ComplimentaryTool({
                 minLength={3}
                 maxLength={200}
                 placeholder="Beta family, school pilot, goodwill after an outage…"
-                className="w-full min-w-48 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm outline-none focus:border-[var(--brand)]"
+                className="w-full min-w-48 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm focus:border-[var(--brand)]"
               />
             </label>
             <button

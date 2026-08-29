@@ -30,3 +30,28 @@ export function revealedIds(reveal: Reveal | null): Set<string> {
   if (reveal?.kind === "ids") return new Set(reveal.ids);
   return new Set();
 }
+
+/**
+ * What an option is, once the answer has been revealed, said in words.
+ *
+ * The colour tells a sighted child which option was right and which they
+ * picked. Nothing said that to anyone else: the answered options were
+ * `disabled`, which takes them out of the tab order entirely, so a screen
+ * reader user heard the verdict and the explanation but could never move back
+ * over the choices to find out which one was correct.
+ *
+ * Returned as text for a visually hidden span rather than as an aria-label,
+ * because a label would replace the option's own text — and "correct answer"
+ * on its own does not say *what* the correct answer was.
+ */
+export function optionStatus(opts: {
+  answered: boolean;
+  chosen: boolean;
+  correct: boolean;
+}): string | null {
+  if (!opts.answered) return null;
+  if (opts.correct && opts.chosen) return "correct, and the answer you chose";
+  if (opts.correct) return "the correct answer";
+  if (opts.chosen) return "the answer you chose, which was wrong";
+  return null;
+}

@@ -6,7 +6,7 @@ import type { PublicItem } from "@/lib/items/public";
 import type { ItemResponse } from "@/lib/items/types";
 import type { Reveal } from "@/lib/items/public";
 import { cn } from "@/lib/utils";
-import { optionClasses, revealedIds } from "./shared";
+import { optionClasses, optionStatus, revealedIds } from "./shared";
 
 /**
  * "Select the TWO that…" — a FAST staple.
@@ -49,16 +49,20 @@ export default function MultiselectGrid({
             <button
               key={choice.id}
               type="button"
-              disabled={answered}
+              // aria-disabled, not disabled: see optionStatus. A disabled
+              // button is skipped by the tab key, so the review is unreachable.
+              aria-disabled={answered}
               aria-pressed={isPicked}
               onClick={() =>
-                setPicked((prev) =>
-                  prev.includes(choice.id)
-                    ? prev.filter((id) => id !== choice.id)
-                    : prev.length >= item.selectCount
-                      ? prev
-                      : [...prev, choice.id],
-                )
+                answered
+                  ? undefined
+                  : setPicked((prev) =>
+                    prev.includes(choice.id)
+                      ? prev.filter((id) => id !== choice.id)
+                      : prev.length >= item.selectCount
+                        ? prev
+                        : [...prev, choice.id],
+                    )
               }
               className={cn(
                 "flex items-center gap-3 rounded-[var(--radius-tile)] border-2 px-5 py-4 text-left text-lg font-bold transition",
@@ -77,7 +81,19 @@ export default function MultiselectGrid({
               >
                 {isPicked && <Check className="h-4 w-4" />}
               </span>
-              <span className="flex-1">{choice.label}</span>
+              <span className="flex-1">
+                {choice.label}
+                {(() => {
+                  const status = optionStatus({
+                    answered,
+                    chosen: isPicked,
+                    correct: right.has(choice.id),
+                  });
+                  return status ? (
+                    <span className="sr-only"> — {status}</span>
+                  ) : null;
+                })()}
+              </span>
             </button>
           );
         })}

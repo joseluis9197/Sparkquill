@@ -5,7 +5,7 @@ import type { PublicItem } from "@/lib/items/public";
 import type { ItemResponse } from "@/lib/items/types";
 import type { Reveal } from "@/lib/items/public";
 import { cn } from "@/lib/utils";
-import { optionClasses } from "./shared";
+import { optionClasses, optionStatus } from "./shared";
 
 /**
  * Two-part evidence-based selected response, the item type FAST reading is
@@ -54,9 +54,13 @@ export default function Ebsr({
           <button
             key={c.id}
             type="button"
-            disabled={disabled || answered}
+            disabled={disabled}
+            // aria-disabled for the answered state, not disabled: see
+            // optionStatus. Both parts have to stay reviewable, and Part B is
+            // the half a child is most likely to have got wrong.
+            aria-disabled={answered}
             aria-pressed={chosen === c.id}
-            onClick={() => onPick(c.id)}
+            onClick={() => (answered ? undefined : onPick(c.id))}
             className={cn(
               "rounded-[var(--radius-tile)] border-2 px-4 py-3 text-left text-[15px] font-semibold transition",
               !answered && chosen === c.id && "border-[var(--brand)] bg-[var(--surface-2)]",
@@ -68,6 +72,14 @@ export default function Ebsr({
             )}
           >
             {c.label}
+            {(() => {
+              const status = optionStatus({
+                answered,
+                chosen: chosen === c.id,
+                correct: correctId === c.id,
+              });
+              return status ? <span className="sr-only"> — {status}</span> : null;
+            })()}
           </button>
         ))}
       </div>
@@ -112,7 +124,14 @@ export default function Ebsr({
             }
             className="w-full rounded-full bg-[var(--brand)] px-8 text-base font-bold text-[var(--brand-contrast)] leading-[48px] transition hover:opacity-90 disabled:opacity-40 sm:w-auto sm:px-10"
           >
-            Check both parts
+            {/* Named rather than silently greyed out, like every other
+                item type: a child who cannot see the button dim gets told
+                which half is still blank. */}
+            {!partA
+              ? "Answer Part A first"
+              : !partB
+                ? "Answer Part B first"
+                : "Check both parts"}
           </button>
           <p className="text-xs text-[var(--text-muted)]">
             Both parts have to be right. Evidence without the claim is not

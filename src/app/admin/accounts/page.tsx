@@ -23,7 +23,7 @@ export default async function AccountsPage(props: {
           name="q"
           defaultValue={q ?? ""}
           placeholder="Parent email, parent name, or a child's name"
-          className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm outline-none focus:border-[var(--brand)]"
+          className="flex-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-5 py-2.5 text-sm focus:border-[var(--brand)]"
         />
         <button
           type="submit"

@@ -97,7 +97,7 @@ function AddStudentForm({
           name="firstName"
           required
           maxLength={40}
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] px-4 py-3 outline-none focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] px-4 py-3 focus:border-[var(--brand)]"
         />
         <span className="mt-1 block text-xs text-[var(--text-muted)]">
           First name only — we do not collect surnames.
@@ -110,7 +110,7 @@ function AddStudentForm({
           name="grade"
           required
           defaultValue="2"
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 outline-none focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-3 focus:border-[var(--brand)]"
         >
           {GRADES.map((g) => (
             <option key={g} value={g}>
@@ -130,7 +130,7 @@ function AddStudentForm({
           pattern="\d{4}"
           maxLength={4}
           required
-          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] px-4 py-3 text-center font-mono text-2xl tracking-[0.5em] outline-none focus:border-[var(--brand)]"
+          className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] px-4 py-3 text-center font-mono text-2xl tracking-[0.5em] focus:border-[var(--brand)]"
         />
         <span className="mt-1 block text-xs text-[var(--text-muted)]">
           Something your child can remember and type themselves.
@@ -203,7 +203,7 @@ function PinEntry({
         autoFocus
         value={pin}
         onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
-        className="mt-5 w-full rounded-[var(--radius-tile)] border-2 border-[var(--border)] px-4 py-4 text-center font-mono text-3xl tracking-[0.5em] outline-none focus:border-[var(--brand)]"
+        className="mt-5 w-full rounded-[var(--radius-tile)] border-2 border-[var(--border)] px-4 py-4 text-center font-mono text-3xl tracking-[0.5em] focus:border-[var(--brand)]"
         aria-label="PIN"
       />
 

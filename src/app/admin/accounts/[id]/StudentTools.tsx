@@ -75,7 +75,7 @@ export default function StudentTools({
               pattern="[0-9]{4}"
               maxLength={4}
               required
-              className="w-24 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-center font-mono tracking-widest outline-none focus:border-[var(--brand)]"
+              className="w-24 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-center font-mono tracking-widest focus:border-[var(--brand)]"
             />
           </label>
           <button
@@ -94,7 +94,7 @@ export default function StudentTools({
             <select
               name="grade"
               defaultValue={String(grade)}
-              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm outline-none focus:border-[var(--brand)]"
+              className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm focus:border-[var(--brand)]"
             >
               {GRADES.map((g) => (
                 <option key={g} value={g}>
@@ -139,7 +139,7 @@ export default function StudentTools({
                   value={typed}
                   onChange={(e) => setTyped(e.target.value)}
                   autoComplete="off"
-                  className="w-40 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm outline-none"
+                  className="w-40 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm"
                 />
                 <button
                   type="submit"

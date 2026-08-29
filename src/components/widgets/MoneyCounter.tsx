@@ -8,8 +8,19 @@ export interface MoneyCounterProps {
   className?: string;
 }
 
+/*
+ * The tints are metal, and the value on each face is ink rather than white.
+ *
+ * White on these greys measured 2.20:1 on a dime and 2.59:1 on a nickel,
+ * against the 4.5:1 small text needs — the number on the coin, on a widget
+ * whose entire job is telling coins apart by value, was the least readable
+ * text in the product. Ink gives 5.57–7.52:1 on the silvers.
+ *
+ * The penny was lightened from #b5744a, where ink reached only 4.38:1. It is
+ * still copper; it is now copper a child can read.
+ */
 const COIN = {
-  1: { name: "penny", plural: "pennies", size: 32, tint: "#b5744a" },
+  1: { name: "penny", plural: "pennies", size: 32, tint: "#bd7f56" },
   5: { name: "nickel", plural: "nickels", size: 38, tint: "#9aa2a8" },
   10: { name: "dime", plural: "dimes", size: 28, tint: "#a8b0b6" },
   25: { name: "quarter", plural: "quarters", size: 44, tint: "#8f979d" },
@@ -58,10 +69,14 @@ export default function MoneyCounter({ coins, className }: MoneyCounterProps) {
               }
               style={{ width: meta.size, height: meta.size, background: meta.tint }}
               className={cn(
-                "flex items-center justify-center rounded-full font-mono text-[10px] font-bold text-white transition",
+                "flex items-center justify-center rounded-full font-mono text-[10px] font-bold text-[var(--color-ink-900)] transition",
                 on
                   ? "ring-[3px] ring-[var(--brand)] ring-offset-2 ring-offset-[var(--surface)]"
-                  : "opacity-80 hover:opacity-100",
+                  // Not opacity-80. Fading the whole button composites the
+                  // face and its number together toward the page, and takes
+                  // a dime from 7.52:1 down to 4.70:1 in the state every coin
+                  // starts in. A hover lift costs no contrast at all.
+                  : "motion-safe:hover:scale-110",
               )}
             >
               {c.value}¢

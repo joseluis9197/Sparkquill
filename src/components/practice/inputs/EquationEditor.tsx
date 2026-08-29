@@ -43,7 +43,10 @@ export default function EquationEditor({
           type="text"
           inputMode="decimal"
           value={value}
-          disabled={answered}
+          // readOnly rather than disabled: a disabled input is skipped by the
+          // tab key and its value is not announced, so a child using a screen
+          // reader could not hear back what they had typed.
+          readOnly={answered}
           onChange={(e) =>
             setValue(e.target.value.replace(/[^0-9./-]/g, "").slice(0, 12))
           }
@@ -55,7 +58,7 @@ export default function EquationEditor({
           aria-label="Your answer"
           placeholder="?"
           className={cn(
-            "w-44 rounded-[var(--radius-tile)] border-2 px-4 py-3 text-center font-mono text-3xl font-bold tabular-nums outline-none",
+            "w-44 rounded-[var(--radius-tile)] border-2 px-4 py-3 text-center font-mono text-3xl font-bold tabular-nums",
             !answered && "border-[var(--border)] focus:border-[var(--brand)]",
             answered &&
               correct &&
@@ -108,7 +111,10 @@ export default function EquationEditor({
             onClick={() => onSubmit({ type: "equation_editor", value })}
             className="mt-5 w-full rounded-full bg-[var(--brand)] px-8 text-base font-bold text-[var(--brand-contrast)] leading-[48px] transition hover:opacity-90 disabled:opacity-40 sm:w-auto sm:px-10"
           >
-            Check my answer
+            {/* A silently greyed-out button says nothing about why it will
+                not respond. The other item types name what is still missing;
+                this one now does too. */}
+            {value.trim() ? "Check my answer" : "Type your answer first"}
           </button>
         </>
       )}

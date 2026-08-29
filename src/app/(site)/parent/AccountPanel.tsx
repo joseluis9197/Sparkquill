@@ -115,7 +115,7 @@ function Field({
         type="password"
         autoComplete={autoComplete}
         required
-        className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 outline-none transition focus:border-[var(--brand)]"
+        className="w-full rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface)] px-4 py-2.5 transition focus:border-[var(--brand)]"
       />
       {hint && (
         <span className="mt-1 block text-xs text-[var(--text-muted)]">

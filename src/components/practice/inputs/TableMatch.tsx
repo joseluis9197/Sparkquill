@@ -5,6 +5,7 @@ import type { PublicItem } from "@/lib/items/public";
 import type { ItemResponse } from "@/lib/items/types";
 import type { Reveal } from "@/lib/items/public";
 import { cn } from "@/lib/utils";
+import { optionStatus } from "./shared";
 
 /**
  * A grid of radio buttons, one row per statement — FAST's Table Item.
@@ -90,10 +91,27 @@ export default function TableMatch({
                           type="button"
                           role="radio"
                           aria-checked={picked}
-                          aria-label={`${row.label}: ${col.label}`}
-                          disabled={answered}
+                          aria-label={[
+                            `${row.label}: ${col.label}`,
+                            optionStatus({
+                              answered,
+                              chosen: picked,
+                              correct: isAnswer,
+                            }),
+                          ]
+                            .filter(Boolean)
+                            .join(", ")}
+                          // aria-disabled, not disabled: see optionStatus.
+                          // A radio removed from the tab order cannot be
+                          // reviewed, and this item has six rows to review.
+                          aria-disabled={answered}
                           onClick={() =>
-                            setPairs((prev) => ({ ...prev, [row.id]: col.id }))
+                            answered
+                              ? undefined
+                              : setPairs((prev) => ({
+                                  ...prev,
+                                  [row.id]: col.id,
+                                }))
                           }
                           className={cn(
                             "mx-auto flex h-7 w-7 items-center justify-center rounded-full border-2 transition",
