@@ -72,8 +72,13 @@ function policy(nonce: string): string {
     // Forms post to our own origin only. Stripe checkout is a redirect, not a
     // cross-origin form post, so this does not need widening for payment.
     "form-action 'self'",
-    "frame-ancestors 'none'",
-    "frame-src 'none'",
+    // Matches X-Frame-Options above: same-origin framing in development for
+    // the viewport lab, nothing at all in production.
+    `frame-ancestors ${isDev ? "'self'" : "'none'"}`,
+    // frame-ancestors governs who may frame us; frame-src governs what we may
+    // frame. Both are needed for the viewport lab, and both stay shut in
+    // production, where this app embeds nothing.
+    `frame-src ${isDev ? "'self'" : "'none'"}`,
     ...(isDev ? [] : ["upgrade-insecure-requests"]),
   ].join("; ");
 }

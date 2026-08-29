@@ -182,7 +182,9 @@ export default function ItemCard({
             <button
               type="button"
               onClick={() => setHintsShown((n) => n + 1)}
-              className="compact text-sm font-semibold text-[var(--brand)] underline underline-offset-4"
+              // Not compact: this is the control a stuck child reaches for,
+              // and it keeps the full finger-sized target.
+              className="inline-flex items-center px-1 text-sm font-semibold text-[var(--brand)] underline underline-offset-4"
             >
               {hintsShown === 0 ? "Give me a hint" : "Another hint"}
             </button>

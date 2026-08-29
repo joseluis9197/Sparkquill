@@ -156,9 +156,18 @@ button,
 a[href] {
   min-height: 44px;
 }
+/*
+ * Opt-out for controls that read as inline text rather than as buttons — a
+ * "change grade" link beside a heading should not be a 44px box.
+ *
+ * It drops to 32px rather than to nothing. The original `min-height: 0` threw
+ * away the floor entirely, which put the "Give me a hint" control at 20px
+ * tall on a phone: under the 24px WCAG minimum, and the one control a child
+ * who is stuck most needs to hit.
+ */
 button.compact,
 a.compact {
-  min-height: 0;
+  min-height: 32px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -170,4 +179,58 @@ a.compact {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/*
+ * Range sliders.
+ *
+ * The default track is about 16px tall, which is not a target a child can
+ * drag on a phone. The thumb is enlarged and the control given room around
+ * it, so the grab area is finger-sized even though the track stays slim.
+ *
+ * Inline links inside a sentence are deliberately left alone: WCAG 2.5.8
+ * exempts them, and padding a link in running prose breaks the line spacing
+ * of the paragraph around it.
+ */
+input[type="range"] {
+  min-height: 44px;
+  padding-block: 12px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  touch-action: pan-y;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-3);
+}
+
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--surface-3);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -10px;
+  border-radius: 999px;
+  background: var(--brand);
+  border: 3px solid var(--surface);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: var(--brand);
+  border: 3px solid var(--surface);
+  cursor: pointer;
 }
