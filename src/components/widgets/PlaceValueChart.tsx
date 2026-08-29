@@ -13,6 +13,13 @@ export interface PlaceValueChartProps {
   showExpanded?: boolean;
   /** Same reasoning: the word form is the answer on a word-form question. */
   showWords?: boolean;
+  /**
+   * The per-digit "worth 400" line. On by default, because naming what a
+   * digit is worth is the entire point of the chart — but it has to come off
+   * for the expanded-form question, where "worth 400" and "worth 40" printed
+   * side by side *are* the answer, spelled out above the options.
+   */
+  showWorth?: boolean;
   audio?: boolean;
   className?: string;
 }
@@ -38,6 +45,7 @@ export default function PlaceValueChart({
   value,
   showExpanded = false,
   showWords = false,
+  showWorth = true,
   audio = true,
   className,
 }: PlaceValueChartProps) {
@@ -64,15 +72,17 @@ export default function PlaceValueChart({
               <p className="py-3 text-center font-display text-4xl font-semibold tabular-nums">
                 {digit}
               </p>
-              <p className="border-t border-[var(--border)] py-1.5 text-center text-xs tabular-nums text-[var(--text-muted)]">
-                {digit === 0 ? (
-                  // A zero is a placeholder, not nothing — saying "worth 0"
-                  // is what stops a child dropping it and writing 35 for 305.
-                  <span>holds the place</span>
-                ) : (
-                  <>worth {digit * col.worth}</>
-                )}
-              </p>
+              {showWorth && (
+                <p className="border-t border-[var(--border)] py-1.5 text-center text-xs tabular-nums text-[var(--text-muted)]">
+                  {digit === 0 ? (
+                    // A zero is a placeholder, not nothing — saying "worth 0"
+                    // is what stops a child dropping it and writing 35 for 305.
+                    <span>holds the place</span>
+                  ) : (
+                    <>worth {digit * col.worth}</>
+                  )}
+                </p>
+              )}
             </div>
           );
         })}

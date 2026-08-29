@@ -59,6 +59,12 @@ export interface ItemCardProps {
   onAnswer: (response: ItemResponse, timeMs: number) => void;
   onNext: () => void;
   audio: boolean;
+  /**
+   * Withholds the hints. Set during a mock test: a hint is teaching, and a
+   * test that teaches while it measures reports a score for a student who
+   * had help — which is not the student who will sit the real one.
+   */
+  hideHints?: boolean;
 }
 
 export default function ItemCard({
@@ -69,6 +75,7 @@ export default function ItemCard({
   onAnswer,
   onNext,
   audio,
+  hideHints = false,
 }: ItemCardProps) {
   const [startedAt] = useState(() => Date.now());
   const [hintsShown, setHintsShown] = useState(0);
@@ -168,8 +175,8 @@ export default function ItemCard({
         <Ebsr item={item} reveal={reveal} onSubmit={submit} />
       )}
 
-      {/* Hints: available before answering, never after. */}
-      {!answered && item.hints.length > 0 && (
+      {/* Hints: available before answering, never after, never on a test. */}
+      {!answered && !hideHints && item.hints.length > 0 && (
         <div className="mt-5">
           {hintsShown < item.hints.length ? (
             <button

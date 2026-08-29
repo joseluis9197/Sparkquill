@@ -131,7 +131,13 @@ export const expandedFormItem: ItemGenerator = {
         "What is the 4 in 342 really worth?",
       ],
       difficulty: 1000,
-      widget: { key: "place-value-chart", config: { value: n } },
+      // The per-digit worth is switched off here: this question asks for the
+      // expanded form, and "worth 400" beside "worth 40" is that answer
+      // written out above the options.
+      widget: {
+        key: "place-value-chart",
+        config: { value: n, showWorth: false },
+      },
       fallback: (taken) => {
         for (let d = 1; d < 50; d++) {
           const v = expandedForm(Math.min(999, n + d));

@@ -93,14 +93,19 @@ export default async function LearnPage(props: {
         </p>
         <div className="mt-2 flex flex-wrap items-baseline justify-between gap-3">
           <h1 className="text-3xl sm:text-4xl">Let&rsquo;s practise</h1>
-          {available.length > 1 && (
+          <div className="flex items-center gap-4">
             <Link
-              href="/learn"
+              href={`/mock?subject=${subject}`}
               className="text-sm font-semibold text-[var(--brand)]"
             >
-              Switch subject
+              Take a practice test
             </Link>
-          )}
+            {available.length > 1 && (
+              <Link href="/learn" className="text-sm font-semibold text-[var(--text-muted)]">
+                Switch subject
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 

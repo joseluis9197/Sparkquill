@@ -88,6 +88,7 @@ export default function WidgetHost({
       return (
         <PlaceValueChart
           value={config.value as number}
+          showWorth={(config.showWorth as boolean) ?? true}
           audio={audio}
           className="mt-5"
         />

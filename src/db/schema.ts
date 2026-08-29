@@ -19,6 +19,18 @@ import {
 
 export const subjectEnum = pgEnum("subject", ["math", "ela"]);
 
+/**
+ * How a session was run.
+ *
+ * Kept apart because the two answer different questions. Practice is adaptive
+ * and forgiving: it repeats what a child is weak at, gives hints, and says
+ * whether each answer was right straight away. A mock test is none of those
+ * things, and its score is the only number in the product that can be
+ * compared to a real test. Averaging the two together would flatter the mock
+ * and corrupt the practice record at once.
+ */
+export const sessionModeEnum = pgEnum("session_mode", ["practice", "mock"]);
+
 /** Mirrors the item types actually used on FAST. See docs/plan.html §01. */
 export const itemTypeEnum = pgEnum("item_type", [
   "multiple_choice",
@@ -532,6 +544,15 @@ export const practiceSessions = pgTable(
       .notNull()
       .references(() => students.id, { onDelete: "cascade" }),
     subject: subjectEnum("subject").notNull(),
+    mode: sessionModeEnum("mode").notNull().default("practice"),
+    /**
+     * Seed for a mock test's question list.
+     *
+     * Stored so a reload, a lost connection or a closed tab returns the same
+     * paper rather than a fresh one. A test you can reroll by refreshing is
+     * not a test.
+     */
+    paperSeed: integer("paper_seed"),
     startedAt: timestamp("started_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
