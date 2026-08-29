@@ -2,6 +2,8 @@ import type { Genre, Passage } from "./types";
 import { G1_G2_PASSAGES } from "./g1-g2";
 import { G3_G4_PASSAGES } from "./g3-g4";
 import { G5_G6_PASSAGES } from "./g5-g6";
+import { EXTRA_G3_G4_PASSAGES } from "./extra-g3";
+import { EXTRA_PASSAGES } from "./extra-g5";
 
 /**
  * Every passage on the platform, keyed for lookup.
@@ -16,6 +18,8 @@ export const PASSAGES: Passage[] = [
   ...G1_G2_PASSAGES,
   ...G3_G4_PASSAGES,
   ...G5_G6_PASSAGES,
+  ...EXTRA_G3_G4_PASSAGES,
+  ...EXTRA_PASSAGES,
 ];
 
 const BY_ID = new Map(PASSAGES.map((p) => [p.id, p]));
