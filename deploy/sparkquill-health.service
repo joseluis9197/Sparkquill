@@ -1,0 +1,9 @@
+[Unit]
+Description=Sparkquill — check the site answers
+OnFailure=sparkquill-alert@%n.service
+
+[Service]
+Type=oneshot
+# Three tries before declaring it down. A single failed curl during a deploy
+# restart is not an outage, and an alarm that cries wolf gets muted.
+ExecStart=/bin/bash -c 'for i in 1 2 3; do code=$(curl -s -o /dev/null -m 10 -w "%%{http_code}" http://127.0.0.1:3100/); [ "$code" = "200" ] && exit 0; sleep 20; done; echo "site did not answer 200 after 3 tries (last: $code)"; exit 1'

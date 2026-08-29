@@ -1,0 +1,13 @@
+[Unit]
+Description=Sparkquill — report the failure of %i
+
+[Service]
+Type=oneshot
+User=sparkquill
+Group=sparkquill
+WorkingDirectory=/var/www/sparkquill/current
+EnvironmentFile=/etc/sparkquill/app.env
+# Run from inside the deployed tree so Node can resolve nodemailer. The
+# script still imports no application code — only the library — so a build
+# that fails to compile cannot silence the alarm about itself.
+ExecStart=/usr/bin/node /var/www/sparkquill/current/deploy/alert.mjs %i FAILED

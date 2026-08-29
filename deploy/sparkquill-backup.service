@@ -1,0 +1,16 @@
+[Unit]
+Description=Sparkquill — nightly database backup
+After=postgresql.service
+# A backup that fails silently is worse than no backup: it buys false
+# confidence until the day it is needed.
+OnFailure=sparkquill-alert@%n.service
+
+[Service]
+Type=oneshot
+User=sparkquill
+Group=sparkquill
+ExecStart=/usr/local/bin/sparkquill-backup
+# The failure path matters more than the success path: if this unit fails,
+# the watchdog notices and reports it.
+StandardOutput=journal
+StandardError=journal

@@ -1,0 +1,12 @@
+[Unit]
+Description=Sparkquill — nightly database backup (timer)
+
+[Timer]
+# 03:30, half an hour after TraderPro's, so two pg/sqlite dumps never contend
+# for the same disk on a small instance.
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
