@@ -133,10 +133,23 @@ export default function PracticeSession({
   grade,
   subject,
   audio = true,
+  startSeed,
 }: {
   grade: number;
   subject: "math" | "ela";
   audio?: boolean;
+  /**
+   * Where this visitor's questions begin.
+   *
+   * Chosen on the server and passed down rather than picked here, because
+   * this component is rendered on the server first and hydrated afterwards:
+   * a random value chosen in the browser would not match the one the server
+   * already sent, and React would throw the markup away. Fixing it to a
+   * constant was the other way to keep the two in step, and it meant every
+   * parent who opened the demo — and every parent who came back to it — met
+   * the same question, out of a library of eighty-seven passages.
+   */
+  startSeed: number;
 }) {
   // Mastery state never affects what is rendered — only which question is
   // picked next — so it lives in a ref. Keeping it in state would mean
@@ -147,11 +160,11 @@ export default function PracticeSession({
   const [attempts, setAttempts] = useState<Attempt[]>([]);
   const [sparks, setSparks] = useState(0);
   const [streak, setStreak] = useState(0);
-  const [seedCounter, setSeedCounter] = useState(2);
+  const [seedCounter, setSeedCounter] = useState(startSeed + 1);
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [reveal, setReveal] = useState<Reveal | null>(null);
   const [current, setCurrent] = useState<CurrentQuestion | null>(() =>
-    pickQuestion(new Map(), [], 1, grade, subject),
+    pickQuestion(new Map(), [], startSeed, grade, subject),
   );
 
   const finished = attempts.length >= SESSION_LENGTH;

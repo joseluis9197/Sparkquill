@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PracticeSession from "@/components/practice/PracticeSession";
 import { GRADES, ordinal } from "@/lib/utils";
+import { demoSeed } from "@/lib/demo-seed";
 
 export const metadata: Metadata = {
   title: "Try it",
@@ -51,6 +52,8 @@ export default async function PracticePage(props: {
     return <Chooser grade={grade} />;
   }
 
+  const startSeed = await demoSeed();
+
   return (
     <main className="mx-auto max-w-2xl px-5 py-8 sm:py-12">
       <header className="mb-8">
@@ -65,7 +68,7 @@ export default async function PracticePage(props: {
         </div>
       </header>
 
-      <PracticeSession grade={grade} subject={subject} />
+      <PracticeSession grade={grade} subject={subject} startSeed={startSeed} />
 
       <div className="mt-10 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface-2)] p-5 text-center">
         <p className="text-[15px]">
