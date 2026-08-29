@@ -64,9 +64,12 @@ with_env npx drizzle-kit migrate 2>&1 | tail -3
 # Skills are derived from the generator registry, so a deploy that adds a
 # generator has to refresh them or the new questions have nowhere to record
 # attempts against.
-echo "--> Seeding curriculum and skills"
+echo "--> Seeding curriculum, skills and prerequisites"
 with_env npx tsx scripts/seed-curriculum.ts 2>&1 | tail -2
 with_env npx tsx scripts/seed-skills.ts 2>&1 | tail -2
+# The prerequisite graph is the source of cross-grade remediation. Reseeded
+# every deploy because an edge removed from the file must disappear here too.
+with_env npx tsx --tsconfig tsconfig.scripts.json scripts/seed-prerequisites.ts 2>&1 | tail -2
 
 echo "--> Building"
 with_env npm run build 2>&1 | tail -3
