@@ -227,6 +227,18 @@ export function mulFractions(a: Fraction, b: Fraction): Fraction {
   return simplify({ n: a.n * b.n, d: a.d * b.d });
 }
 
+/**
+ * Exactly the fraction given, with nothing reduced.
+ *
+ * Separate from `fractionText` on purpose. Half the fraction benchmarks are
+ * *about* the unsimplified form — 2/4 and 1/2 being the same amount written
+ * two ways is the lesson — and a formatter that quietly reduces would print
+ * the question as its own answer.
+ */
+export function fractionRaw({ n, d }: Fraction): string {
+  return `${n}/${d}`;
+}
+
 /** "3/4", or "5" when it divides exactly, or "1 1/2" for an improper value. */
 export function fractionText(f: Fraction, mixed = false): string {
   const { n, d } = simplify(f);

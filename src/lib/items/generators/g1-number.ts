@@ -110,7 +110,7 @@ export const g1TensAndOnes = mcGenerator({
   benchmark: "MA.1.NSO.1.3",
   skillSlug: "compose-decompose-to-100",
   skillTitle: "Breaking numbers into tens and ones",
-  build(rng, ctx) {
+  build(rng) {
     const n = rng.int(21, 99);
     const { tens, ones } = placeValueParts(n);
     const askForParts = rng.bool();
