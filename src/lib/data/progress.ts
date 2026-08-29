@@ -1,9 +1,10 @@
 import "server-only";
-import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, lte, sql } from "drizzle-orm";
 import { db } from "@/db";
 import {
   attempts,
   benchmarks,
+  practiceSessions,
   reportingCategories,
   skillMastery,
   skillPrerequisites,
@@ -285,7 +286,33 @@ export interface StudentSummary {
   topMisconceptions: { key: string; count: number }[];
 }
 
-export async function summaryFor(studentId: string): Promise<StudentSummary> {
+/**
+ * Attempts made under test conditions, which practice statistics must exclude.
+ *
+ * A mock test is deliberately harder than practice: no hints, no second look,
+ * and questions drawn from the blueprint rather than from what the child is
+ * ready for. Counting those attempts into "how accurate is my child in
+ * practice" drags the figure down for a reason that has nothing to do with
+ * their practice, and makes a parent who encourages test-taking see a worse
+ * number for it.
+ */
+const mockAttemptFilter = sql`${attempts.sessionId} is null or ${attempts.sessionId} not in (
+  select id from ${practiceSessions} where mode = 'mock'
+)`;
+
+/**
+ * `grade` bounds the denominator.
+ *
+ * Without it the report said "0 of 299 skills mastered" to the parent of a
+ * second grader, where 299 counts every skill from grade 1 to grade 6. The
+ * child can never be set most of them, so the figure measured nothing and
+ * made steady progress look like none — the same mistake as serving a child
+ * another grade's questions, arriving by a different route.
+ */
+export async function summaryFor(
+  studentId: string,
+  grade: number,
+): Promise<StudentSummary> {
   const [totals] = await db
     .select({
       total: sql<number>`count(*)::int`,
@@ -293,7 +320,7 @@ export async function summaryFor(studentId: string): Promise<StudentSummary> {
       ms: sql<number>`coalesce(sum(${attempts.timeMs}), 0)::bigint`,
     })
     .from(attempts)
-    .where(eq(attempts.studentId, studentId));
+    .where(and(eq(attempts.studentId, studentId), mockAttemptFilter));
 
   const misconceptions = await db
     .select({
@@ -306,6 +333,7 @@ export async function summaryFor(studentId: string): Promise<StudentSummary> {
         eq(attempts.studentId, studentId),
         eq(attempts.correct, false),
         sql`${attempts.misconception} is not null`,
+        mockAttemptFilter,
       ),
     )
     .groupBy(attempts.misconception)
@@ -317,7 +345,11 @@ export async function summaryFor(studentId: string): Promise<StudentSummary> {
     .from(skillMastery)
     .where(eq(skillMastery.studentId, studentId));
 
-  const skillCount = await db.select({ id: skills.id }).from(skills);
+  const skillCount = await db
+    .select({ id: skills.id })
+    .from(skills)
+    .innerJoin(benchmarks, eq(benchmarks.code, skills.benchmarkCode))
+    .where(lte(benchmarks.grade, grade));
 
   return {
     totalAttempts: totals?.total ?? 0,
@@ -424,4 +456,98 @@ export async function loadCategoryWeights(
     name: r.name,
     weight: (Number(r.min) + Number(r.max)) / 2,
   }));
+}
+
+export interface MockResult {
+  id: string;
+  subject: Subject;
+  takenAt: Date;
+  total: number;
+  correct: number;
+  minutes: number;
+  /** Per reporting category, empty for grades with no published blueprint. */
+  byCategory: { name: string; correct: number; total: number }[];
+}
+
+/**
+ * Every practice test a child has finished, newest first.
+ *
+ * The reason this exists separately from `summaryFor`: a mock score is the one
+ * number on this platform that can be compared with a real test, and it is
+ * only meaningful if it stands alone. Averaged into practice it means nothing;
+ * listed on its own, a parent can watch it move across a term.
+ *
+ * Abandoned tests are excluded. A test somebody walked away from halfway
+ * through is not a result, and showing it as one would tell a parent their
+ * child scored 30% when their child scored nothing and went outside.
+ */
+export async function mockHistoryFor(
+  studentId: string,
+  limit = 6,
+): Promise<MockResult[]> {
+  const sessions = await db
+    .select({
+      id: practiceSessions.id,
+      subject: practiceSessions.subject,
+      startedAt: practiceSessions.startedAt,
+      endedAt: practiceSessions.endedAt,
+    })
+    .from(practiceSessions)
+    .where(
+      and(
+        eq(practiceSessions.studentId, studentId),
+        eq(practiceSessions.mode, "mock"),
+        isNotNull(practiceSessions.endedAt),
+      ),
+    )
+    .orderBy(desc(practiceSessions.startedAt))
+    .limit(limit);
+
+  if (sessions.length === 0) return [];
+
+  const rows = await db
+    .select({
+      sessionId: attempts.sessionId,
+      correct: attempts.correct,
+      category: benchmarks.reportingCategory,
+    })
+    .from(attempts)
+    .innerJoin(skills, eq(skills.id, attempts.skillId))
+    .innerJoin(benchmarks, eq(benchmarks.code, skills.benchmarkCode))
+    .where(
+      inArray(
+        attempts.sessionId,
+        sessions.map((s) => s.id),
+      ),
+    );
+
+  return sessions
+    .map((s) => {
+      const mine = rows.filter((r) => r.sessionId === s.id);
+      const cats = new Map<string, { correct: number; total: number }>();
+      for (const r of mine) {
+        if (!r.category) continue;
+        const c = cats.get(r.category) ?? { correct: 0, total: 0 };
+        c.total += 1;
+        if (r.correct) c.correct += 1;
+        cats.set(r.category, c);
+      }
+      return {
+        id: s.id,
+        subject: s.subject,
+        takenAt: s.startedAt,
+        total: mine.length,
+        correct: mine.filter((r) => r.correct).length,
+        minutes: Math.max(
+          1,
+          Math.round(
+            ((s.endedAt ?? s.startedAt).getTime() - s.startedAt.getTime()) / 60000,
+          ),
+        ),
+        byCategory: [...cats.entries()].map(([name, v]) => ({ name, ...v })),
+      };
+    })
+    // A finished session with no answers is somebody who opened a test and
+    // pressed finish. Not a result.
+    .filter((r) => r.total > 0);
 }

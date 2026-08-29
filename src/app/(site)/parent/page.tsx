@@ -3,7 +3,12 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { listStudents } from "@/lib/data/students";
-import { skillProgressFor, summaryFor } from "@/lib/data/progress";
+import {
+  mockHistoryFor,
+  skillProgressFor,
+  summaryFor,
+  type MockResult,
+} from "@/lib/data/progress";
 import { billingSummary } from "@/app/actions/billing";
 import BillingPanel from "./BillingPanel";
 import AccountPanel from "./AccountPanel";
@@ -45,8 +50,9 @@ export default async function ParentPage() {
   const reports = await Promise.all(
     children.map(async (child) => ({
       child,
-      summary: await summaryFor(child.id),
+      summary: await summaryFor(child.id, child.grade),
       skills: await skillProgressFor(child.id, child.grade),
+      mocks: await mockHistoryFor(child.id),
     })),
   );
 
@@ -73,7 +79,7 @@ export default async function ParentPage() {
         </p>
       )}
 
-      {reports.map(({ child, summary, skills }) => {
+      {reports.map(({ child, summary, skills, mocks }) => {
         const accuracy =
           summary.totalAttempts === 0
             ? null
@@ -90,6 +96,8 @@ export default async function ParentPage() {
                 {ordinal(child.grade)} grade
               </span>
             </div>
+
+            <MockPanel results={mocks} name={child.firstName} />
 
             {summary.totalAttempts === 0 ? (
               <p className="mt-4 text-[var(--text-muted)]">
@@ -194,6 +202,122 @@ function Stat({ value, label }: { value: string; label: string }) {
       <span className="block text-xs leading-snug text-[var(--text-muted)]">
         {label}
       </span>
+    </div>
+  );
+}
+
+const SUBJECT_LABEL = { math: "Mathematics", ela: "Reading" } as const;
+
+const WHEN = new Intl.DateTimeFormat("en-US", {
+  day: "numeric",
+  month: "short",
+});
+
+/**
+ * Practice test results.
+ *
+ * Placed above the practice statistics, and kept visually apart from them,
+ * because they answer a different question. Practice accuracy says how a
+ * child is doing on work chosen to suit them, with hints available. A test
+ * score is what happens with none of that help, on a paper built from the
+ * blueprint — and it is the only number here a parent can hold next to a real
+ * test result.
+ *
+ * The two are never averaged. Mixing them would make a family that encourages
+ * test practice see a worse accuracy figure for doing so.
+ */
+function MockPanel({ results, name }: { results: MockResult[]; name: string }) {
+  if (results.length === 0) {
+    return (
+      <div className="mt-5 rounded-[var(--radius-tile)] border border-dashed border-[var(--border)] px-4 py-3 text-sm text-[var(--text-muted)]">
+        {name} has not taken a practice test yet. It is timed, gives no hints,
+        and follows the state&rsquo;s own mix of topics — the closest thing here
+        to sitting the real one.
+      </div>
+    );
+  }
+
+  const [latest, ...earlier] = results;
+  const pct = (r: MockResult) => Math.round((r.correct / r.total) * 100);
+  // Only compared within a subject: a reading score next to a maths score is
+  // not a trend, it is two different tests.
+  const previous = earlier.find((r) => r.subject === latest.subject);
+  const change = previous ? pct(latest) - pct(previous) : null;
+
+  return (
+    <div className="mt-5 rounded-[var(--radius-tile)] border border-[var(--border)] bg-[var(--surface-2)] p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h3 className="text-sm font-bold uppercase tracking-wide text-[var(--text-muted)]">
+          Practice tests
+        </h3>
+        <span className="font-mono text-[11px] text-[var(--text-muted)]">
+          timed · no hints
+        </span>
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-baseline gap-3">
+        <span className="font-display text-3xl font-semibold tabular-nums">
+          {pct(latest)}%
+        </span>
+        <span className="text-sm text-[var(--text-muted)]">
+          {SUBJECT_LABEL[latest.subject]} · {latest.correct} of {latest.total} ·{" "}
+          {WHEN.format(new Date(latest.takenAt))}
+        </span>
+        {change !== null && (
+          <span
+            className={
+              change >= 0
+                ? "text-sm font-semibold text-[var(--color-grow-500)]"
+                : "text-sm font-semibold text-[var(--color-ember-500)]"
+            }
+          >
+            {change >= 0 ? "+" : ""}
+            {change} points since last time
+          </span>
+        )}
+      </div>
+
+      {latest.byCategory.length > 0 && (
+        <ul className="mt-3 flex flex-wrap gap-1.5">
+          {latest.byCategory.map((c) => (
+            <li
+              key={c.name}
+              className="rounded-full bg-[var(--surface)] px-3 py-1 text-xs"
+            >
+              {c.name}
+              <span className="ml-1.5 tabular-nums text-[var(--text-muted)]">
+                {c.correct}/{c.total}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {earlier.length > 0 && (
+        <details className="mt-3">
+          <summary className="cursor-pointer text-xs font-semibold text-[var(--brand)]">
+            Earlier tests ({earlier.length})
+          </summary>
+          <ul className="mt-2 space-y-1 text-sm">
+            {earlier.map((r) => (
+              <li key={r.id} className="flex justify-between gap-3">
+                <span className="text-[var(--text-muted)]">
+                  {WHEN.format(new Date(r.takenAt))} ·{" "}
+                  {SUBJECT_LABEL[r.subject]}
+                </span>
+                <span className="tabular-nums">
+                  {pct(r)}% ({r.correct}/{r.total}, {r.minutes} min)
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )}
+
+      <p className="mt-3 text-xs text-[var(--text-muted)]">
+        A score on our questions, not a FAST score. We do not convert it to an
+        achievement level — only the state can do that.
+      </p>
     </div>
   );
 }
