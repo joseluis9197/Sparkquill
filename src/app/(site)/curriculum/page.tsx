@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { benchmarks, skills } from "@/db/schema";
 import { sql, eq, isNotNull, and } from "drizzle-orm";
 import { GRADES, assessmentName, hasBlueprint, ordinal } from "@/lib/utils";
+import { NOT_PRACTISED } from "@/lib/curriculum/not-practised";
 
 export const metadata: Metadata = {
   title: "What's covered",
@@ -143,6 +144,39 @@ export default async function CurriculumPage() {
           );
         })}
       </div>
+
+      <section className="mt-10 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6">
+        <h2 className="text-2xl">What we deliberately leave to the classroom</h2>
+        <p className="mt-3 max-w-prose text-[var(--text-muted)]">
+          Twelve of Florida&rsquo;s English Language Arts standards, across
+          every grade, ask a child to <em>do</em> something rather than choose
+          an answer. Florida does not assess them with test questions either —
+          a teacher watches the child do the thing. We could generate four
+          options for &ldquo;print all upper- and lowercase letters&rdquo;, and
+          the number it produced on your child&rsquo;s report would mean
+          nothing.
+        </p>
+        <ul className="mt-5 space-y-3">
+          {NOT_PRACTISED.map((n) => (
+            <li key={n.suffix} className="flex flex-col gap-0.5 sm:flex-row sm:gap-4">
+              <span className="font-mono text-xs text-[var(--text-muted)] sm:w-16 sm:flex-none sm:pt-1">
+                {n.suffix}
+              </span>
+              <span>
+                <span className="font-semibold">{n.what}</span>
+                <span className="block text-sm text-[var(--text-muted)]">
+                  {n.why}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-5 border-t border-[var(--border)] pt-4 text-sm text-[var(--text-muted)]">
+          Everything else &mdash; every reading, vocabulary, grammar and
+          mathematics benchmark from grade 1 to grade 6 &mdash; has practice
+          behind it.
+        </p>
+      </section>
 
       <p className="mt-10 text-xs text-[var(--text-muted)]">
         Counts come straight from the curriculum in our database, so this page
