@@ -381,6 +381,7 @@ Gopher tortoises are protected in Florida. It is against the law to disturb a bu
     opinionEvidence: [
       "That law protects one animal on paper and several hundred in practice.",
       "Take the gopher tortoise out of the sandhills and the animals that depend on its burrows go too.",
+      "When a fire moves across the sandhills, animals go down the nearest burrow and come out afterwards to a burnt landscape they survived by borrowing somebody's house.",
     ],
     textFeatures: [
       {
@@ -448,7 +449,7 @@ Gopher tortoises are protected in Florida. It is against the law to disturb a bu
 
 The answer is not tradition. It is what happens in your head while your hand is moving.
 
-Researchers have watched children learn letters two ways: by typing them and by writing them out. The children who wrote the letters by hand recognised them faster afterwards. Forming a letter yourself, badly, over and over, seems to teach your brain what makes an "a" an "a" in a way that pressing a key does not.
+Researchers have watched children learn letters two ways: by typing them and by writing them out. The children who wrote the letters by hand recognised them faster afterwards. Forming a letter yourself, badly, over and over, seems to teach the brain what the shape of a letter really is, in a way that pressing a key does not.
 
 The same thing shows up with notes. Students who take notes by hand cannot write fast enough to record everything, so they have to decide what matters as they go. Students typing can keep up, so they often type without deciding anything at all. Afterwards, the handwriters remember more of the ideas.
 
@@ -466,6 +467,7 @@ None of this means typing is bad. Typing is faster and easier to read, and most 
     opinionEvidence: [
       "The children who wrote the letters by hand recognised them faster afterwards.",
       "Afterwards, the handwriters remember more of the ideas.",
+      "Students who take notes by hand cannot write fast enough to record everything, so they have to decide what matters as they go.",
     ],
     textFeatures: [
       {
@@ -1055,7 +1057,8 @@ Several famous springs that were clear in photographs from the 1950s are green i
       "What ordinary people do on their own land matters more to Florida's springs than any single polluter.",
     opinionEvidence: [
       "Fertiliser spread on a lawn does not stay on the lawn.",
-      "Nothing was dumped into them. The change came from a thousand ordinary lawns.",
+      "The change came from a thousand ordinary lawns.",
+      "Rain carries the nitrogen down through the same cracks the water travels, and it comes out at the spring, where it feeds algae that turn clear water green.",
     ],
     textFeatures: [
       {
@@ -1141,9 +1144,9 @@ The middle position, which most schools eventually reach, is that phones come to
     authorOpinion:
       "Storing phones during the day is better than either banning them from school or letting students carry them.",
     opinionEvidence: [
-      "Part of the mind is spent on not checking it.",
-      "Schools that ban phones have to be honest that they are taking on a responsibility instead.",
-      "The phone is present. It is not in a pocket.",
+      "Because part of the mind is spent on not checking it.",
+      "Schools that ban phones have to be honest that they are taking on a responsibility instead: their own systems for reaching families have to be good, and tested, and fast.",
+      "When a phone is in a pocket, on silent, students still perform worse on tasks that need sustained attention than students whose phones are in another room.",
     ],
     textFeatures: [
       {

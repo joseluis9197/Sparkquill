@@ -149,8 +149,8 @@ There is a lesson in the timeline that is easy to miss. The draining took about 
       "Undoing damage to a natural system takes far longer than causing it.",
     opinionEvidence: [
       "The draining took about twenty-five years.",
-      "The repair has taken longer than that already and is not finished.",
-      "Much of the restoration involves removing structures that were themselves major achievements.",
+      "The repair has taken longer than that already, and is not finished.",
+      "Much of the work involves removing structures that were themselves enormous engineering achievements.",
     ],
     textFeatures: [
       {
@@ -257,9 +257,9 @@ Removal is worth doing. It is not, and nobody involved claims it is, a solution.
     authorOpinion:
       "Removal programmes are worthwhile but cannot solve the problem on their own.",
     opinionEvidence: [
-      "Programmes take several thousand snakes while estimates run into the tens of thousands.",
-      "Pythons are extremely hard to detect even when searchers walk over them.",
-      "The realistic goal is to hold the edges of the range.",
+      "Together these take several thousand snakes.",
+      "Estimates of the population run into the tens of thousands, and pythons are extraordinarily difficult to see: in one study, searchers walking directly over pythons found them about one time in every three.",
+      "The realistic goal is to hold the edges of the range while researchers look for something better.",
     ],
     vocabulary: [
       {
@@ -539,9 +539,9 @@ The economics are worth stating plainly. Growing oranges in Florida now costs ro
     authorOpinion:
       "For many growers the decision to stop replanting is now an economic one rather than an agricultural one.",
     opinionEvidence: [
-      "Costs per box are roughly three times what they were in 2003.",
-      "Yield per acre has fallen at the same time.",
-      "The land is worth more with houses on it.",
+      "Growing oranges in Florida now costs roughly three times what it did in 2003, per box, while the yield per acre has fallen.",
+      "They are making a financial one, weighing thirty years of uncertain fruit against a certain offer from a developer this year.",
+      "For many the arithmetic has already answered it: the land is worth more with houses on it than with trees.",
     ],
     textFeatures: [
       {

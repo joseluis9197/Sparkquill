@@ -422,7 +422,7 @@ The practical objection is time, and it is a fair one. Ten minutes is enough. It
     opinionEvidence: [
       "A child's listening comprehension runs ahead of their reading comprehension until roughly the age of thirteen.",
       "A child reading alone abandons those books.",
-      "What it has to be is above the level the child would pick alone.",
+      "What it has to be is above the level the child would pick alone, because that is the entire point of somebody else doing the reading.",
     ],
     textFeatures: [
       {
@@ -498,8 +498,9 @@ Farmers' market tomatoes taste better mainly because they were picked ripe and t
     authorOpinion:
       "The blandness of shipped tomatoes is a predictable result of what was measured, not a failure of care.",
     opinionEvidence: [
-      "the reason is not that growers do not care",
+      "A tomato from a supermarket in February usually does not, and the reason is not that growers do not care.",
       "Flavour was not measured, so it was not selected for, and a trait nobody selects for tends to drift away.",
+      "For fifty years, tomato varieties were selected for how they travelled, how uniformly they ripened, and how they looked in a box.",
     ],
     textFeatures: [
       {
@@ -1010,7 +1011,8 @@ The uncomfortable part of the science is that we cannot stop a bloom once it for
       "Cutting nutrient runoff is worth doing even though it cannot prevent red tide from occurring.",
     opinionEvidence: [
       "What is within reach is the fuel.",
-      "It will make the difference between a bloom that lasts weeks and one that lasts a year.",
+      "It will make the difference between a bloom that lasts weeks and one that lasts a year — which, to anybody who lives on that coast, is not a small difference at all.",
+      "It can be fed, extended, and intensified by it.",
     ],
     textFeatures: [
       {
@@ -1079,7 +1081,7 @@ The uncomfortable part of the science is that we cannot stop a bloom once it for
 
 A grade does three jobs, and they are frequently confused with one another. It tells a student where they stand. It tells a teacher whether the teaching worked. And it tells somebody outside the classroom — the next school, an employer, a scholarship committee — something they cannot find out for themselves.
 
-The third job is the one that is hardest to replace. A written comment saying that a student "engages thoughtfully with challenging texts" is more informative than a B, provided you trust the person who wrote it and you have time to read four hundred of them. A scholarship committee reading two thousand applications has neither. Where grades have been removed, what usually replaces them is not a richer picture but a reliance on things that are worse: the reputation of the school, the confidence of the applicant, and who knows whom.
+The third job is the one that is hardest to replace. A written comment saying that a student engages thoughtfully with challenging texts is more informative than a B, provided you trust the person who wrote it and you have time to read four hundred of them. A scholarship committee reading two thousand applications has neither. Where grades have been removed, what usually replaces them is not a richer picture but a reliance on things that are worse: the reputation of the school, the confidence of the applicant, and who knows whom.
 
 The second job matters more than students realise. A teacher looking at a set of results can see that eleven people missed the same question, which is information about the lesson rather than about the eleven people. Removing the measurement does not remove the problem; it removes the teacher's ability to see it.
 
@@ -1099,9 +1101,9 @@ Grades are a poor summary of a person. They were never meant to be a summary of 
     authorPurpose: "to persuade",
     authorOpinion: "Grades should be improved rather than abolished.",
     opinionEvidence: [
-      "Where grades have been removed, what usually replaces them is not a richer picture but a reliance on things that are worse.",
+      "Where grades have been removed, what usually replaces them is not a richer picture but a reliance on things that are worse: the reputation of the school, the confidence of the applicant, and who knows whom.",
       "Removing the measurement does not remove the problem; it removes the teacher's ability to see it.",
-      "But the answer to a bad instrument is a better one, not none.",
+      "But the answer to a bad instrument is a better one, not none — a grade with a comment attached, returned quickly enough to act on, is a different thing from a grade alone at the end of a term.",
     ],
     textFeatures: [
       {
@@ -1183,7 +1185,7 @@ None of this means results should never be recorded. It means the recording shou
       "Work should usually be returned with feedback and no grade, with results recorded only a few times a year.",
     opinionEvidence: [
       "The students who received a comment only improved most on the next piece.",
-      "once a grade is present, almost nobody reads the comment",
+      "The students who received both improved about as little as the students who received a grade alone — because once a grade is present, almost nobody reads the comment.",
       "It is against measuring so often that the measurement becomes the subject.",
     ],
     textFeatures: [

@@ -221,7 +221,7 @@ Some schools give only fifteen minutes of recess. That is not enough. Every scho
     opinionEvidence: [
       "Running and playing helps your body get strong.",
       "After recess, kids sit still better and listen better.",
-      "Fifteen minutes of recess is not enough.",
+      "Going outside also helps your brain.",
     ],
     textFeatures: [
       {
@@ -478,8 +478,8 @@ Manatees have no natural enemies. Almost everything that hurts them comes from p
     authorOpinion: "The dangers manatees face are ones people could fix.",
     opinionEvidence: [
       "Manatees have no natural enemies.",
-      "Almost everything that hurts them comes from people.",
-      "Signs telling boats to slow down already exist on many rivers.",
+      "Almost everything that hurts them comes from people, which means almost everything that hurts them is something people can change.",
+      "Many rivers now have signs telling boats to go slowly.",
     ],
     textFeatures: [
       {
@@ -559,9 +559,9 @@ That is why some Florida towns turn beach lights off in summer. A dark beach in 
     authorPurpose: "to persuade",
     authorOpinion: "Turning beach lights off in summer is worth doing.",
     opinionEvidence: [
-      "Bright lights can be brighter than the moon.",
-      "A baby turtle may crawl the wrong way.",
-      "A dark beach in July is a beach doing its job.",
+      "Now bright lights from houses and streets can be brighter than the moon, and a baby turtle may crawl the wrong way.",
+      "They find the water by looking for the brightest, lowest light.",
+      "It is a beach doing its job.",
     ],
     vocabulary: [
       {

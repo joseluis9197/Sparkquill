@@ -93,6 +93,22 @@ export interface Passage {
   supportingDetails?: string[];
   authorPurpose?: "to inform" | "to entertain" | "to persuade";
   authorOpinion?: string;
+  /**
+   * Sentences from the text that give a reason to accept the opinion.
+   *
+   * Each entry has to be one whole sentence, copied from `text` exactly.
+   * That is not tidiness. Three separate items quote these back to a student
+   * as words the author wrote — one asks which statement *from the text* is
+   * evidence, one says "the author writes" and asks what kind of appeal it
+   * is, and the hot-text item asks the student to find the sentence in the
+   * passage and tap it. When these were paraphrases, all three were lying,
+   * and the hot-text item had to guess which sentence was meant by counting
+   * shared words. It guessed wrong at least twice, marking the wrong sentence
+   * correct in a passage a child could read for themselves.
+   *
+   * Enforced by a test, so the generators can look the sentence up instead of
+   * searching for it.
+   */
   opinionEvidence?: string[];
   textFeatures?: TextFeatureNote[];
 

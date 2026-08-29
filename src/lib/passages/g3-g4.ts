@@ -131,9 +131,9 @@ A spring, then, is not only a nice place to swim. It is a window into the water 
     authorPurpose: "to inform",
     authorOpinion: "What people put on the ground matters, because it ends up in the water they drink.",
     opinionEvidence: [
-      "What people pour onto lawns and roads sinks into the same limestone.",
-      "It arrives in the same water people later drink.",
-      "A spring is a window into the water supply.",
+      "What people pour onto lawns and roads does not simply disappear.",
+      "It sinks through the same sandy soil, into the same limestone, and arrives in the same water people later drink.",
+      "It is a window into the water supply, and what you can see coming out of it is a fair report of what has been going in.",
     ],
     textFeatures: [
       {
@@ -393,8 +393,8 @@ That rule is not really about weather. It is about people. A forecaster in 2040 
     authorPurpose: "to inform",
     authorOpinion: "Retiring a hurricane's name is a decision about people rather than about weather.",
     opinionEvidence: [
-      "A retired name would ask families to hear a name that means the worst week of their lives.",
-      "That rule is not really about weather. It is about people.",
+      "A forecaster in 2040 warning a family about Hurricane Katrina would be asking them to hear a name that, for many, means the worst week of their lives.",
+      "That rule is not really about weather.",
     ],
     textFeatures: [
       {
@@ -495,9 +495,9 @@ None of this is expensive. Most of it is not even difficult. It is only inconven
     authorPurpose: "to persuade",
     authorOpinion: "Families should prepare for hurricanes months before the season, not when a warning arrives.",
     opinionEvidence: [
-      "A household buying plywood on the day of a warning often loses out.",
-      "Water bought in June is an ordinary purchase; bought on the day it is an empty shelf.",
-      "None of this is expensive or difficult, only inconvenient.",
+      "A house buying plywood the day a warning is issued is competing with every other household in the county for the same sheets at the same hardware store, and often loses.",
+      "Bought the afternoon of a warning, it is a queue and an empty shelf.",
+      "It is only inconvenient at a time of year when nothing seems urgent, which is exactly why it so often does not get done.",
     ],
     vocabulary: [
       {

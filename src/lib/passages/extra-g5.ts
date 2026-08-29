@@ -563,9 +563,9 @@ The general shape of this is not unique to lighting. A decision framed as a tech
     authorOpinion:
       "Cities should choose the colour of their streetlights deliberately rather than treating the switch as a purely technical decision.",
     opinionEvidence: [
-      "Cities that switched early and cheaply have in a number of cases replaced their replacements.",
-      "Warmer LEDs are the ones a city does not have to install twice.",
-      "That choice is easier to make deliberately than to discover afterwards.",
+      "Cities that switched early and cheaply have, in a number of cases, replaced their replacements.",
+      "They are also, on the evidence available, the ones a city does not have to install twice.",
+      "A decision framed as a technical upgrade turns out to contain a choice about what a street is for at eleven at night, and that choice is a great deal easier to make deliberately at the start than to discover, years later, from the complaints.",
     ],
     textFeatures: [
       {

@@ -191,9 +191,9 @@ Karl von Frisch worked this out in the 1940s by marking individual bees with pai
     authorOpinion:
       "What a bee can communicate is far more than people expected from an insect.",
     opinionEvidence: [
-      "Almost nobody believed Karl von Frisch at first.",
-      "An insect with a brain the size of a grass seed was not supposed to be able to say where.",
-      "The dance carries both a direction and a distance.",
+      "Almost nobody believed him at first.",
+      "The angle the bee walks tells the others which direction to fly, measured against the sun.",
+      "The length of the middle part of the dance tells them how far.",
     ],
     textFeatures: [
       {
@@ -282,9 +282,9 @@ There is no ant deciding any of this. Each one follows a simple rule, and the li
     authorOpinion:
       "Something that looks organised does not need anyone organising it.",
     opinionEvidence: [
-      "It looks organised, as though somebody is in charge. Nobody is.",
-      "Each one follows a simple rule.",
-      "The line across the path is what those rules add up to.",
+      "Watch a line of ants crossing a path and it looks organised, as though somebody is in charge.",
+      "An ant that finds food picks up a crumb and walks home.",
+      "Each one follows a simple rule, and the line across the path is what those rules add up to.",
     ],
     vocabulary: [
       {

@@ -14,6 +14,20 @@ import { bandFor, searchableText, wordCount } from "../types";
  * has quietly grown to four hundred words.
  */
 
+/**
+ * How the hot-text item divides a passage, copied deliberately.
+ *
+ * The generator splits on end punctuation to turn a passage into tappable
+ * sentences. This test has to divide it exactly the same way to check what a
+ * child would actually be shown, so the two must stay in step: change one and
+ * this stops testing the thing it claims to.
+ */
+const NEWLINES = /\n+/g;
+const SENTENCE_END = /(?<=[.!?"])\s+/;
+
+/** A real sentence opens with a capital, a digit, or an opening quote. */
+const STARTS_LIKE_A_SENTENCE = /^["“(]?[A-Z0-9]/;
+
 describe("passage library", () => {
   it("has passages for every grade", () => {
     for (let grade = 1; grade <= 6; grade++) {
@@ -180,6 +194,78 @@ describe("passage library", () => {
       if (p.opinionEvidence?.length) {
         expect(p.authorOpinion, `${p.id} has evidence but no opinion`).toBeTruthy();
       }
+    }
+  });
+
+  it("quotes evidence as whole sentences from the text", () => {
+    /*
+     * Three separate items present these to a student as the author's own
+     * words, and the hot-text item asks the student to find the sentence in
+     * the passage and tap it. A paraphrase makes the first two untrue and
+     * makes the third impossible to build without guessing.
+     *
+     * It used to guess, by counting words shared between the annotation and
+     * each sentence. On two passages it guessed wrong and marked the wrong
+     * sentence correct. This is the check that makes the lookup exact.
+     */
+    const sentences = (text: string) =>
+      text
+        .replace(/\n+/g, " ")
+        .split(/(?<=[.!?"])\s+/)
+        .map((s) => s.trim())
+        .filter(Boolean);
+    const normalise = (s: string) =>
+      s.replace(/\s+/g, " ").replace(/[“”]/g, '"').trim().toLowerCase();
+
+    for (const p of PASSAGES) {
+      const inText = new Set(sentences(p.text).map(normalise));
+      for (const ev of p.opinionEvidence ?? []) {
+        expect(
+          inText.has(normalise(ev)),
+          `${p.id}: "${ev}" is offered as the author's own words but is not a sentence in the passage`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("splits an evidence text into whole sentences", () => {
+    /*
+     * The hot-text item turns the passage into a list of tappable sentences,
+     * so however the splitter divides the text is what a child is asked to
+     * choose between. A sentence containing a quoted phrase splits at the
+     * closing quotation mark, which turned one passage into three fragments
+     * and offered a child two stray words as a thing to tap.
+     *
+     * Only texts the item can actually use are held to this. Dialogue splits
+     * the same way and there is no fixing that, but stories are never used
+     * for evidence items, so it costs them nothing.
+     */
+    const sentences = (text: string) =>
+      text
+        .replace(NEWLINES, " ")
+        .split(SENTENCE_END)
+        .map((x) => x.trim())
+        .filter(Boolean);
+
+    for (const p of PASSAGES) {
+      if (!p.authorOpinion || !p.opinionEvidence?.length) continue;
+      for (const sentence of sentences(p.text)) {
+        expect(
+          STARTS_LIKE_A_SENTENCE.test(sentence),
+          `${p.id}: "${sentence}" is a fragment, not a sentence a child could be asked to tap`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  it("does not point two pieces of evidence at the same sentence", () => {
+    // The hot-text item picks one entry and asks for that sentence. Two
+    // entries resolving to the same sentence make the same item twice.
+    for (const p of PASSAGES) {
+      const evidence = p.opinionEvidence ?? [];
+      expect(new Set(evidence).size, `${p.id} repeats a piece of evidence`).toBe(
+        evidence.length,
+      );
     }
   });
 

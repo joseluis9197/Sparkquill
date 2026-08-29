@@ -431,32 +431,58 @@ function hotTextGenerator(spec: {
       const evidence = passage.opinionEvidence!;
 
       /*
-       * Which sentence counts as the evidence is decided by matching the
-       * annotation against the passage's own sentences on their content
-       * words. The annotation is a paraphrase, so an exact match would find
-       * nothing — but a sentence sharing most of its distinctive words with
-       * the stated evidence is the sentence that evidence came from.
+       * A lookup, not a search.
+       *
+       * This used to decide which sentence was the evidence by counting the
+       * words an annotation shared with each sentence, because annotations
+       * were paraphrases and nothing matched exactly. It failed quietly in
+       * both directions: ties went to whichever sentence came first, and an
+       * annotation matching nothing at all fell through to sentence zero. On
+       * two passages it marked the wrong sentence correct — in a text the
+       * child could read for themselves and see it was wrong.
+       *
+       * Evidence is now required to be a whole sentence copied from the
+       * passage, checked by a test, so the sentence can simply be found. The
+       * throw below is unreachable while that test passes, and is here so
+       * that if it ever stops passing this fails loudly instead of teaching
+       * somebody the wrong answer.
        */
-      const words = (s: string) =>
-        new Set(
-          s
-            .toLowerCase()
-            .replace(/[^a-z0-9\s]/g, "")
-            .split(/\s+/)
-            .filter((w) => w.length > 3),
-        );
+      const normalise = (s: string) =>
+        s.replace(/\s+/g, " ").replace(/[“”]/g, '"').trim().toLowerCase();
 
-      const target = rng.pick(evidence);
-      const targetWords = words(target);
-      let best = 0;
-      let bestScore = -1;
-      all.forEach((s, i) => {
-        const overlap = [...words(s)].filter((w) => targetWords.has(w)).length;
-        if (overlap > bestScore) {
-          bestScore = overlap;
-          best = i;
-        }
-      });
+      /*
+       * Half the time, ask for two sentences rather than one.
+       *
+       * This is a format the real test uses, and it is a harder question in
+       * the way the benchmark intends: one sentence can be found by spotting
+       * a keyword, while two has to be chosen against each other. It is also
+       * where this template's variety comes from. Asking for one gives as
+       * many questions as a passage has evidence; asking for two gives every
+       * pair, which roughly doubles the number of distinct items a student
+       * can meet before they start seeing repeats.
+       *
+       * Nothing else needed changing: the input already reads how many to
+       * select from the number of correct answers, and the scorer already
+       * awards partial credit for one of two.
+       */
+      const wantTwo = evidence.length >= 2 && rng.bool(0.5);
+      const chosen = wantTwo
+        ? rng.shuffle([...evidence]).slice(0, 2)
+        : [rng.pick(evidence)];
+
+      const targets = chosen
+        .map((sentence) => {
+          const i = all.findIndex((s) => normalise(s) === normalise(sentence));
+          if (i === -1) {
+            throw new Error(
+              `${spec.key}: ${passage.id} lists evidence that is not a sentence of its own text: "${sentence}"`,
+            );
+          }
+          return i;
+        })
+        // In the order they appear in the passage, so the explanation reads
+        // the way the text does rather than the way the shuffle came out.
+        .sort((a, b) => a - b);
 
       const tokens = all.map((text, i) => ({
         id: `s${i}`,
@@ -471,22 +497,26 @@ function hotTextGenerator(spec: {
         benchmark: spec.benchmark,
         skillSlug: spec.skillSlug,
         type: "hot_text",
-        stem: `The author argues: "${passage.authorOpinion}"\n\nTap the **one sentence** that best supports that.`,
-        audioText: `The author argues: ${passage.authorOpinion}. Tap the sentence that best supports it.`,
+        stem: `The author argues: "${passage.authorOpinion}"\n\nTap the **${wantTwo ? "two sentences" : "one sentence"}** that ${wantTwo ? "support" : "best supports"} that.`,
+        audioText: `The author argues: ${passage.authorOpinion}. Tap the ${wantTwo ? "two sentences that support it" : "sentence that best supports it"}.`,
         tokens,
-        correctIds: [`s${best}`],
+        correctIds: targets.map((i) => `s${i}`),
         passage: {
           id: passage.id,
           title: passage.title,
           text: passage.text,
           genre: passage.genre,
         },
-        explanation: `"${all[best]}" is the sentence doing the work. Evidence has to be in the text and has to give a reason for the claim — a sentence that is merely nearby does neither.`,
+        explanation: `${targets
+          .map((i) => `"${all[i]}"`)
+          .join(" and ")} ${targets.length > 1 ? "are the sentences" : "is the sentence"} doing the work. Evidence has to be in the text and has to give a reason for the claim — a sentence that is merely nearby does neither.`,
         hints: [
           "Look for a sentence that gives a reason, not just a fact.",
           "Ask whether it would convince someone who disagreed.",
         ],
-        difficulty: 1280,
+        // Choosing two is harder than finding one: a keyword can locate a
+        // single sentence, but a pair has to be weighed against each other.
+        difficulty: wantTwo ? 1340 : 1280,
       };
     },
   };
