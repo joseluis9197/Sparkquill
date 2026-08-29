@@ -46,12 +46,22 @@ export default function HomePage() {
               Start a 7-day trial
             </Link>
             <Link
-              href="/curriculum"
+              href="/practice"
               className="inline-flex items-center rounded-full border border-[var(--border)] px-7 text-base font-semibold leading-[44px] transition hover:bg-[var(--surface-3)]"
             >
-              See what&rsquo;s covered
+              Try it first, no account
             </Link>
           </div>
+          <p className="mt-3 text-sm text-[var(--text-muted)]">
+            Or{" "}
+            <Link
+              href="/curriculum"
+              className="font-semibold text-[var(--brand)] underline underline-offset-4"
+            >
+              see exactly what is covered
+            </Link>{" "}
+            — every standard, and the ones we deliberately leave out.
+          </p>
           <p className="mt-4 font-mono text-xs text-[var(--text-muted)]">
             $10 per student per month · cancel in one click
           </p>

@@ -3,6 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import { Flame, Sparkles } from "lucide-react";
 import { GENERATORS } from "@/lib/items/registry";
+import { parseBenchmark } from "@/lib/curriculum/code";
 import type { Item, ItemResponse, ScoreResult } from "@/lib/items/types";
 import { scoreItem } from "@/lib/items/build";
 import { revealFor, toPublicItem, type Reveal } from "@/lib/items/public";
@@ -41,17 +42,40 @@ interface CurrentQuestion {
 
 type SkillStates = Map<string, SkillState>;
 
-function buildCandidates(states: SkillStates): SkillCandidate[] {
+/**
+ * Skills this demo may draw on.
+ *
+ * Exactly the chosen grade, not the grades below it — which is the opposite
+ * of what the signed-in app does, and deliberately so.
+ *
+ * For a child, reaching down is remediation: the point is to find the thing
+ * they are actually missing. For a visitor evaluating the product, it is a
+ * misrepresentation. Somebody who asks to see fifth grade reading and is
+ * handed a first grade story about new shoes has been shown something that is
+ * not what they asked about, and will conclude the product is for younger
+ * children than it is.
+ *
+ * Without any grade bound at all — which is how this was — the demo pulled
+ * from every generator in the registry, so a visitor trying second grade
+ * could be handed sixth grade ratios.
+ */
+function buildCandidates(
+  states: SkillStates,
+  grade: number,
+  subject: "math" | "ela",
+): SkillCandidate[] {
   const bySkill = new Map<string, string>();
   for (const g of GENERATORS) {
+    const parts = parseBenchmark(g.benchmark);
+    if (!parts || parts.subject !== subject || parts.grade !== grade) continue;
     if (!bySkill.has(g.skillSlug)) bySkill.set(g.skillSlug, g.benchmark);
   }
   return [...bySkill.entries()].map(([slug, benchmark]) => ({
     skillId: slug,
     skillSlug: slug,
     benchmark,
-    // Grades 1-2 have no published blueprint, so there is no reporting
-    // category to weight by here. See docs/plan.html §01.
+    // No weights here: this demo has no database, so there is no blueprint to
+    // read. The signed-in app loads the real ones.
     reportingCategory: null,
     prerequisiteIds: [],
     state: states.get(slug) ?? initialSkillState(),
@@ -71,9 +95,11 @@ function pickQuestion(
   states: SkillStates,
   served: string[],
   seedCounter: number,
+  grade: number,
+  subject: "math" | "ela",
 ): CurrentQuestion | null {
   const selection = selectNextSkill({
-    candidates: buildCandidates(states),
+    candidates: buildCandidates(states, grade, subject),
     categoryWeights: [],
     now: new Date(),
     recentlyServed: served.slice(-2),
@@ -103,7 +129,15 @@ function pickQuestion(
   };
 }
 
-export default function PracticeSession({ audio = true }: { audio?: boolean }) {
+export default function PracticeSession({
+  grade,
+  subject,
+  audio = true,
+}: {
+  grade: number;
+  subject: "math" | "ela";
+  audio?: boolean;
+}) {
   // Mastery state never affects what is rendered — only which question is
   // picked next — so it lives in a ref. Keeping it in state would mean
   // reading the latest value from inside a setState updater, which React may
@@ -117,7 +151,7 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
   const [result, setResult] = useState<ScoreResult | null>(null);
   const [reveal, setReveal] = useState<Reveal | null>(null);
   const [current, setCurrent] = useState<CurrentQuestion | null>(() =>
-    pickQuestion(new Map(), [], 1),
+    pickQuestion(new Map(), [], 1, grade, subject),
   );
 
   const finished = attempts.length >= SESSION_LENGTH;
@@ -170,8 +204,8 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
     setReveal(null);
     setResult(null);
     setSeedCounter((n) => n + 1);
-    setCurrent(pickQuestion(statesRef.current, nextServed, seedCounter));
-  }, [current, served, seedCounter]);
+    setCurrent(pickQuestion(statesRef.current, nextServed, seedCounter, grade, subject));
+  }, [current, served, seedCounter, grade, subject]);
 
   const restart = useCallback(() => {
     statesRef.current = new Map();
@@ -182,8 +216,8 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
     setSeedCounter(2);
     setReveal(null);
     setResult(null);
-    setCurrent(pickQuestion(new Map(), [], 1));
-  }, []);
+    setCurrent(pickQuestion(new Map(), [], 1, grade, subject));
+  }, [grade, subject]);
 
   if (finished) {
     const correct = attempts.filter((a) => a.correct).length;
