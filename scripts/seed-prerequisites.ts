@@ -73,7 +73,7 @@ async function main() {
   const rows = await db.select({ id: skills.id, slug: skills.slug }).from(skills);
   const idBySlug = new Map(rows.map((r) => [r.slug, r.id]));
 
-  const good: { skillId: string; prerequisiteId: string; strength: string }[] = [];
+  const good: { skillId: string; prerequisiteId: string; strength: number }[] = [];
   const missing: string[] = [];
 
   for (const [skill, prereq] of PREREQUISITE_EDGES) {
@@ -91,7 +91,7 @@ async function main() {
       missing.push(`${skill} points at itself`);
       continue;
     }
-    good.push({ skillId, prerequisiteId: prereqId, strength: "1" });
+    good.push({ skillId, prerequisiteId: prereqId, strength: 1 });
   }
 
   if (missing.length > 0) {

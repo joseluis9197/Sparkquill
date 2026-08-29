@@ -1,5 +1,6 @@
 import type { ItemGenerator } from "./types";
 import { ELA_GENERATORS } from "./generators/ela-registry";
+import { FAST_FORMAT_GENERATORS } from "./generators/fast-formats";
 import {
   additionWithinHundred,
   subtractionWithinHundred,
@@ -466,6 +467,14 @@ export const GENERATORS: ItemGenerator[] = [
    * generators/ela-registry.ts for why.
    */
   ...ELA_GENERATORS,
+
+  /*
+   * The formats FAST uses beyond multiple choice — typed answers, select-two,
+   * table items, hot text and two-part evidence questions. Registered on the
+   * same benchmarks as their multiple-choice siblings so a session mixes
+   * formats the way the real test does, without announcing it.
+   */
+  ...FAST_FORMAT_GENERATORS,
 ];
 
 const BY_KEY = new Map(GENERATORS.map((g) => [g.key, g]));

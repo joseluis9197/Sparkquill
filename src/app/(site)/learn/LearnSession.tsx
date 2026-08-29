@@ -9,7 +9,8 @@ import {
   type NextQuestion,
 } from "@/app/actions/practice";
 import ItemCard from "@/components/practice/ItemCard";
-import type { MultipleChoiceItem, ScoreResult } from "@/lib/items/types";
+import type { ItemResponse, ScoreResult } from "@/lib/items/types";
+import type { Reveal } from "@/lib/items/public";
 
 const SESSION_LENGTH = 10;
 
@@ -44,9 +45,8 @@ export default function LearnSession({
   const [sparks, setSparks] = useState(0);
   const [streak, setStreak] = useState(0);
   const [result, setResult] = useState<ScoreResult | null>(null);
-  const [chosenId, setChosenId] = useState<string | null>(null);
   const [revealed, setRevealed] = useState<{
-    correctChoiceId: string;
+    reveal: Reveal;
     explanation: string;
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -56,28 +56,27 @@ export default function LearnSession({
   const questionNumber = Math.min(served.length + 1, SESSION_LENGTH);
 
   const handleAnswer = useCallback(
-    (choiceId: string, _local: ScoreResult, timeMs: number) => {
+    (response: ItemResponse, timeMs: number) => {
       if (!current || result) return;
-      setChosenId(choiceId);
 
       startTransition(async () => {
         const server = await submitAnswer({
           templateKey: current.item.templateKey,
           seed: current.item.seed,
           difficulty: current.difficulty,
-          choiceId,
+          response,
           timeMs,
           hintsUsed: 0,
         });
 
         if (server.error) {
           setError(server.error);
-          setChosenId(null);
+
           return;
         }
 
         setRevealed({
-          correctChoiceId: server.correctChoiceId,
+          reveal: server.reveal,
           explanation: server.explanation,
         });
         setResult({
@@ -106,7 +105,6 @@ export default function LearnSession({
     const nextServed = [...served, current.item.skillSlug];
     setServed(nextServed);
     setResult(null);
-    setChosenId(null);
     setRevealed(null);
 
     startTransition(async () => {
@@ -167,16 +165,6 @@ export default function LearnSession({
     );
   }
 
-  // ItemCard needs the answer key to colour the options once the child has
-  // answered; before that, the server has not revealed it and the placeholder
-  // never matches a real choice id.
-  const item: MultipleChoiceItem = {
-    ...current.item,
-    correctId: revealed?.correctChoiceId ?? "__hidden__",
-    explanation: revealed?.explanation ?? "",
-    choices: current.item.choices,
-  };
-
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
@@ -214,12 +202,13 @@ export default function LearnSession({
       </div>
 
       <ItemCard
-        key={item.id}
-        item={item}
+        key={current.item.id}
+        item={current.item}
+        reveal={revealed?.reveal ?? null}
+        explanation={revealed?.explanation ?? ""}
+        correct={result?.correct ?? null}
         onAnswer={handleAnswer}
         onNext={handleNext}
-        result={result}
-        chosenId={chosenId}
         audio={audio}
       />
 

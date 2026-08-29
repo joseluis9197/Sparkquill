@@ -11,7 +11,7 @@ import {
   subtractWithoutBorrowing,
 } from "../numbers";
 import { Rng } from "../rng";
-import type { MultipleChoiceItem } from "../types";
+import type { ItemResponse, MultipleChoiceItem } from "../types";
 
 
 
@@ -125,32 +125,81 @@ describe.each(GENERATORS.map((g) => [g.key, g] as const))(
       }
     });
 
-    it("always has exactly one choice flagged as correct", () => {
+    it("marks exactly the right number of answers as correct", () => {
       for (const difficulty of DIFFICULTIES) {
         for (const seed of SEEDS) {
-          const item = generator.generate({
-            seed,
-            difficulty,
-          }) as MultipleChoiceItem;
-          const correct = item.choices.filter((c) => !c.misconception);
-          expect(correct).toHaveLength(1);
-          expect(correct[0].id).toBe(item.correctId);
+          const item = generator.generate({ seed, difficulty });
+          switch (item.type) {
+            case "multiple_choice": {
+              const correct = item.choices.filter((c) => !c.misconception);
+              expect(correct).toHaveLength(1);
+              expect(correct[0].id).toBe(item.correctId);
+              break;
+            }
+            case "multiselect": {
+              // The count the student is told to pick has to match the count
+              // that is actually right, or the item cannot be answered.
+              expect(item.correctIds.length).toBe(item.selectCount);
+              const ids = new Set(item.choices.map((c) => c.id));
+              for (const id of item.correctIds) expect(ids.has(id)).toBe(true);
+              break;
+            }
+            case "hot_text": {
+              expect(item.correctIds.length).toBeGreaterThan(0);
+              const ids = new Set(item.tokens.map((t) => t.id));
+              for (const id of item.correctIds) expect(ids.has(id)).toBe(true);
+              break;
+            }
+            case "ebsr": {
+              for (const part of [item.partA, item.partB]) {
+                const correct = part.choices.filter((c) => !c.misconception);
+                expect(correct).toHaveLength(1);
+                expect(correct[0].id).toBe(part.correctId);
+              }
+              break;
+            }
+            case "table_match": {
+              // Every row needs an answer, and it has to name a real column.
+              const cols = new Set(item.columns.map((c) => c.id));
+              for (const row of item.rows) {
+                expect(item.answer[row.id], `row ${row.id} has no answer`).toBeDefined();
+                expect(cols.has(item.answer[row.id])).toBe(true);
+              }
+              break;
+            }
+            case "equation_editor": {
+              expect(item.answer.trim().length).toBeGreaterThan(0);
+              break;
+            }
+          }
         }
       }
     });
 
     it("labels every distractor with a misconception", () => {
+      // Only for formats where a wrong option is a discrete thing a student
+      // chose. Hot text has no distractors — every token is real text, and
+      // the wrong ones are wrong by position rather than by error type.
       for (const seed of SEEDS.slice(0, 50)) {
-        const item = generator.generate({
-          seed,
-          difficulty: "core",
-        }) as MultipleChoiceItem;
-        for (const choice of item.choices) {
-          if (choice.id === item.correctId) continue;
-          expect(
-            choice.misconception,
-            `${generator.key} seed=${seed}: distractor "${choice.label}" has no misconception`,
-          ).toBeTruthy();
+        const item = generator.generate({ seed, difficulty: "core" });
+        const sets: { choices: typeof item extends never ? never : { id: string; label: string; misconception?: string }[]; correctId: string }[] =
+          item.type === "multiple_choice"
+            ? [{ choices: item.choices, correctId: item.correctId }]
+            : item.type === "ebsr"
+              ? [
+                  { choices: item.partA.choices, correctId: item.partA.correctId },
+                  { choices: item.partB.choices, correctId: item.partB.correctId },
+                ]
+              : [];
+
+        for (const { choices, correctId } of sets) {
+          for (const choice of choices) {
+            if (choice.id === correctId) continue;
+            expect(
+              choice.misconception,
+              `${generator.key} seed=${seed}: distractor "${choice.label}" has no misconception`,
+            ).toBeTruthy();
+          }
         }
       }
     });
@@ -163,19 +212,42 @@ describe.each(GENERATORS.map((g) => [g.key, g] as const))(
       }
     });
 
-    it("scores the correct choice as correct and others as wrong", () => {
+    it("scores its own correct answer as correct", () => {
+      // Whatever the format, answering an item with its own answer key must
+      // come out right. This is the assertion that catches a generator whose
+      // stated answer does not match what the scorer will accept — which is
+      // silent everywhere else and looks to a child like being marked wrong
+      // for being right.
       for (const seed of SEEDS.slice(0, 50)) {
-        const item = generator.generate({
-          seed,
-          difficulty: "core",
-        }) as MultipleChoiceItem;
+        const item = generator.generate({ seed, difficulty: "core" });
 
-        const right = scoreItem(item, {
-          type: "multiple_choice",
-          choiceId: item.correctId,
-        });
-        expect(right.correct).toBe(true);
+        const answer: ItemResponse =
+          item.type === "multiple_choice"
+            ? { type: "multiple_choice", choiceId: item.correctId }
+            : item.type === "multiselect"
+              ? { type: "multiselect", choiceIds: item.correctIds }
+              : item.type === "hot_text"
+                ? { type: "hot_text", tokenIds: item.correctIds }
+                : item.type === "equation_editor"
+                  ? { type: "equation_editor", value: item.answer }
+                  : item.type === "table_match"
+                    ? { type: "table_match", pairs: item.answer }
+                    : {
+                        type: "ebsr",
+                        partA: item.partA.correctId,
+                        partB: item.partB.correctId,
+                      };
+
+        const right = scoreItem(item, answer);
+        expect(right.correct, `${generator.key} seed=${seed}`).toBe(true);
         expect(right.partialCredit).toBe(1);
+      }
+    });
+
+    it("scores a wrong answer as wrong, and names the error", () => {
+      for (const seed of SEEDS.slice(0, 50)) {
+        const item = generator.generate({ seed, difficulty: "core" });
+        if (item.type !== "multiple_choice") continue;
 
         for (const choice of item.choices) {
           if (choice.id === item.correctId) continue;
@@ -185,6 +257,22 @@ describe.each(GENERATORS.map((g) => [g.key, g] as const))(
           });
           expect(wrong.correct).toBe(false);
           expect(wrong.misconception).toBe(choice.misconception);
+        }
+      }
+    });
+
+    it("accepts every alternative form its own answer allows", () => {
+      // 4.5 and 4.500 are the same number. A generator that lists an accepted
+      // form the scorer rejects would mark a right answer wrong.
+      for (const seed of SEEDS.slice(0, 30)) {
+        const item = generator.generate({ seed, difficulty: "core" });
+        if (item.type !== "equation_editor") continue;
+        for (const form of item.accepts) {
+          const scored = scoreItem(item, { type: "equation_editor", value: form });
+          expect(
+            scored.correct,
+            `${generator.key} seed=${seed} lists "${form}" as accepted but the scorer rejects it`,
+          ).toBe(true);
         }
       }
     });
@@ -236,15 +324,36 @@ describe.each(GENERATORS.map((g) => [g.key, g] as const))(
       }
     });
 
-    it("gives every choice a non-empty label", () => {
+    it("gives every option a non-empty label", () => {
       for (const seed of SEEDS.slice(0, 50)) {
-        const item = generator.generate({
-          seed,
-          difficulty: "core",
-        }) as MultipleChoiceItem;
-        expect(item.choices.length).toBeGreaterThanOrEqual(3);
-        for (const choice of item.choices) {
-          expect(choice.label.trim().length).toBeGreaterThan(0);
+        const item = generator.generate({ seed, difficulty: "core" });
+        const groups: { id: string; label: string }[][] =
+          item.type === "multiple_choice" || item.type === "multiselect"
+            ? [item.choices]
+            : item.type === "ebsr"
+              ? [item.partA.choices, item.partB.choices]
+              : item.type === "hot_text"
+                ? [
+                    item.tokens
+                      .filter((t) => t.selectable)
+                      .map((t) => ({ id: t.id, label: t.text })),
+                  ]
+                : item.type === "table_match"
+                  ? [item.rows, item.columns]
+                  : [];
+
+        for (const group of groups) {
+          expect(group.length).toBeGreaterThanOrEqual(2);
+          for (const option of group) {
+            expect(option.label.trim().length).toBeGreaterThan(0);
+          }
+          // Two options reading the same thing is unanswerable whatever the
+          // format, so the check is not special to multiple choice.
+          const labels = group.map((o) => o.label);
+          expect(
+            new Set(labels).size,
+            `${generator.key} seed=${seed} repeated an option: ${labels.join(" | ")}`,
+          ).toBe(labels.length);
         }
       }
     });

@@ -8,27 +8,69 @@ import { requireActiveStudent } from "@/lib/data/students";
 import { loadMastery, recordAttempt } from "@/lib/data/progress";
 import { getGenerator } from "@/lib/items/registry";
 import { scoreItem } from "@/lib/items/build";
-import type { ItemResponse, MultipleChoiceItem } from "@/lib/items/types";
+import type { Item, ItemResponse } from "@/lib/items/types";
+import {
+  NO_REVEAL,
+  revealFor,
+  toPublicItem,
+  type PublicItem,
+  type Reveal,
+} from "@/lib/items/public";
 import { bandForStudent } from "@/lib/adaptive/elo";
 import { initialSkillState } from "@/lib/adaptive/mastery";
+
+/**
+ * The response, whichever kind of item it answers.
+ *
+ * Validated as a discriminated union rather than a bag of optional fields, so
+ * a client cannot send a hot-text answer to a multiple-choice item and have
+ * the server quietly score it against nothing.
+ */
+const responseSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("multiple_choice"), choiceId: z.string().min(1) }),
+  z.object({
+    type: z.literal("multiselect"),
+    choiceIds: z.array(z.string().min(1)).min(1).max(10),
+  }),
+  z.object({
+    type: z.literal("equation_editor"),
+    // Length-capped: this is the one item type that takes free text, and an
+    // unbounded string from the browser has no business reaching the scorer.
+    value: z.string().max(40),
+  }),
+  z.object({
+    type: z.literal("table_match"),
+    pairs: z.record(z.string(), z.string()),
+  }),
+  z.object({
+    type: z.literal("hot_text"),
+    tokenIds: z.array(z.string().min(1)).max(80),
+  }),
+  z.object({
+    type: z.literal("ebsr"),
+    partA: z.string().min(1),
+    partB: z.string().min(1),
+  }),
+]);
 
 const submitSchema = z.object({
   templateKey: z.string().min(1),
   seed: z.coerce.number().int(),
   difficulty: z.enum(["easy", "core", "stretch"]),
-  choiceId: z.string().min(1),
+  response: responseSchema,
   timeMs: z.coerce.number().int().min(0).max(1000 * 60 * 30),
   hintsUsed: z.coerce.number().int().min(0).max(10),
 });
 
 export interface SubmitResult {
   correct: boolean;
-  correctChoiceId: string;
+  reveal: Reveal;
   explanation: string;
   misconception?: string;
   justMastered: boolean;
   error?: string;
 }
+
 
 /**
  * Records one answer.
@@ -46,7 +88,7 @@ export async function submitAnswer(
   if (!active) {
     return {
       correct: false,
-      correctChoiceId: "",
+      reveal: NO_REVEAL,
       explanation: "",
       justMastered: false,
       error: "Your session has ended. Please choose your profile again.",
@@ -57,14 +99,14 @@ export async function submitAnswer(
   if (!parsed.success) {
     return {
       correct: false,
-      correctChoiceId: "",
+      reveal: NO_REVEAL,
       explanation: "",
       justMastered: false,
       error: "That answer could not be read.",
     };
   }
 
-  const { templateKey, seed, difficulty, choiceId, timeMs, hintsUsed } =
+  const { templateKey, seed, difficulty, response, timeMs, hintsUsed } =
     parsed.data;
 
   let generator;
@@ -73,7 +115,7 @@ export async function submitAnswer(
   } catch {
     return {
       correct: false,
-      correctChoiceId: "",
+      reveal: NO_REVEAL,
       explanation: "",
       justMastered: false,
       error: "That question is no longer available.",
@@ -82,9 +124,21 @@ export async function submitAnswer(
 
   // Regenerating from (template, seed) reproduces the item byte for byte,
   // which is what makes server-side scoring possible without storing it.
-  const item = generator.generate({ seed, difficulty }) as MultipleChoiceItem;
-  const response: ItemResponse = { type: "multiple_choice", choiceId };
-  const scored = scoreItem(item, response);
+  const item: Item = generator.generate({ seed, difficulty });
+
+  // A response of the wrong kind would make scoreItem throw. Rejecting it
+  // here turns a crash into a message, and there is no legitimate client that
+  // can produce one.
+  if (item.type !== response.type) {
+    return {
+      correct: false,
+      reveal: NO_REVEAL,
+      explanation: "",
+      justMastered: false,
+      error: "That answer did not match the question.",
+    };
+  }
+  const scored = scoreItem(item, response as ItemResponse);
 
   const [skill] = await db
     .select({ id: skills.id })
@@ -95,7 +149,7 @@ export async function submitAnswer(
   if (!skill) {
     return {
       correct: scored.correct,
-      correctChoiceId: item.correctId,
+      reveal: revealFor(item),
       explanation: item.explanation,
       justMastered: false,
       error: "This skill is not set up yet, so the answer was not saved.",
@@ -117,55 +171,17 @@ export async function submitAnswer(
 
   return {
     correct: scored.correct,
-    correctChoiceId: item.correctId,
+    reveal: revealFor(item),
     explanation: item.explanation,
     misconception: scored.misconception,
     justMastered: result.justMastered,
   };
 }
 
-/**
- * The item as the browser sees it: everything needed to render the question,
- * with the answer key and the explanation removed. Those come back only in
- * the response to submitAnswer, so the answer is never sitting in the page
- * before the child has committed to a choice.
- */
-export type PublicItem = Omit<
-  MultipleChoiceItem,
-  "correctId" | "explanation"
-> & {
-  choices: { id: string; label: string }[];
-};
-
 export interface NextQuestion {
   item: PublicItem;
   difficulty: "easy" | "core" | "stretch";
   reason: string;
-}
-
-/**
- * Built field by field rather than by omitting keys from the full item, so a
- * field added to MultipleChoiceItem later cannot leak to the browser just
- * because nobody remembered to exclude it.
- */
-function toPublicItem(item: MultipleChoiceItem): PublicItem {
-  return {
-    id: item.id,
-    templateKey: item.templateKey,
-    seed: item.seed,
-    benchmark: item.benchmark,
-    skillSlug: item.skillSlug,
-    type: item.type,
-    stem: item.stem,
-    audioText: item.audioText,
-    widget: item.widget,
-    passage: item.passage,
-    hints: item.hints,
-    difficulty: item.difficulty,
-    // The misconception label on each distractor is a giveaway too, so the
-    // choices are reduced to id and text.
-    choices: item.choices.map((c) => ({ id: c.id, label: c.label })),
-  };
 }
 
 /**
@@ -248,9 +264,7 @@ export async function nextQuestion(
   const generator = candidates[seed % candidates.length];
 
   return {
-    item: toPublicItem(
-      generator.generate({ seed, difficulty }) as MultipleChoiceItem,
-    ),
+    item: toPublicItem(generator.generate({ seed, difficulty })),
     difficulty,
     reason: selection.explanation,
   };

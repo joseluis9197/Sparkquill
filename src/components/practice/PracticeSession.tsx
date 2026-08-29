@@ -3,7 +3,9 @@
 import { useCallback, useRef, useState } from "react";
 import { Flame, Sparkles } from "lucide-react";
 import { GENERATORS } from "@/lib/items/registry";
-import type { MultipleChoiceItem, ScoreResult } from "@/lib/items/types";
+import type { Item, ItemResponse, ScoreResult } from "@/lib/items/types";
+import { scoreItem } from "@/lib/items/build";
+import { revealFor, toPublicItem, type Reveal } from "@/lib/items/public";
 import {
   applyAttempt,
   initialSkillState,
@@ -32,7 +34,7 @@ interface Attempt {
 }
 
 interface CurrentQuestion {
-  item: MultipleChoiceItem;
+  item: Item;
   skillSlug: string;
   reason: string;
 }
@@ -90,8 +92,12 @@ function pickQuestion(
   const seed = seedCounter * 7919 + skillSlug.length;
   const generator = generators[seed % generators.length];
 
+  // The full item is kept, not just its public shape. This demo has no
+  // server to score against, so it holds the answer key in the browser — the
+  // one place the real product deliberately never puts it. Nothing is saved
+  // from this page, which is what makes that acceptable here and nowhere else.
   return {
-    item: generator.generate({ seed, difficulty: band }) as MultipleChoiceItem,
+    item: generator.generate({ seed, difficulty: band }),
     skillSlug,
     reason: selection.explanation,
   };
@@ -108,8 +114,8 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
   const [sparks, setSparks] = useState(0);
   const [streak, setStreak] = useState(0);
   const [seedCounter, setSeedCounter] = useState(2);
-  const [chosenId, setChosenId] = useState<string | null>(null);
   const [result, setResult] = useState<ScoreResult | null>(null);
+  const [reveal, setReveal] = useState<Reveal | null>(null);
   const [current, setCurrent] = useState<CurrentQuestion | null>(() =>
     pickQuestion(new Map(), [], 1),
   );
@@ -118,10 +124,13 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
   const questionNumber = Math.min(served.length + 1, SESSION_LENGTH);
 
   const handleAnswer = useCallback(
-    (choiceId: string, scored: ScoreResult, timeMs: number) => {
+    (response: ItemResponse, timeMs: number) => {
       if (!current || result) return;
-      setChosenId(choiceId);
+      if (current.item.type !== response.type) return;
+
+      const scored = scoreItem(current.item, response);
       setResult(scored);
+      setReveal(revealFor(current.item));
 
       const state =
         statesRef.current.get(current.skillSlug) ?? initialSkillState();
@@ -158,7 +167,7 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
     if (!current) return;
     const nextServed = [...served, current.skillSlug];
     setServed(nextServed);
-    setChosenId(null);
+    setReveal(null);
     setResult(null);
     setSeedCounter((n) => n + 1);
     setCurrent(pickQuestion(statesRef.current, nextServed, seedCounter));
@@ -171,7 +180,7 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
     setSparks(0);
     setStreak(0);
     setSeedCounter(2);
-    setChosenId(null);
+    setReveal(null);
     setResult(null);
     setCurrent(pickQuestion(new Map(), [], 1));
   }, []);
@@ -276,11 +285,12 @@ export default function PracticeSession({ audio = true }: { audio?: boolean }) {
 
       <ItemCard
         key={current.item.id}
-        item={current.item}
+        item={toPublicItem(current.item)}
+        reveal={reveal}
+        explanation={reveal ? current.item.explanation : ""}
+        correct={result?.correct ?? null}
         onAnswer={handleAnswer}
         onNext={handleNext}
-        result={result}
-        chosenId={chosenId}
         audio={audio}
       />
 

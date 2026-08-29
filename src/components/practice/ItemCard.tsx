@@ -2,17 +2,31 @@
 
 import { useState } from "react";
 import { Volume2 } from "lucide-react";
-import type { MultipleChoiceItem, ScoreResult } from "@/lib/items/types";
+import type { PublicItem } from "@/lib/items/public";
+import type { ItemResponse } from "@/lib/items/types";
+import type { Reveal } from "@/lib/items/public";
 import { speak } from "@/lib/audio/speak";
 import { cn } from "@/lib/utils";
 import WidgetHost from "./WidgetHost";
+import ChoiceGrid from "./inputs/ChoiceGrid";
+import MultiselectGrid from "./inputs/MultiselectGrid";
+import EquationEditor from "./inputs/EquationEditor";
+import HotText from "./inputs/HotText";
+import TableMatch from "./inputs/TableMatch";
+import Ebsr from "./inputs/Ebsr";
 
 /**
- * Renders one question and collects one answer.
+ * Renders one question of any type, and collects one answer.
  *
- * The stem carries **bold** markers from the generators, which are rendered
- * rather than shown raw — a seven-year-old reading "Round **47** to the
- * nearest ten" would be reading punctuation as part of the number.
+ * The chrome — passage, stem, manipulative, hints, the verdict panel, the
+ * next button — is identical whatever the item is, so it lives here once. The
+ * part that differs is how an answer is given, and each of those is a small
+ * component under `inputs/`.
+ *
+ * Nothing here decides whether an answer is right. The child's response goes
+ * to the server, which regenerates the item from its seed and scores it, and
+ * only then sends back the answer key. Until that reply arrives the page does
+ * not contain the answer in any form.
  */
 function renderStem(stem: string) {
   return stem.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
@@ -37,25 +51,33 @@ function splitBlocks(text: string): string[] {
 }
 
 export interface ItemCardProps {
-  item: MultipleChoiceItem;
-  onAnswer: (choiceId: string, result: ScoreResult, timeMs: number) => void;
+  item: PublicItem;
+  /** The answer key, sent by the server only after an answer was submitted. */
+  reveal: Reveal | null;
+  explanation: string;
+  correct: boolean | null;
+  onAnswer: (response: ItemResponse, timeMs: number) => void;
   onNext: () => void;
-  result: ScoreResult | null;
-  chosenId: string | null;
   audio: boolean;
 }
 
 export default function ItemCard({
   item,
+  reveal,
+  explanation,
+  correct,
   onAnswer,
   onNext,
-  result,
-  chosenId,
   audio,
 }: ItemCardProps) {
   const [startedAt] = useState(() => Date.now());
   const [hintsShown, setHintsShown] = useState(0);
-  const answered = result !== null;
+  const answered = reveal !== null;
+
+  const submit = (response: ItemResponse) => {
+    if (answered) return;
+    onAnswer(response, Date.now() - startedAt);
+  };
 
   return (
     <div className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-sm sm:p-8">
@@ -69,9 +91,7 @@ export default function ItemCard({
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h3 className="font-sans text-lg font-bold">
-                {item.passage.title}
-              </h3>
+              <h3 className="font-sans text-lg font-bold">{item.passage.title}</h3>
               <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-[var(--text-muted)]">
                 {item.passage.genre === "informational"
                   ? "Informational text"
@@ -93,7 +113,10 @@ export default function ItemCard({
           </div>
           <div className="mt-3 space-y-3 text-[0.975rem] leading-relaxed">
             {splitBlocks(item.passage.text).map((para, i) => (
-              <p key={i} className={item.passage!.genre === "poetry" ? "whitespace-pre-line" : ""}>
+              <p
+                key={i}
+                className={item.passage!.genre === "poetry" ? "whitespace-pre-line" : ""}
+              >
                 {para}
               </p>
             ))}
@@ -104,10 +127,7 @@ export default function ItemCard({
       <div className="flex items-start gap-3">
         <h2
           className={cn(
-            "flex-1 font-sans font-bold leading-snug",
-            // A reading question sits under a passage the student has just
-            // read, so it does not need to shout for attention the way a
-            // standalone arithmetic prompt does.
+            "flex-1 font-sans font-bold leading-snug whitespace-pre-line",
             item.passage ? "text-xl sm:text-2xl" : "text-2xl sm:text-3xl",
           )}
         >
@@ -127,49 +147,24 @@ export default function ItemCard({
 
       <WidgetHost widget={item.widget} audio={audio} />
 
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        {item.choices.map((choice) => {
-          const isChosen = chosenId === choice.id;
-          const isCorrect = choice.id === item.correctId;
-          const reveal = answered && (isChosen || isCorrect);
-
-          return (
-            <button
-              key={choice.id}
-              type="button"
-              disabled={answered}
-              onClick={() => {
-                if (answered) return;
-                const timeMs = Date.now() - startedAt;
-                onAnswer(
-                  choice.id,
-                  {
-                    correct: choice.id === item.correctId,
-                    misconception: choice.misconception,
-                    partialCredit: choice.id === item.correctId ? 1 : 0,
-                  },
-                  timeMs,
-                );
-              }}
-              className={cn(
-                "rounded-[var(--radius-tile)] border-2 px-5 py-4 text-left text-xl font-bold tabular-nums transition",
-                !answered &&
-                  "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--brand)] hover:bg-[var(--surface-2)]",
-                reveal &&
-                  isCorrect &&
-                  "border-[var(--color-grow-500)] bg-[var(--color-grow-100)] text-[var(--color-ink-900)]",
-                reveal &&
-                  !isCorrect &&
-                  isChosen &&
-                  "border-[var(--color-ember-500)] bg-[var(--color-ember-100)] text-[var(--color-ink-900)]",
-                answered && !reveal && "border-[var(--border)] opacity-45",
-              )}
-            >
-              {choice.label}
-            </button>
-          );
-        })}
-      </div>
+      {item.type === "multiple_choice" && (
+        <ChoiceGrid item={item} reveal={reveal} onSubmit={submit} />
+      )}
+      {item.type === "multiselect" && (
+        <MultiselectGrid item={item} reveal={reveal} onSubmit={submit} />
+      )}
+      {item.type === "equation_editor" && (
+        <EquationEditor item={item} reveal={reveal} correct={correct} onSubmit={submit} />
+      )}
+      {item.type === "hot_text" && (
+        <HotText item={item} reveal={reveal} onSubmit={submit} />
+      )}
+      {item.type === "table_match" && (
+        <TableMatch item={item} reveal={reveal} onSubmit={submit} />
+      )}
+      {item.type === "ebsr" && (
+        <Ebsr item={item} reveal={reveal} onSubmit={submit} />
+      )}
 
       {/* Hints: available before answering, never after. */}
       {!answered && item.hints.length > 0 && (
@@ -201,17 +196,15 @@ export default function ItemCard({
           aria-live="polite"
           className={cn(
             "mt-6 rounded-[var(--radius-tile)] border-l-4 px-5 py-4",
-            result.correct
+            correct
               ? "border-[var(--color-grow-500)] bg-[var(--color-grow-100)]"
               : "border-[var(--color-ember-500)] bg-[var(--color-ember-100)]",
           )}
         >
           <p className="font-bold text-[var(--color-ink-900)]">
-            {result.correct ? "That's right." : "Not quite."}
+            {correct ? "That's right." : "Not quite."}
           </p>
-          <p className="mt-1 text-[15px] text-[var(--color-ink-800)]">
-            {item.explanation}
-          </p>
+          <p className="mt-1 text-[15px] text-[var(--color-ink-800)]">{explanation}</p>
         </div>
       )}
 
