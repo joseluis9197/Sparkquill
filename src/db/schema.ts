@@ -369,6 +369,19 @@ export const students = pgTable(
     pinHash: text("pin_hash").notNull(),
     /** Audio autoplay preference, set by the parent. */
     autoplayAudio: boolean("autoplay_audio").notNull().default(true),
+    /**
+     * A strand the parent has asked practice to lean towards, and when that
+     * ends. Both null when there is no focus.
+     *
+     * Stored as the full strand code ("MA.4.FR") rather than the key ("FR"),
+     * so it carries its own subject and grade and cannot quietly match the
+     * wrong thing after a birthday.
+     *
+     * Deliberately expiring. A focus that never ended would be a topic menu
+     * with extra steps, and the reason to have it is a test on Thursday.
+     */
+    focusStrand: text("focus_strand"),
+    focusUntil: timestamp("focus_until", { withTimezone: true }),
     active: boolean("active").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()

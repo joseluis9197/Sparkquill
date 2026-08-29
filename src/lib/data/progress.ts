@@ -25,6 +25,8 @@ export interface SkillRow {
   title: string;
   benchmarkCode: string;
   benchmarkDescription: string;
+  /** "MA.4.FR" — what a parent's focus is set against. */
+  strandCode: string;
   reportingCategory: string | null;
   grade: number;
   subject: Subject;
@@ -56,6 +58,7 @@ export async function listSkills(opts: {
       title: skills.title,
       benchmarkCode: skills.benchmarkCode,
       benchmarkDescription: benchmarks.description,
+      strandCode: benchmarks.strandCode,
       reportingCategory: benchmarks.reportingCategory,
       grade: benchmarks.grade,
       subject: benchmarks.subject,

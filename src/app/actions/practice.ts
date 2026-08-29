@@ -203,17 +203,22 @@ export async function nextQuestion(
   const { listSkills, loadPrerequisites, loadCategoryWeights } = await import(
     "@/lib/data/progress"
   );
+  const { activeFocus } = await import("@/lib/data/focus");
   const { GENERATORS } = await import("@/lib/items/registry");
 
   // Bounded by the child's own grade. The ceiling is the important half: the
   // selector will happily reach down for a missing prerequisite, but nothing
   // should ever hand a child work from a grade they have not reached.
-  const [allSkills, mastery, prerequisites, categoryWeights] = await Promise.all([
-    listSkills({ upToGrade: active.student.grade, subject }),
-    loadMastery(active.student.id),
-    loadPrerequisites(),
-    loadCategoryWeights(active.student.grade, subject),
-  ]);
+  const [allSkills, mastery, prerequisites, categoryWeights, focus] =
+    await Promise.all([
+      listSkills({ upToGrade: active.student.grade, subject }),
+      loadMastery(active.student.id),
+      loadPrerequisites(),
+      loadCategoryWeights(active.student.grade, subject),
+      // Null unless a parent has set one and it has not run out. It narrows
+      // what the selector chooses from; it never postpones a due review.
+      activeFocus(active.student.id),
+    ]);
 
   /*
    * A prerequisite is passed to the selector only when there is evidence the
@@ -236,6 +241,7 @@ export async function nextQuestion(
       skillId: s.id,
       skillSlug: s.slug,
       benchmark: s.benchmarkCode,
+      strandCode: s.strandCode,
       reportingCategory: s.reportingCategory,
       prerequisiteIds: (prerequisites.get(s.slug) ?? [])
         .map((slug) => bySlug.get(slug))
@@ -247,6 +253,7 @@ export async function nextQuestion(
     categoryWeights,
     now: new Date(),
     recentlyServed,
+    focus,
   });
   if (!selection) return null;
 

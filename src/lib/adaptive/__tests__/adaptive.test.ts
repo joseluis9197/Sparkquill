@@ -247,6 +247,7 @@ describe("skill selection", () => {
       skillId: id,
       skillSlug: id,
       benchmark: "MA.2.NSO.1.1",
+      strandCode: "MA.2.NSO",
       reportingCategory: null,
       prerequisiteIds: [],
       state: initialSkillState(),

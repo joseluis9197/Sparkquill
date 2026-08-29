@@ -17,7 +17,9 @@ import BillingPanel from "./BillingPanel";
 import VerifyPanel from "./VerifyPanel";
 import AccountPanel from "./AccountPanel";
 import DeleteStudent from "./DeleteStudent";
+import FocusPanel from "./FocusPanel";
 import { hasBlueprint, ordinal } from "@/lib/utils";
+import { focusDetail, strandOptions } from "@/lib/data/focus";
 
 export const metadata: Metadata = { title: "Parent dashboard" };
 
@@ -63,6 +65,8 @@ export default async function ParentPage() {
       summary: await summaryFor(child.id, child.grade),
       skills: await skillProgressFor(child.id, child.grade),
       mocks: await mockHistoryFor(child.id),
+      strands: await strandOptions(child.grade),
+      focus: await focusDetail(child.id),
     })),
   );
 
@@ -93,7 +97,7 @@ export default async function ParentPage() {
         </p>
       )}
 
-      {reports.map(({ child, summary, skills, mocks }) => {
+      {reports.map(({ child, summary, skills, mocks, strands, focus }) => {
         const accuracy =
           summary.totalAttempts === 0
             ? null
@@ -110,6 +114,13 @@ export default async function ParentPage() {
                 {ordinal(child.grade)} grade
               </span>
             </div>
+
+            <FocusPanel
+              studentId={child.id}
+              childName={child.firstName}
+              options={strands}
+              current={focus}
+            />
 
             <MockPanel results={mocks} name={child.firstName} />
 

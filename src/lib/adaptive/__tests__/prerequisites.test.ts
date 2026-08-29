@@ -111,6 +111,7 @@ describe("remediation actually fires", () => {
           skillId: "unlike",
           skillSlug: "add-subtract-unlike-fractions",
           benchmark: "MA.5.FR.2.1",
+          strandCode: "MA.5.FR",
           reportingCategory: "Fractions and Decimals",
           prerequisiteIds: ["equivalent"],
           state: state({
@@ -123,6 +124,7 @@ describe("remediation actually fires", () => {
           skillId: "equivalent",
           skillSlug: "equivalent-fractions-g4",
           benchmark: "MA.4.FR.1.3",
+          strandCode: "MA.4.FR",
           reportingCategory: "Fractions and Decimals",
           prerequisiteIds: [],
           state: state({ attemptCount: 4, level: "learning" }),
@@ -142,6 +144,7 @@ describe("remediation actually fires", () => {
           skillId: "unlike",
           skillSlug: "add-subtract-unlike-fractions",
           benchmark: "MA.5.FR.2.1",
+          strandCode: "MA.5.FR",
           reportingCategory: "Fractions and Decimals",
           prerequisiteIds: [],
           state: state(),
@@ -173,6 +176,7 @@ describe("blueprint weights change what is chosen", () => {
           skillId: "small",
           skillSlug: "a",
           benchmark: "MA.5.DP.1.1",
+          strandCode: "MA.5.DP",
           reportingCategory: "Light",
         },
         {
@@ -180,6 +184,7 @@ describe("blueprint weights change what is chosen", () => {
           skillId: "big",
           skillSlug: "b",
           benchmark: "MA.5.FR.2.1",
+          strandCode: "MA.5.FR",
           reportingCategory: "Heavy",
         },
       ],
@@ -199,8 +204,10 @@ describe("blueprint weights change what is chosen", () => {
     // to be named first alphabetically.
     const selection = selectNextSkill({
       candidates: [
-        { ...base, skillId: "one", skillSlug: "a", benchmark: "MA.1.NSO.1.1", reportingCategory: null },
-        { ...base, skillId: "two", skillSlug: "b", benchmark: "MA.1.NSO.1.2", reportingCategory: null },
+        { ...base, skillId: "one", skillSlug: "a", benchmark: "MA.1.NSO.1.1",
+ strandCode: "MA.1.NSO", reportingCategory: null },
+        { ...base, skillId: "two", skillSlug: "b", benchmark: "MA.1.NSO.1.2",
+ strandCode: "MA.1.NSO", reportingCategory: null },
       ],
       categoryWeights: [],
       now,

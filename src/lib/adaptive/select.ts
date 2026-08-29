@@ -15,12 +15,18 @@ import { isDueForReview, type SkillState } from "./mastery";
  * Tier 3 is where the blueprint weights earn their keep. Two skills a child
  * is equally weak at are not equally worth practising if one sits in a
  * category worth 42% of the test and the other in one worth 25%.
+ *
+ * A parent can set a focus on top of this, which narrows tiers 2 and 3 to one
+ * strand for a few days. It cannot reach tier 1: see the comment where it is
+ * applied.
  */
 
 export interface SkillCandidate {
   skillId: string;
   skillSlug: string;
   benchmark: string;
+  /** "MA.4.FR" — the strand this skill belongs to. Present for every grade. */
+  strandCode: string;
   /** Null for grades 1-2, which have no published blueprint. */
   reportingCategory: string | null;
   prerequisiteIds: string[];
@@ -66,6 +72,17 @@ export type SelectionReason =
   | "prerequisite_gap"
   | "fallback";
 
+/**
+ * A strand the parent has asked practice to lean towards.
+ *
+ * `label` is what the child is told, so it is the strand's readable name
+ * rather than its code.
+ */
+export interface Focus {
+  strandCode: string;
+  label: string;
+}
+
 export interface Selection {
   candidate: SkillCandidate;
   reason: SelectionReason;
@@ -102,6 +119,8 @@ export function selectNextSkill(opts: {
   now: Date;
   /** Skills already served this session, to avoid repeating one immediately. */
   recentlyServed?: string[];
+  /** Set by the parent, for a few days. See how it is applied below. */
+  focus?: Focus | null;
 }): Selection | null {
   const recent = new Set(opts.recentlyServed ?? []);
   const pool = opts.candidates.filter((c) => !recent.has(c.skillId));
@@ -126,11 +145,31 @@ export function selectNextSkill(opts: {
     };
   }
 
+  /*
+   * The parent's focus applies from here down, and no higher.
+   *
+   * It is placed after the review tier on purpose. A review is due on the day
+   * the schedule says, and a topic filter that skipped due reviews would turn
+   * spaced repetition into a worksheet generator — the 1/3/7/21 day intervals
+   * stop meaning anything the moment they can be postponed. So a focus can
+   * decide *which new work* a child gets, and never defers work already owed.
+   *
+   * It narrows rather than replaces: if the focus has nothing left to offer —
+   * every skill in it mastered, or the child practising the other subject —
+   * selection carries on across everything as though no focus were set. An
+   * empty session would be a worse answer than an off-topic question.
+   */
+  const focused = opts.focus
+    ? working.filter((c) => c.strandCode === opts.focus!.strandCode)
+    : [];
+  const inFocus = focused.length > 0;
+  const choosing = inFocus ? focused : working;
+
   /* ---- 2. Unmastered, with prerequisites already met ---- */
   const masteredIds = new Set(
     opts.candidates.filter(isMastered).map((c) => c.skillId),
   );
-  const unlocked = working.filter(
+  const unlocked = choosing.filter(
     (c) =>
       !isMastered(c) &&
       c.prerequisiteIds.every((id) => masteredIds.has(id)),
@@ -170,12 +209,15 @@ export function selectNextSkill(opts: {
     return {
       candidate: best,
       reason: best.state.level === "not_started" ? "unlocked_gap" : "weak_category",
-      explanation: weakest,
+      // Said plainly rather than hidden. A child who has been handed four
+      // fraction questions in a row should be told why, and "because you
+      // asked for it" is not an answer they can be given.
+      explanation: inFocus ? `${opts.focus!.label}, as asked for at home.` : weakest,
     };
   }
 
   /* ---- 3. Everything is blocked: drop to the prerequisites themselves ---- */
-  const blocked = working.filter((c) => !isMastered(c));
+  const blocked = choosing.filter((c) => !isMastered(c));
   if (blocked.length > 0) {
     // Prefer the skill with the fewest unmet prerequisites — the closest
     // thing to a foundation the child can actually stand on.
@@ -193,7 +235,7 @@ export function selectNextSkill(opts: {
   }
 
   /* ---- Everything mastered: keep the strongest skills warm ---- */
-  const oldest = [...working].sort(
+  const oldest = [...choosing].sort(
     (a, b) =>
       (a.state.lastSeenAt?.getTime() ?? 0) - (b.state.lastSeenAt?.getTime() ?? 0),
   )[0];

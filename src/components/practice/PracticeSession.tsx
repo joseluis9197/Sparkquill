@@ -74,7 +74,10 @@ function buildCandidates(
     skillId: slug,
     skillSlug: slug,
     benchmark,
-    // No weights here: this demo has no database, so there is no blueprint to
+    // The first three segments of a benchmark code are its strand. Derived
+    // rather than looked up because the demo has no database to look in.
+    strandCode: benchmark.split(".").slice(0, 3).join("."),
+    // No weights here either, for the same reason: there is no blueprint to
     // read. The signed-in app loads the real ones.
     reportingCategory: null,
     prerequisiteIds: [],
