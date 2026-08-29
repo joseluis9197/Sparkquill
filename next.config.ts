@@ -7,10 +7,9 @@ import type { NextConfig } from "next";
  * the cheap defences are worth having switched on from the start rather than
  * added after something goes wrong.
  *
- * There is deliberately no Content-Security-Policy here yet: a CSP written
- * without measuring what the app actually loads either breaks the 3D canvas
- * and the Google Fonts stylesheet, or is so permissive it protects nothing.
- * It belongs in its own change, with the report-only phase that requires.
+ * The Content-Security-Policy is not here. It needs a fresh nonce on every
+ * response, which a static header cannot carry, so it lives in src/proxy.ts.
+ * These are the headers that are the same for every request.
  */
 const securityHeaders = [
   // No sniffing a response into a different content type than it declares.
