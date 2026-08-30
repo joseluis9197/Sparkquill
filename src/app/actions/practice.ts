@@ -8,6 +8,7 @@ import { requireActiveStudent } from "@/lib/data/students";
 import { loadMastery, recordAttempt } from "@/lib/data/progress";
 import { getGenerator } from "@/lib/items/registry";
 import { scoreItem } from "@/lib/items/build";
+import { passageClipUrl } from "@/lib/audio/clips";
 import type { Item, ItemResponse } from "@/lib/items/types";
 import {
   NO_REVEAL,
@@ -271,7 +272,7 @@ export async function nextQuestion(
   const generator = candidates[seed % candidates.length];
 
   return {
-    item: toPublicItem(generator.generate({ seed, difficulty })),
+    item: toPublicItem(generator.generate({ seed, difficulty }), passageClipUrl),
     difficulty,
     reason: selection.explanation,
   };

@@ -3,7 +3,6 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 config({ path: ".env" });
 
-import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
@@ -15,6 +14,7 @@ import {
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { PASSAGES } from "../src/lib/passages";
+import { clipFileName } from "../src/lib/audio/clips";
 
 /**
  * Builds narration clips for the passages.
@@ -47,9 +47,13 @@ import { PASSAGES } from "../src/lib/passages";
 
 const OUT_DIR = join("public", "audio", "passages");
 
-export function clipName(text: string): string {
-  return `${createHash("sha256").update(text).digest("hex").slice(0, 16)}.mp3`;
-}
+/*
+ * The naming is imported rather than repeated. It used to be defined here as
+ * well as in the app, which is two implementations of one rule: change the
+ * hash in one place and this builds files under names the app never asks
+ * for, producing a directory full of clips and a product that ignores them.
+ */
+
 
 type Provider = (text: string) => Promise<Buffer>;
 
@@ -115,7 +119,7 @@ async function main() {
   const prune = process.argv.includes("--prune");
 
   mkdirSync(OUT_DIR, { recursive: true });
-  const wanted = new Map(PASSAGES.map((p) => [clipName(p.text), p]));
+  const wanted = new Map(PASSAGES.map((p) => [clipFileName(p.text), p]));
 
   const provider = chooseProvider();
   if (!provider) {

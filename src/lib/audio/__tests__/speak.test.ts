@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import { forSpeech } from "../speak";
-import { passageClipUrl } from "../clips";
 
 /**
  * What the narrator says, as opposed to what the screen shows.
@@ -46,20 +45,10 @@ describe("preparing text for narration", () => {
   });
 });
 
-describe("passage clip naming", () => {
-  it("names a clip by its content, not its title", () => {
-    // So that editing a passage yields a new filename rather than a stale
-    // clip a child hears while reading different words.
-    const a = passageClipUrl("The bee dances.");
-    const b = passageClipUrl("The bee dances!");
-    expect(a).not.toBe(b);
-  });
-
-  it("is stable for the same text", () => {
-    expect(passageClipUrl("Hello")).toBe(passageClipUrl("Hello"));
-  });
-
-  it("produces a path under the public audio directory", () => {
-    expect(passageClipUrl("x")).toMatch(/^\/audio\/passages\/[0-9a-f]{16}\.mp3$/);
-  });
-});
+/*
+ * Clip naming moved to clips.test.ts, along with the rule these tests used
+ * to get wrong. They asserted that a URL always comes back, which was the
+ * behaviour that broke the passage read-aloud button: a path to a file that
+ * does not exist is not better than no path, it is worse, because the player
+ * waits on it for ever.
+ */

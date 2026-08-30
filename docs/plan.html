@@ -284,7 +284,18 @@ footer a{color:var(--ink-2)}
 <header class="masthead">
   <div class="wrap">
     <p class="eyebrow">Plan de desarrollo <span>·</span> v1.0 <span>·</span> Agosto 2026</p>
-    <h1>Sparkquill</h1>
+    <div id="sq-status-banner" style="max-width:52rem;margin:2rem auto;padding:1.25rem 1.5rem;border-left:4px solid #a94412;background:#fef8ec;color:#16211e;font-family:system-ui,sans-serif;line-height:1.55;border-radius:.5rem">
+<p style="margin:0 0 .6rem;font-weight:700">Esto es el plan de partida, no la descripci&oacute;n del producto.</p>
+<p style="margin:0 0 .6rem">Escrito el <strong>27 de agosto de 2026</strong>, antes de existir una l&iacute;nea de c&oacute;digo. Se conserva porque el an&aacute;lisis de FAST de la secci&oacute;n 01 y el de cumplimiento legal de la 09 siguen siendo v&aacute;lidos, y el c&oacute;digo los cita. El resto describe intenciones, y varias se decidieron de otra forma al construir.</p>
+<p style="margin:0 0 .6rem">Lo que de verdad hace la plataforma est&aacute; en el c&oacute;digo y en el historial de git. En particular, estas cosas cambiaron:</p>
+<ul style="margin:0 0 .6rem;padding-left:1.2rem">
+<li><strong>Cobertura</strong>: 298 est&aacute;ndares evaluables, y 60 declarados expl&iacute;citamente fuera de alcance por ser tareas de aula. Ver <code>scripts/coverage.ts</code> y <code>src/lib/curriculum/not-practised.ts</code>.</li>
+<li><strong>Audio</strong>: la narraci&oacute;n la hace el sint&eacute;tizador del dispositivo. Los clips pregrabados existen como opci&oacute;n para pasajes y no se han generado. Ver <code>src/lib/audio/speak.ts</code>.</li>
+<li><strong>Selecci&oacute;n</strong>: adaptativa por defecto, con un enfoque por tema que puede fijar el padre unos d&iacute;as. Ver <code>src/lib/adaptive/select.ts</code>.</li>
+</ul>
+<p style="margin:0">Un plan que se lee como si fuera documentaci&oacute;n miente sin querer. Esta nota est&aacute; aqu&iacute; para que no lo haga.</p>
+</div>
+<h1>Sparkquill</h1>
     <p class="deck">Plataforma interactiva de preparación para los exámenes <strong>FAST</strong> de Florida, grados&nbsp;1.º a 6.º, en Inglés y Matemáticas. Manipulativos 3D, audio nativo y un motor adaptativo construido sobre los benchmarks reales del currículo B.E.S.T.</p>
     <div class="chips">
       <span class="chip on">6 grados</span>

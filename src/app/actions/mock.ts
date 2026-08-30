@@ -13,6 +13,7 @@ import {
 import { getGenerator } from "@/lib/items/registry";
 import { scoreItem } from "@/lib/items/build";
 import { toPublicItem, type PublicItem } from "@/lib/items/public";
+import { passageClipUrl } from "@/lib/audio/clips";
 import type { Item, ItemResponse } from "@/lib/items/types";
 import { buildPaper, paperLength, paperMinutes } from "@/lib/mock/paper";
 import { GENERATORS } from "@/lib/items/registry";
@@ -173,7 +174,10 @@ export async function mockQuestion(
     total: paper.length,
     // On a test the band is fixed rather than chosen from mastery: a harder
     // question for a stronger student would make scores incomparable.
-    item: toPublicItem(generator.generate({ seed: q.seed, difficulty: "core" })),
+    item: toPublicItem(
+      generator.generate({ seed: q.seed, difficulty: "core" }),
+      passageClipUrl,
+    ),
   };
 }
 

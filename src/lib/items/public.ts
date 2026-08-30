@@ -7,7 +7,6 @@ import type {
   MultiselectItem,
   TableMatchItem,
 } from "./types";
-import { passageClipUrl } from "@/lib/audio/clips";
 
 /**
  * Items as the browser is allowed to see them.
@@ -77,7 +76,7 @@ export type PublicItem =
       partB: { stem: string; choices: PublicChoice[] };
     });
 
-function base(item: Item): PublicBase {
+function base(item: Item, clipUrl?: ClipResolver): PublicBase {
   return {
     id: item.id,
     templateKey: item.templateKey,
@@ -91,7 +90,7 @@ function base(item: Item): PublicBase {
     // passage recorded after an item was generated is picked up without the
     // item having to be regenerated.
     passage: item.passage
-      ? { ...item.passage, clipUrl: passageClipUrl(item.passage.text) }
+      ? { ...item.passage, clipUrl: clipUrl?.(item.passage.text) }
       : undefined,
     hints: item.hints,
     difficulty: item.difficulty,
@@ -101,16 +100,33 @@ function base(item: Item): PublicBase {
 const safeChoices = (cs: { id: string; label: string }[]): PublicChoice[] =>
   cs.map((c) => ({ id: c.id, label: c.label }));
 
-export function toPublicItem(item: Item): PublicItem {
+/**
+ * How to find a passage's narration clip, when the caller can look.
+ *
+ * Passed in rather than imported, because this module is used by client
+ * components as well as by server actions, and finding a clip means reading
+ * a directory. Importing the server-side resolver here put `node:fs` into the
+ * browser bundle and broke every page that renders an item.
+ *
+ * Callers that cannot look — the no-account demo, which builds its questions
+ * entirely in the browser — pass nothing and get on-device narration, which
+ * is what they would have got anyway.
+ */
+export type ClipResolver = (text: string) => string | undefined;
+
+export function toPublicItem(
+  item: Item,
+  clipUrl?: ClipResolver,
+): PublicItem {
   switch (item.type) {
     case "multiple_choice": {
       const i = item as MultipleChoiceItem;
-      return { ...base(i), type: "multiple_choice", choices: safeChoices(i.choices) };
+      return { ...base(i, clipUrl), type: "multiple_choice", choices: safeChoices(i.choices) };
     }
     case "multiselect": {
       const i = item as MultiselectItem;
       return {
-        ...base(i),
+        ...base(i, clipUrl),
         type: "multiselect",
         choices: safeChoices(i.choices),
         // The count is shown on purpose. FAST tells the student how many to
@@ -121,12 +137,12 @@ export function toPublicItem(item: Item): PublicItem {
     }
     case "equation_editor": {
       const i = item as EquationEditorItem;
-      return { ...base(i), type: "equation_editor", unit: i.unit };
+      return { ...base(i, clipUrl), type: "equation_editor", unit: i.unit };
     }
     case "hot_text": {
       const i = item as HotTextItem;
       return {
-        ...base(i),
+        ...base(i, clipUrl),
         type: "hot_text",
         tokens: i.tokens.map((t) => ({
           id: t.id,
@@ -139,7 +155,7 @@ export function toPublicItem(item: Item): PublicItem {
     case "table_match": {
       const i = item as TableMatchItem;
       return {
-        ...base(i),
+        ...base(i, clipUrl),
         type: "table_match",
         rows: i.rows.map((r) => ({ id: r.id, label: r.label })),
         columns: i.columns.map((c) => ({ id: c.id, label: c.label })),
@@ -148,7 +164,7 @@ export function toPublicItem(item: Item): PublicItem {
     case "ebsr": {
       const i = item as EbsrItem;
       return {
-        ...base(i),
+        ...base(i, clipUrl),
         type: "ebsr",
         partA: { stem: i.partA.stem, choices: safeChoices(i.partA.choices) },
         partB: { stem: i.partB.stem, choices: safeChoices(i.partB.choices) },

@@ -92,7 +92,9 @@ COPPA, which is one of the methods the rule accepts explicitly.
 ## Planning
 
 The full development plan, including the research behind the curriculum data and
-the assessment structure, is in `docs/plan.html`.
+the assessment structure, is in `docs/plan.html` — which opens with a note
+saying what in it has since been decided differently. It is the starting
+plan, not a description of what was built.
 
 ## Trademarks
 

@@ -135,6 +135,55 @@ function forSpeech(text: string): string {
     .trim();
 }
 
+/**
+ * How long a clip gets to start before we give up and speak instead.
+ *
+ * A child who has tapped the speaker is waiting in silence, and cannot tell
+ * a slow clip from a broken button. Rather more than a good connection needs
+ * and rather less than a child will sit through.
+ */
+const CLIP_START_TIMEOUT_MS = 1200;
+
+/**
+ * Starts a clip, reporting whether it actually began playing.
+ *
+ * Written as a race rather than `await audio.play()` because that promise is
+ * not trustworthy. Measured in Chrome against a URL that 404s: `play()`
+ * neither resolves nor rejects, no `error` event fires, and the element sits
+ * at networkState 2 indefinitely. The previous code awaited that promise
+ * inside a try/catch, so the catch never ran and the fallback never happened
+ * — the passage read-aloud button was silent for the whole life of the
+ * feature.
+ *
+ * So nothing here waits on a single signal. Success is `playing` actually
+ * firing; failure is an error, a rejection, or simply time passing.
+ */
+async function playClip(url: string): Promise<boolean> {
+  const audio = new Audio(url);
+
+  const started = new Promise<boolean>((resolve) => {
+    audio.addEventListener("playing", () => resolve(true), { once: true });
+    audio.addEventListener("error", () => resolve(false), { once: true });
+    audio.play().then(undefined, () => resolve(false));
+  });
+  const timedOut = new Promise<boolean>((resolve) =>
+    setTimeout(() => resolve(false), CLIP_START_TIMEOUT_MS),
+  );
+
+  if (await Promise.race([started, timedOut])) {
+    currentAudio = audio;
+    return true;
+  }
+
+  // Stop it loading. Left alone, a stalled request stays open behind a child
+  // who has already been given the synthesised reading instead, and would
+  // start playing over the top of it if it ever arrived.
+  audio.pause();
+  audio.removeAttribute("src");
+  audio.load();
+  return false;
+}
+
 /** Plays a pre-generated clip if one exists, otherwise synthesises. */
 export async function speak(
   text: string,
@@ -143,18 +192,10 @@ export async function speak(
   if (typeof window === "undefined") return;
   stopSpeech();
 
-  if (options.clipUrl) {
-    try {
-      const audio = new Audio(options.clipUrl);
-      currentAudio = audio;
-      await audio.play();
-      return;
-    } catch {
-      // Falls through to synthesis. A missing or unplayable clip must never
-      // leave a dead speaker button in front of a child who cannot read the
-      // question without it.
-    }
-  }
+  if (options.clipUrl && (await playClip(options.clipUrl))) return;
+  // Anything else falls through to synthesis. A missing or unplayable clip
+  // must never leave a dead speaker button in front of a child who cannot
+  // read the question without it.
 
   if (!("speechSynthesis" in window)) return;
   await whenVoicesReady();
