@@ -299,9 +299,27 @@ export interface StudentSummary {
  * their practice, and makes a parent who encourages test-taking see a worse
  * number for it.
  */
-const mockAttemptFilter = sql`${attempts.sessionId} is null or ${attempts.sessionId} not in (
+/*
+ * The outer parentheses are the whole point of this line.
+ *
+ * Without them the fragment is `a is null or a not in (...)`, and every
+ * caller combines it with `and(eq(studentId, ...), thisFilter)`. AND binds
+ * tighter than OR, so Postgres read that as
+ *
+ *   (student_id = $1 and session_id is null) or (session_id not in (...))
+ *
+ * — and the right-hand side names no student at all. Any attempt whose
+ * session was not a mock counted towards whoever happened to be asking, and
+ * when the table held no mock sessions the subquery was empty, `null not in
+ * ()` is true, and a parent's report counted every attempt in the database.
+ *
+ * Found by an integration test, in code whose commit message claimed to be
+ * fixing this exact area. A missing pair of brackets does not look like a
+ * data leak, which is why it survived review.
+ */
+const mockAttemptFilter = sql`(${attempts.sessionId} is null or ${attempts.sessionId} not in (
   select id from ${practiceSessions} where mode = 'mock'
-)`;
+))`;
 
 /**
  * `grade` bounds the denominator.

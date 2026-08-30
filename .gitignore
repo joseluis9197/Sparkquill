@@ -48,3 +48,7 @@ next-env.d.ts
 /stripe.txt
 /*.secret
 /secrets/
+
+# The disposable Postgres cluster the integration tests use.
+# Binaries and data are downloaded/created locally; see scripts/test-db.mjs.
+.postgres/

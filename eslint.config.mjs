@@ -35,6 +35,11 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The disposable Postgres cluster the integration tests use. It is a
+    // vendor tarball with thousands of files in it, several of which are
+    // JavaScript, and linting somebody else's database server produces
+    // thirty-eight thousand warnings about code nobody here wrote.
+    ".postgres/**",
   ]),
 ]);
 
