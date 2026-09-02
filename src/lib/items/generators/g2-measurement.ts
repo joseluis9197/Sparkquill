@@ -72,7 +72,7 @@ export const countMoney: ItemGenerator = {
         "Count the value of each coin, not how many coins there are.",
       ],
       difficulty: ctx.difficulty === "easy" ? 920 : ctx.difficulty === "core" ? 1060 : 1180,
-      widget: { key: "money-counter", config: { parts: parts.map((p) => ({ value: p.coin.value, count: p.count })) } },
+      widget: { key: "money-counter", config: { coins: parts.map((p) => ({ value: p.coin.value, count: p.count })) } },
       fallback: (taken) => {
         for (let d = 1; d < 40; d++) {
           for (const v of [formatMoney(total + d), formatMoney(total - d)]) {
@@ -289,7 +289,7 @@ export const partitionShapes: ItemGenerator = {
           "Two parts are halves, three are thirds, four are fourths.",
         ],
         difficulty: 1040,
-        widget: { key: "fraction-bar", config: { parts, shaded: 1 } },
+        widget: { key: "fraction-bar", config: { denominator: parts, shaded: 1 } },
       });
     }
 
@@ -313,7 +313,7 @@ export const partitionShapes: ItemGenerator = {
         "The parts must be the same size, or they are not really thirds.",
       ],
       difficulty: ctx.difficulty === "easy" ? 890 : 960,
-      widget: { key: "fraction-bar", config: { parts, shaded: parts } },
+      widget: { key: "fraction-bar", config: { denominator: parts, shaded: parts } },
     });
   },
 };
